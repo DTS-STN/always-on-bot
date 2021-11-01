@@ -17,7 +17,8 @@ import {
 import { DialogSet } from 'botbuilder-dialogs';
 
 // This bot's main dialog.
-import { VirtualAssistantCallbackBot } from './bots/virtualAssistantCallbackBot';
+import { VirtualAssistantUnblockBot } from './bots/VirtualAssistantUnblockBot';
+
 // import i18n from './dialogs/locales/i18nConfig';
 
 // Create HTTP server
@@ -79,7 +80,7 @@ const dialogs = new DialogSet(conversationState.createProperty('DialogState'));
 const userState = new UserState(memoryStorage);
 
 // Create the main dialog.
-const myVirtualAssistantBot = new VirtualAssistantCallbackBot(
+const myVirtualAssistantBot = new VirtualAssistantUnblockBot(
   conversationState,
   userState,
   dialogs,
