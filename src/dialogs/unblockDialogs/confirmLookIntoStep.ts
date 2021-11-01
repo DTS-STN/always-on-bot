@@ -25,6 +25,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     this.addDialog(
       new WaterfallDialog(CONFIRM_LOOK_INTO_WATERFALL_STEP, [
         this.initialStep.bind(this),
+        this.serviceCanadaCallbackStep.bind(this),
         this.finalStep.bind(this),
       ]),
     );
@@ -102,6 +103,72 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     }
   }
 
+
+  async serviceCanadaCallbackStep(stepContext) {
+    // Get the user details / state machine
+    const unblockBotDetails = stepContext.options;
+
+    // DEBUG
+    // console.log('DEBUG UNBLOCKBOTDETAILS:', unblockBotDetails);
+
+    // Set the text for the prompt
+    const chillMsg = i18n.__('confirmLookIntoStepCloseMsg');
+    const standardMsg = i18n.__('confirmServiceCanadaStepCallbackPrompt');
+
+    // Set the text for the retry prompt
+    const retryMsg = i18n.__('confirmLookIntoStepRetryMsg');
+
+    // Send master error message
+    await stepContext.context.sendActivity(chillMsg);
+
+    // Check if the error count is greater than the max threshold
+    if (unblockBotDetails.errorCount.confirmLookIntoStep >= MAX_ERROR_COUNT) {
+      // Throw the master error flag
+      unblockBotDetails.masterError = true;
+
+      // Set master error message to send
+      const errorMsg = i18n.__('masterErrorMsg');
+
+      // Send master error message
+      await stepContext.context.sendActivity(errorMsg);
+
+      // End the dialog and pass the updated details state machine
+      return await stepContext.endDialog(unblockBotDetails);
+    }
+
+    // Check the user state to see if unblockBotDetails.confirm_look_into_step is set to null or -1
+    // If it is in the error state (-1) or or is set to null prompt the user
+    // If it is false the user does not want to proceed
+    if (
+      unblockBotDetails.confirmLookIntoStep === null ||
+      unblockBotDetails.confirmLookIntoStep === -1
+    ) {
+      // Setup the prompt message
+      var promptMsg = standardMsg;
+
+      // The current step is an error state
+      if (unblockBotDetails.confirmLookIntoStep === -1) {
+        promptMsg = retryMsg;
+      }
+
+      const promptOptions = i18n.__('confirmLookIntoStepStandardPromptOptions');
+
+      const promptDetails = {
+        prompt: ChoiceFactory.forChannel(
+          stepContext.context,
+          promptOptions,
+          promptMsg,
+        ),
+      };
+
+      return await stepContext.prompt(TEXT_PROMPT, promptDetails);
+    } else {
+      return await stepContext.next(false);
+    }
+  }
+
+
+
   /**
    * Validation step in the waterfall.
    * We use LUIZ to process the prompt reply and then
@@ -153,7 +220,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     // Top intent tell us which cognitive service to use.
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
 
-    const closeMsg = i18n.__('confirmLookIntoStepCloseMsg');
+    const closeMsg = i18n.__('confirmServiceCanadaStepCloseMsg');
 
     switch (intent) {
       // Proceed
