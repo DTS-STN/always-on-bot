@@ -1,0 +1,23 @@
+environments:
+  benrd: 
+  bingrd:
+  dev:
+  prod-blue:
+  prod-green: 
+  prototype:
+
+
+releases:
+
+  - name: oasubapi-{{ requiredEnv "BRANCH" }}
+    chart: ../helm/charts/oas-unlock-bot
+    namespace: oas-ub-{{ requiredEnv "BRANCH" }}
+    values:
+      - overrides/oas-unlock-bot-api.yaml.gotmpl
+    labels:
+        category: prototype
+        app: oas-unlock-bot
+        tier: api
+    wait: false
+    installed: true
+    force: false
