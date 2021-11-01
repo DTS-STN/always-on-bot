@@ -1,4 +1,4 @@
-# oas-callback-Bot
+# oas-unblock-Bot
 
 ## Summary
 
@@ -16,7 +16,7 @@ The project is building a chatbot to help OAS user to understand and know their 
 
 ## Table of Contents
 
-- [oas-callback-Bot](#oas-unblock-bot)
+- [oas-unblock-Bot](#oas-unblock-bot)
   - [Summary](#summary)
   - [Table of Contents](#table-of-contents)
   - [Prerequisites](#prerequisites)
@@ -64,7 +64,7 @@ Follow these steps to get started.
 - Clone the repository
 
 ```bash
-git clone https://github.com/DTS-STN/oas-callback-bot
+git clone https://github.com/DTS-STN/oas-unblock-bot
 ```
 
 or
@@ -138,7 +138,7 @@ Workspaces:
 - Launch Bot Framework Emulator
 - File -> Open Bot
 - Enter a Bot URL of `http://localhost:3978/api/messages`
-- Enter a Dev Bot URL `https://dts-oas-callback-bot-dev.bdm-dev.dts-stn.com/api/messages`
+- Enter a Dev Bot URL `https://dts-oas-unblock-bot-dev.bdm-dev.dts-stn.com/api/messages`
 - if you are using docker container or connect to dev env from your local laptop, please download ngrok and config as below ![config-ngrok](config_ngrok.png)
 - otherwise do not need this step
 - Enter MicrosoftAppId and MicrosoftAppPassword from your .env file
