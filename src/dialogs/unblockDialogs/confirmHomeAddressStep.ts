@@ -48,6 +48,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
    * want to proceed
    */
   async initialStep(stepContext) {
+
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
 

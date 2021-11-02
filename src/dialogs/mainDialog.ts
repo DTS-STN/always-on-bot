@@ -31,7 +31,7 @@ export class MainDialog extends ComponentDialog {
   constructor() {
     super(MAIN_DIALOG);
 
-    // Add the callBackBot dialog to the dialog
+    // Add the unblockBot dialog to the dialog
     this.addDialog(new UnblockBotDialog());
     this.addDialog(new ChoicePrompt(CHOICE_PROMPT));
 
@@ -75,8 +75,6 @@ export class MainDialog extends ComponentDialog {
     // Here we are start the unblock dialog in the prototype,
     // in the real case, the callback flow will trigger from unblock bot, which
     // should run in a different instance
-    // const callBackBotDetails = new CallbackBotDetails();
-    // return await stepContext.beginDialog(UNBLOCK_BOT_DIALOG, callBackBotDetails);
     const unblockBotDetails = new UnblockBotDetails();
     return await stepContext.beginDialog(UNBLOCK_BOT_DIALOG, unblockBotDetails);
   }

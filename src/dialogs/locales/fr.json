@@ -1,122 +1,82 @@
 {
-	"callbackBotDialogMasterErrorMsg": "Désolé Mary, Je ne suis pas capable de vous aider avec cela. Si vous voulez planifié un appel avec un de nos agents, vous pouvez accéder a notre service de rappel ici: [insérer le lien lici]",
-
-    "mainDialogFeedbackMsg": "Avant de partir, puis-je vous demander d'évaluer le service que vous avez reçu aujourd'hui?",
-	"mainDialogGreatDayMsg": "D'accord, passez une belle journée!",
-
-    "confirmLookIntoStepStandardMsg": "J'ai regardé votre demande et je vois que votre dossier est bloqué. Voulez-vous que je l'examine?",
-	"confirmLookIntoStepRetryMsg": "Désolé, voulez-vous que je jette un coup d'oeil à votre dossier?",
-	"confirmLookIntoStepErrorMsg": "Désolé Mary, Je ne suis pas capable de vous aider avec cela. Si vous voulez planifié un appel avec un de nos agents, vous pouvez accéder a notre service de rappel ici: [insérer le lien lici]",
-	"confirmLookIntoStepStandardPromptOptions": [
-		"Oui",
-		"Non merci"
-	],
-	"confirmLookIntoStepCloseMsg": "D'accord, pas de problème. Dites-le-moi si vous changez d'avis!",
-
-	"confirmSendEmailStepStandardMsg": "Je vois que vous avez rempli votre demande le 12 février et que la demande elle-même semble bonne. Cependant, nous n'avons toujours pas reçu de relevé d'emploi de votre ancien employeur, Initech.",
-    "confirmSendEmailStepRetryMsg": "Désolé, voulez-vous que j'envoie un courriel à votre ancien employeur?",
-    "confirmSendEmailStepQueryMsg": "Si vous voulez, je peux envoyer un courriel de suivi à Initech de la part du gouvernement du Canada. Cela règle généralement le problème 😉",
-    "confirmSendEmailStepErrorMsg": "Désolé Mary, Je ne suis pas capable de vous aider avec cela. Si vous voulez planifié un appel avec un de nos agents, vous pouvez accéder a notre service de rappel ici: [insérer le lien lici]",
-
-    "confirmSendEmailStepCloseMsg": "D'accord, pas de problème. Dites-le-moi si vous changez d'avis!",
-
-    "getAndSendEmailStepStandardMsg": "D'accord, à quelle adresse de courrier électronique dois-je l'envoyer?",
-    "getAndSendEmailStepRetryMsg": "Désolé, voulez-vous que j'envoie un courriel à votre ancien employeur?",
-    "getAndSendEmailStepConfirmMsg": "D'accord, c'est envoyé!",
-
-    "confirmNotifyROEReceivedStepStandardMsg": "Voulez-vous que je vous informe lorsque nous aurons reçu le relevé d'emploi?",
-    "confirmNotifyROEReceivedStepRetryMsg": "Désolé, Voulez-vous que je vous informe lorsque nous aurons reçu le relevé d'emploi?",
-    "confirmNotifyROEReceivedStepErrorMsg": "Désolé Mary, Je ne suis pas capable de vous aider avec cela. Si vous voulez planifié un appel avec un de nos agents, vous pouvez accéder a notre service de rappel ici: [insérer le lien lici]",
-    "confirmNotifyROEReceivedStepStandardPromptOptions": [
-        "Oui, informez-moi",
-        "Non, ne m'informez pas"
-    ],
-    "confirmNotifyROEReceivedStepCloseMsg": "FROk, no problem!",
-
-    "getPreferredMethodOfContactStepStandardMsg": "Quel est le meilleur moyen de vous joindre? Je peux envoyer un courriel ou un message texte (ou les deux).",
-    "getPreferredMethodOfContactStepRetryMsg": "Désolé, vous préférez recevoir un courriel ou un message texte?",
-    "getPreferredMethodOfContactStepSendEmailMsg": "D'accord, je vous enverrai un courriel à mary@adressefaux.com dès que nous aurons reçu votre relevé d'emploi.",
-    "getPreferredMethodOfContactStepSendTextMsg": "D'accord, je vous enverrai un message texte à 123-456-789 dès que nous aurons reçu votre relevé d'emploi.",
-    "getPreferredMethodOfContactStepSendBothMsg": "D'accord, je vous enverrai un courriel à mary@adressefaux.com et un message texte au 123-456-7890 dès que nous aurons reçu votre relevé d'emploi.",
-    "getPreferredMethodOfContactStepStandardPromptOptions": [
-        "courriel",
-        "message texte",
-        "les deux"
-    ],
-
-        "callbackBotDialogWelcomeMsg": " Great - One of our officers will give you a call within the next 48 hours to help you with your missing record of employment.",
-        "confirmConfirmationStepStandardPromptOptions": [
-          "Yes, email",
-          "yes, text",
-          "Both"
-        ],
-        "callbackBotDialogStepStandardMsg": "Ok, no problem. We are able to set up a callback with an officer from Service Canada, who'd be able to help you with your block over the phone. Does that sound good to you?",
-
-
-        "confirmCallbackStandardPromptOptions": [
-            "Yes please!",
-            "No thanks"
-        ],
-
-        "confirmCallbackStandardMsg": "Can you tell me your phone number that the agent can reach you?",
-        "confirmCallbackStepRetryMsg": "Sorry, do you want me to setup a callback?",
-
-        "confirmCallbackStepErrorMsg": "Sorry Mary, I’m not able to help you with that. If you want to schedule a call with one of our agents, you can access our callback service here: [insert link here].",
-        "confirmCallbackStepStandardPromptOptions": [
-            "Yes please!",
-            "No thanks"
-        ],
-        "confirmCallbackStepCloseMsg": "Ok, no problem. Let me know if you change your mind!",
-
-        "confirmCallbackDetailsStepStandardMsg": "So, here is your callback appointment details:",
-
-        "confirmAuthWordStepStandardMsg": "Ok - here's your confirmation code: XXX-XXXXXXXXXXXXXXX.",
-        "confirmAuthWordMsg": "You will be contacted by an officer from Service Canada within the next 48 hours between 9-5pm EST.",
-        "confirmAuthStepMsg": "We'll also email/text your confirmation code to [EMAIL/INSERT PHONE]. When the Service Canada representative calls you, they'll read this code in order to prove they are not a spam caller.",
-        "confirmAuthWordStepRetryMsg":"sorry, I dont understand what do you mean?",
-        "getUserPhoneNumberStepStandardMsg": "Ok, what phone number that the agent can reach you?",
-        "getUserPhoneNumberStepRetryMsg": "Sorry, do you want me to record your phone number?",
-        "getUserPhoneNumberStepConfirmMsg": "Ok, received your phone number!",
-        "getUserPhoneNumberConfirmMsg": "Ok, Phone number saved",
-         "getPreferredCallbackDateAndTimeStepConfirmMsg": "OK, date and time saved",
-        "getPreferredCallbackDateAndTimeStepPromptMsg": "Now Could you please choose the available date and time?",
-        "getPreferredCallbackDateAndTimeStepStandardMsg": "What's the best date and time to reach you?",
-         "getCallbackScheduleStandardMsg": " Great - One of our officers will give you a call within the next 48 hours to help you with your missing record of employment.",
-        "getPreferredCallbackDateAndTimeStepRetryMsg": "Sorry, do you prefer email or text or both?",
-        "confirmEmailStepStandMsg":"The e-mail we have on file is test@test.com. Is this the correct e-mail address?",
-        "confirmEmailStepRetryMsg": "Sorry, is this your email address?",
-        "confirmEmailStepStandardPromptOptions": [
-          "Yes correct!",
-          "No it's not"
-      ],
-      "confirmPhoneStepStandMsg":"The phone number we have on file is XXX-XXX-XXXX. Is this the correct phone number?",
-      "confirmPhoneStepRetryMsg": "Sorry, is this your phone number?",
-      "confirmPhoneStepStandardPromptOptions": [
-        "Yes correct!",
-        "No it's not"
-    ],
-    "callbackGoodByeGreetingMsg":"   Is there anything else we can help you out with today?",
-    "callbackGoodByeGreetingStandardPromptOptions": [
-      "Yes ",
-      "No "
-    ],
-    "callbackCloseMsg" :"Ok, no problem. I'll be here if you need me!",
-
-        "masterErrorMsg": "Sorry Mary, I’m not able to help you with that. If you want to schedule a call with one of our agents, you can access our callback service here: [insert link here].",
-
-        "unBlockBotDialogWelcomeMsg": "Hi Mary, I’m your virtual assistant!",
-
-
-
-        "confirmSendEmailStepStandardPromptOptions": [
-          "Yes, send email",
-          "No, don't send email"
-        ],
-
-
-
-       "callbackConfirmationQueryMsg": "Would you like us to send you a confirmation through text or e-mail?"
-
-
-
+  "callbackBotDialogMasterErrorMsg": "Désolé Mary, Je ne suis pas capable de vous aider avec cela. Si vous voulez planifié un appel avec un de nos agents, vous pouvez accéder a notre service de rappel ici: [insérer le lien lici]",
+  "mainDialogFeedbackMsg": "Avant de partir, puis-je vous demander d'évaluer le service que vous avez reçu aujourd'hui?",
+  "mainDialogGreatDayMsg": "D'accord, passez une belle journée!",
+  "confirmLookIntoStepStandardMsg": "J'ai regardé votre demande et je vois que votre dossier est bloqué. Voulez-vous que je l'examine?",
+  "confirmLookIntoStepRetryMsg": "Désolé, voulez-vous que je jette un coup d'oeil à votre dossier?",
+  "confirmLookIntoStepErrorMsg": "Désolé Mary, Je ne suis pas capable de vous aider avec cela. Si vous voulez planifié un appel avec un de nos agents, vous pouvez accéder a notre service de rappel ici: [insérer le lien lici]",
+  "confirmLookIntoStepStandardPromptOptions": ["Oui", "Non merci"],
+  "confirmLookIntoStepCloseMsg": "D'accord, pas de problème. Dites-le-moi si vous changez d'avis!",
+  "confirmServiceCanadaStepCallbackPrompt": "Je peux demander à un agent de Service Canada de vous appeler au téléphone pour vous aider avec votre demande de pension. Cela vous semble-t-il bon ?",
+  "confirmServiceCanadaStepCloseMsg": "D'accord pas de problème. Je serai là si tu as besoin de moi !",
+  "confirmUnblockAddressStandardMsg": "Il semble donc que tout ce qui manque est votre adresse personnelle. Quelle est votre adresse domiciliaire actuelle?",
+  "confirmSendEmailStepStandardMsg": "Je vois que vous avez rempli votre demande le 12 février et que la demande elle-même semble bonne. Cependant, nous n'avons toujours pas reçu de relevé d'emploi de votre ancien employeur, Initech.",
+  "confirmSendEmailStepRetryMsg": "Désolé, voulez-vous que j'envoie un courriel à votre ancien employeur?",
+  "confirmSendEmailStepQueryMsg": "Si vous voulez, je peux envoyer un courriel de suivi à Initech de la part du gouvernement du Canada. Cela règle généralement le problème 😉",
+  "confirmSendEmailStepErrorMsg": "Désolé Mary, Je ne suis pas capable de vous aider avec cela. Si vous voulez planifié un appel avec un de nos agents, vous pouvez accéder a notre service de rappel ici: [insérer le lien lici]",
+  "confirmSendEmailStepCloseMsg": "D'accord, pas de problème. Dites-le-moi si vous changez d'avis!",
+  "getAndSendEmailStepStandardMsg": "D'accord, à quelle adresse de courrier électronique dois-je l'envoyer?",
+  "getAndSendEmailStepRetryMsg": "Désolé, voulez-vous que j'envoie un courriel à votre ancien employeur?",
+  "getAndSendEmailStepConfirmMsg": "D'accord, c'est envoyé!",
+  "confirmNotifyROEReceivedStepStandardMsg": "Voulez-vous que je vous informe lorsque nous aurons reçu le relevé d'emploi?",
+  "confirmNotifyROEReceivedStepRetryMsg": "Désolé, Voulez-vous que je vous informe lorsque nous aurons reçu le relevé d'emploi?",
+  "confirmNotifyROEReceivedStepErrorMsg": "Désolé Mary, Je ne suis pas capable de vous aider avec cela. Si vous voulez planifié un appel avec un de nos agents, vous pouvez accéder a notre service de rappel ici: [insérer le lien lici]",
+  "confirmNotifyROEReceivedStepStandardPromptOptions": [
+    "Oui, informez-moi",
+    "Non, ne m'informez pas"
+  ],
+  "confirmNotifyROEReceivedStepCloseMsg": "FROk, no problem!",
+  "getPreferredMethodOfContactStepStandardMsg": "Quel est le meilleur moyen de vous joindre? Je peux envoyer un courriel ou un message texte (ou les deux).",
+  "getPreferredMethodOfContactStepRetryMsg": "Désolé, vous préférez recevoir un courriel ou un message texte?",
+  "getPreferredMethodOfContactStepSendEmailMsg": "D'accord, je vous enverrai un courriel à mary@adressefaux.com dès que nous aurons reçu votre relevé d'emploi.",
+  "getPreferredMethodOfContactStepSendTextMsg": "D'accord, je vous enverrai un message texte à 123-456-789 dès que nous aurons reçu votre relevé d'emploi.",
+  "getPreferredMethodOfContactStepSendBothMsg": "D'accord, je vous enverrai un courriel à mary@adressefaux.com et un message texte au 123-456-7890 dès que nous aurons reçu votre relevé d'emploi.",
+  "getPreferredMethodOfContactStepStandardPromptOptions": [
+    "courriel",
+    "message texte",
+    "les deux"
+  ],
+  "callbackBotDialogWelcomeMsg": " Great - One of our officers will give you a call within the next 48 hours to help you with your missing record of employment.",
+  "confirmConfirmationStepStandardPromptOptions": [
+    "Yes, email",
+    "yes, text",
+    "Both"
+  ],
+  "callbackBotDialogStepStandardMsg": "Ok, no problem. We are able to set up a callback with an officer from Service Canada, who'd be able to help you with your block over the phone. Does that sound good to you?",
+  "confirmCallbackStandardPromptOptions": ["Yes please!", "No thanks"],
+  "confirmCallbackStandardMsg": "Can you tell me your phone number that the agent can reach you?",
+  "confirmCallbackStepRetryMsg": "Sorry, do you want me to setup a callback?",
+  "confirmCallbackStepErrorMsg": "Sorry Mary, I’m not able to help you with that. If you want to schedule a call with one of our agents, you can access our callback service here: [insert link here].",
+  "confirmCallbackStepStandardPromptOptions": ["Yes please!", "No thanks"],
+  "confirmCallbackStepCloseMsg": "Ok, no problem. Let me know if you change your mind!",
+  "confirmCallbackDetailsStepStandardMsg": "So, here is your callback appointment details:",
+  "confirmAuthWordStepStandardMsg": "Ok - here's your confirmation code: XXX-XXXXXXXXXXXXXXX.",
+  "confirmAuthWordMsg": "You will be contacted by an officer from Service Canada within the next 48 hours between 9-5pm EST.",
+  "confirmAuthStepMsg": "We'll also email/text your confirmation code to [EMAIL/INSERT PHONE]. When the Service Canada representative calls you, they'll read this code in order to prove they are not a spam caller.",
+  "confirmAuthWordStepRetryMsg": "sorry, I dont understand what do you mean?",
+  "getUserPhoneNumberStepStandardMsg": "Ok, what phone number that the agent can reach you?",
+  "getUserPhoneNumberStepRetryMsg": "Sorry, do you want me to record your phone number?",
+  "getUserPhoneNumberStepConfirmMsg": "Ok, received your phone number!",
+  "getUserPhoneNumberConfirmMsg": "Ok, Phone number saved",
+  "getPreferredCallbackDateAndTimeStepConfirmMsg": "OK, date and time saved",
+  "getPreferredCallbackDateAndTimeStepPromptMsg": "Now Could you please choose the available date and time?",
+  "getPreferredCallbackDateAndTimeStepStandardMsg": "What's the best date and time to reach you?",
+  "getCallbackScheduleStandardMsg": " Great - One of our officers will give you a call within the next 48 hours to help you with your missing record of employment.",
+  "getPreferredCallbackDateAndTimeStepRetryMsg": "Sorry, do you prefer email or text or both?",
+  "confirmEmailStepStandMsg": "The e-mail we have on file is test@test.com. Is this the correct e-mail address?",
+  "confirmEmailStepRetryMsg": "Sorry, is this your email address?",
+  "confirmEmailStepStandardPromptOptions": ["Yes correct!", "No it's not"],
+  "confirmPhoneStepStandMsg": "The phone number we have on file is XXX-XXX-XXXX. Is this the correct phone number?",
+  "confirmPhoneStepRetryMsg": "Sorry, is this your phone number?",
+  "confirmPhoneStepStandardPromptOptions": ["Yes correct!", "No it's not"],
+  "callbackGoodByeGreetingMsg": "   Is there anything else we can help you out with today?",
+  "callbackGoodByeGreetingStandardPromptOptions": ["Yes ", "No "],
+  "callbackCloseMsg": "Ok, no problem. I'll be here if you need me!",
+  "masterErrorMsg": "Sorry Mary, I’m not able to help you with that. If you want to schedule a call with one of our agents, you can access our callback service here: [insert link here].",
+  "unBlockBotDialogWelcomeMsg": "Hi Mary, I’m your virtual assistant!",
+  "confirmSendEmailStepStandardPromptOptions": [
+    "Yes, send email",
+    "No, don't send email"
+  ],
+  "callbackConfirmationQueryMsg": "Would you like us to send you a confirmation through text or e-mail?"
 }

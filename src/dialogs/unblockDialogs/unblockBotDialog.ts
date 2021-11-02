@@ -8,6 +8,10 @@ import {
   CONFIRM_SEND_EMAIL_STEP,
 } from './confirmSendEmailStep';
 import {
+  ConfirmHomeAddressStep,
+  CONFIRM_HOME_ADDRESS_STEP,
+} from './confirmHomeAddressStep';
+import {
   GetAndSendEmailStep,
   GET_AND_SEND_EMAIL_STEP,
 } from './getAndSendEmailStep';
@@ -32,6 +36,7 @@ export class UnblockBotDialog extends ComponentDialog {
 
     // Add the ConfirmLookIntoStep dialog to the dialog stack
     this.addDialog(new ConfirmLookIntoStep());
+    this.addDialog(new ConfirmHomeAddressStep());
     this.addDialog(new ConfirmSendEmailStep());
     this.addDialog(new GetAndSendEmailStep());
     this.addDialog(new ConfirmNotifyROEReceivedStep());
@@ -42,6 +47,7 @@ export class UnblockBotDialog extends ComponentDialog {
       new WaterfallDialog(MAIN_UNBLOCK_BOT_WATERFALL_DIALOG, [
         this.welcomeStep.bind(this),
         this.confirmLookIntoStep.bind(this),
+        this.confirmHomeAddressStep.bind(this),
         this.confirmSendEmailStep.bind(this),
         this.getAndSendEmailStep.bind(this),
         this.confirmNotifyROEReceivedStep.bind(this),
@@ -54,7 +60,7 @@ export class UnblockBotDialog extends ComponentDialog {
   }
 
   /**
-   * Initial step in the waterfall. This will kick of the unblockbot dialog
+   * 1. Initial step in the waterfall. This will kick of the unblockbot dialog
    * Most of the time this will just kick off the CONFIRM_LOOK_INTO_STEP dialog -
    * But in the off chance that the bot has already run through the switch statement
    * will take care of edge cases
@@ -63,6 +69,9 @@ export class UnblockBotDialog extends ComponentDialog {
     // Get the unblockbot details / state machine for the current user
     const unblockBotDetails = stepContext.options;
 
+    // DEBUG
+    // console.log('DEBUG: welcomeSteps:', unblockBotDetails);
+
     const welcomeMsg = i18n.__('unBlockBotDialogWelcomeMsg');
 
     await stepContext.context.sendActivity(welcomeMsg);
@@ -70,11 +79,8 @@ export class UnblockBotDialog extends ComponentDialog {
     return await stepContext.next(unblockBotDetails);
   }
 
-  /*
-   * Initial step in the waterfall. This will kick of the unblockbot dialog
-   * Most of the time this will just kick off the CONFIRM_LOOK_INTO_STEP dialog -
-   * But in the off chance that the bot has already run through the switch statement
-   * will take care of edge cases
+  /**
+   * 2. Confirm the user's intent to proceed with the unblockbot
    */
   async confirmLookIntoStep(stepContext) {
     // Get the state machine from the last step
@@ -82,7 +88,7 @@ export class UnblockBotDialog extends ComponentDialog {
 
     // DEBUG
     // console.log('DEBUG: unblockBotDetails:', unblockBotDetails);
-
+    //
     switch (unblockBotDetails.confirmLookIntoStep) {
       // The confirmLookIntoStep flag in the state machine isn't set
       // so we are sending the user to that step
@@ -109,6 +115,52 @@ export class UnblockBotDialog extends ComponentDialog {
         return await stepContext.endDialog(unblockBotDetails);
     }
   }
+
+    /**
+    * 3. Confirm the user's home address
+    */
+    async confirmHomeAddressStep(stepContext) {
+    // Get the state machine from the last step
+    const unblockBotDetails = stepContext.result;
+
+    // DEBUG
+    console.log('DEBUG: confirmHomeAddressStep:', unblockBotDetails);
+
+    console.log('SUCCESS');
+
+    // Check if a master error occured and then end the dialog
+    if (unblockBotDetails.masterError) {
+      return await stepContext.endDialog(unblockBotDetails);
+    } else {
+      // If no master error occured continue on to the next step
+      switch (unblockBotDetails.confirmHomeAddressStep) {
+        // The confirmLookIntoStep flag in the state machine isn't set
+        // so we are sending the user to that step
+        case null:
+          // if (unblockBotDetails.confirmHomeAddressStep) {
+            return await stepContext.beginDialog(
+              CONFIRM_HOME_ADDRESS_STEP,
+              unblockBotDetails,
+            );
+          // } else {
+          //   return await stepContext.endDialog(unblockBotDetails);
+          // }
+
+        // The confirmLookIntoStep flag in the state machine is set to true
+        // so we are sending the user to next step
+        case true:
+          return await stepContext.next();
+
+        // The confirmLookIntoStep flag in the state machine is set to false
+        // so we are sending to the end because they don't want to continue
+        // Default catch all but we should never need i
+        case false:
+        default:
+          return await stepContext.endDialog(unblockBotDetails);
+      }
+    }
+  }
+
 
   /**
    * Second Step
