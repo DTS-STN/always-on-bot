@@ -161,7 +161,6 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
     // Top intent tell us which cognitive service to use.
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
-    console.log('Second step - INTENT', intent);
 
     switch (intent) {
       // Proceed

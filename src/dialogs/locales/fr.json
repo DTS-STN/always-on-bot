@@ -9,7 +9,17 @@
   "confirmLookIntoStepCloseMsg": "D'accord, pas de problème. Dites-le-moi si vous changez d'avis!",
   "confirmServiceCanadaStepCallbackPrompt": "Je peux demander à un agent de Service Canada de vous appeler au téléphone pour vous aider avec votre demande de pension. Cela vous semble-t-il bon ?",
   "confirmServiceCanadaStepCloseMsg": "D'accord pas de problème. Je serai là si tu as besoin de moi !",
+
   "confirmUnblockAddressStandardMsg": "Il semble donc que tout ce qui manque est votre adresse personnelle. Quelle est votre adresse domiciliaire actuelle?",
+  "confirmHomeAddressStepRetryMsg": "Oops, I'm not sure what you meant. Can you confirm your home address?",
+  "confirmHomeAddressStepQueryMsg": "Oh no, I'm unable to update your information right now. I can have a Service Canada officer call you on the phone to help you with your pension application. Does that sound good to you?",
+  "confirmHomeAddressConfirm1Msg": "Ok, so your address is: ",
+  "confirmHomeAddressConfirm2Msg": ". Is everything spelled correctly? Can you confirm this is your home address?",
+  "confirmHomeAddressStepStandardPromptOptions": ["Yes please!", "No thanks"],
+  "confirmHomeAddressSavedFirstMsg": "Ok, I've saved your home address and your pension file is up to date. You're all set for now!",
+  "confirmHomeAddressSavedSecondMsg": "Once your file is processed you will recieve more information my mail.",
+  "confirmHomeAddressSavedThirdMsg": "Just a reminder: you'll recieve your first Old Age Security payment one month after your 65th birthday.",
+
   "confirmSendEmailStepStandardMsg": "Je vois que vous avez rempli votre demande le 12 février et que la demande elle-même semble bonne. Cependant, nous n'avons toujours pas reçu de relevé d'emploi de votre ancien employeur, Initech.",
   "confirmSendEmailStepRetryMsg": "Désolé, voulez-vous que j'envoie un courriel à votre ancien employeur?",
   "confirmSendEmailStepQueryMsg": "Si vous voulez, je peux envoyer un courriel de suivi à Initech de la part du gouvernement du Canada. Cela règle généralement le problème 😉",
