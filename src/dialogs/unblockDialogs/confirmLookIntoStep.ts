@@ -139,8 +139,6 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     }
   }
 
-
-
   /**
    * Offer to have a Service Canada Officer contact them
    */
@@ -207,7 +205,6 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       }
     }
   }
-
 
   /**
    * Validation step in the waterfall.

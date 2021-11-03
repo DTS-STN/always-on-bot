@@ -53,7 +53,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
     const unblockBotDetails = stepContext.options;
 
     // DEBUG
-    console.log('DEBUG HOME ADDRESS', stepContext.context.activity);
+    console.log('DEBUG HOME ADDRESS', unblockBotDetails);
     // console.log('DEBUG UNBLOCKBOTDETAILS:', unblockBotDetails.errorCount.confirmHomeAddressStep);
 
     // Set the text for the prompt
@@ -80,7 +80,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
       return await stepContext.endDialog(unblockBotDetails);
     }
 
-    // Check the user state to see if unblockBotDetails.confirm_look_into_step is set to null or -1
+    // Check the user state to see if unblockBotDetails.confirmHomeAddressStep is set to null or -1
     // If it is in the error state (-1) or or is set to null prompt the user
     // If it is false the user does not want to proceed
     if (
