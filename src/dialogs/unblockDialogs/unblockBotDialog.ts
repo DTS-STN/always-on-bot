@@ -60,7 +60,7 @@ export class UnblockBotDialog extends ComponentDialog {
     const unblockBotDetails = stepContext.result;
 
     // DEBUG
-    // console.log('DEBUG: unblockBotDetails:', unblockBotDetails);
+    console.log('DEBUG: confirmLookIntoStep:', unblockBotDetails);
 
     switch (unblockBotDetails.confirmLookIntoStep) {
       // The confirmLookIntoStep flag in the state machine isn't set
@@ -116,7 +116,6 @@ export class UnblockBotDialog extends ComponentDialog {
 
       // The confirmLookIntoStep flag in the state machine is set to false
       // so we are sending to the end because they don't want to continue
-      // Default catch all but we should never need it
       case false:
       default:
         return await stepContext.endDialog(unblockBotDetails);
@@ -132,7 +131,7 @@ export class UnblockBotDialog extends ComponentDialog {
     const unblockBotDetails = stepContext.result;
 
     // DEBUG
-    // console.log('DEBUG DETAILS: ', unblockBotDetails);
+    console.log('DEBUG finalStep: ', unblockBotDetails);
 
     // Check if a master error has occured
     if (unblockBotDetails.masterError) {

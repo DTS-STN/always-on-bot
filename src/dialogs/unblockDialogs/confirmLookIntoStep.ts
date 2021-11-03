@@ -9,6 +9,10 @@ import { LuisRecognizer } from 'botbuilder-ai';
 
 import i18n from '../locales/i18nConfig';
 
+import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
+
+import { CallbackBotDetails } from '../callbackBotDetails';
+
 const TEXT_PROMPT = 'TEXT_PROMPT';
 export const CONFIRM_LOOK_INTO_STEP = 'CONFIRM_LOOK_INTO_STEP';
 const CONFIRM_LOOK_INTO_WATERFALL_STEP = 'CONFIRM_LOOK_INTO_STEP';
@@ -153,33 +157,27 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     // Call prompts recognizer
     const recognizerResult = await recognizer.recognize(stepContext.context);
 
+    const closeMsg = i18n.__('confirmLookIntoStepCloseMsg');
+
     // Top intent tell us which cognitive service to use.
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
-
-    // set Close message
-    const closeMsg = i18n.__('confirmLookIntoStepCloseMsg');
+    console.log('Second step - INTENT', intent);
 
     switch (intent) {
       // Proceed
       case 'promptConfirmYes':
-      case 'promptConfirmSendEmailYes':
-        unblockBotDetails.confirmLookIntoStep = true;
+        unblockBotDetails.confirmLookIntoStep = null;
         return await stepContext.endDialog(unblockBotDetails);
 
-      // Don't Proceed
+      // Don't Proceed, offer callback
       case 'promptConfirmNo':
 
-        // Clear remaining waterfall dialogs
-        unblockBotDetails.confirmHomeAddressStep = false;
+        unblockBotDetails.confirmLookIntoStep = false;
 
-        // Set the text for the prompt
+        // Set messages
         const standardMsg = i18n.__('confirmServiceCanadaStepCallbackPrompt');
-
-        // Setup the prompt message
-        var promptMsg = standardMsg;
-
+        const promptMsg = standardMsg;
         const promptOptions = i18n.__('confirmLookIntoStepStandardPromptOptions');
-
         const promptDetails = {
           prompt: ChoiceFactory.forChannel(
             stepContext.context,
@@ -191,10 +189,9 @@ export class ConfirmLookIntoStep extends ComponentDialog {
         await stepContext.context.sendActivity(closeMsg);
         return await stepContext.prompt(TEXT_PROMPT, promptDetails);
 
-      // Could not understand / None intent
+      // Could not understand / No intent
       default: {
-        // Catch all
-        console.log('NONE INTENT');
+        // console.log('NO INTENT');
         unblockBotDetails.confirmLookIntoStep = -1;
         unblockBotDetails.errorCount.confirmLookIntoStep++;
 
@@ -212,41 +209,46 @@ export class ConfirmLookIntoStep extends ComponentDialog {
    * update the state machine (unblockBotDetails)
    */
   async finalStep(stepContext) {
-    // console.log('ACTIVITY: ', stepContext.context.activity);
-    // console.log('STEPCONTEXT: ', stepContext);
-
-    // Get the user details / state machine
-    const unblockBotDetails = stepContext.options;
 
     // Setup the LUIS app config and languages
     LUISAppSetup(stepContext);
+
+    // Get the user details / state machine
+    const unblockBotDetails = stepContext.options;
 
     // Call prompts recognizer
     const recognizerResult = await recognizer.recognize(stepContext.context);
 
     // Top intent tell us which cognitive service to use.
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
+    console.log('Final step - INTENT', intent);
 
     // set Close message
     const closeMsg = i18n.__('confirmLookIntoStepCloseMsg');
-    console.log('INTENT', intent);
+
     switch (intent) {
-      // Proceed
+
+      // Proceed to callback bot
       case 'promptConfirmYes':
-        unblockBotDetails.confirmLookIntoStep = true;
-        return await stepContext.endDialog(unblockBotDetails);
 
-      // Don't Proceed
+        unblockBotDetails.confirmLookIntoStep = false;
+
+        return await stepContext.replaceDialog(
+          CALLBACK_BOT_DIALOG,
+          new CallbackBotDetails(),
+        );
+
+      // Don't Proceed, ask for rating
       case 'promptConfirmNo':
-
+        console.log("Don't Proceed, ask for rating");
         await stepContext.context.sendActivity(closeMsg);
         unblockBotDetails.confirmLookIntoStep = false;
         return await stepContext.endDialog(unblockBotDetails);
 
-      // Could not understand / None intent
+      // Could not understand / None intent, try again
       default: {
         // Catch all
-        console.log('NONE INTENT');
+        console.log('NO INTENT');
         unblockBotDetails.confirmLookIntoStep = -1;
         unblockBotDetails.errorCount.confirmLookIntoStep++;
 

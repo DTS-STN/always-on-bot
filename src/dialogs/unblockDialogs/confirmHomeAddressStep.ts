@@ -19,6 +19,43 @@ const CONFIRM_HOME_ADDRESS_STEP_WATERFALL_STEP =
 
 const MAX_ERROR_COUNT = 3;
 
+
+// Luis Application Settings
+let applicationId = '';
+let endpointKey = '';
+let endpoint = '';
+let recognizer;
+
+const LUISAppSetup = (stepContext) => {
+  // Then change LUIZ appID
+  if (
+    stepContext.context.activity.locale.toLowerCase() === 'fr-ca' ||
+    stepContext.context.activity.locale.toLowerCase() === 'fr-fr'
+  ) {
+    applicationId = process.env.LuisAppIdFR;
+    endpointKey = process.env.LuisAPIKeyFR;
+    endpoint = `https://${process.env.LuisAPIHostNameFR}.api.cognitive.microsoft.com`;
+  } else {
+    applicationId = process.env.LuisAppIdEN;
+    endpointKey = process.env.LuisAPIKeyEN;
+    endpoint = `https://${process.env.LuisAPIHostNameEN}.api.cognitive.microsoft.com`;
+  }
+
+  // LUIZ Recogniser processing
+  recognizer = new LuisRecognizer(
+    {
+      applicationId: applicationId,
+      endpointKey: endpointKey,
+      endpoint: endpoint,
+    },
+    {
+      includeAllIntents: true,
+      includeInstanceData: true,
+    },
+    true,
+  );
+}
+
 export class ConfirmHomeAddressStep extends ComponentDialog {
   constructor() {
     super(CONFIRM_HOME_ADDRESS_STEP);
@@ -130,38 +167,8 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
 
-    // Language check
-    var applicationId = '';
-    var endpointKey = '';
-    var endpoint = '';
-
-    // Then change LUIZ appID
-    if (
-      stepContext.context.activity.locale.toLowerCase() === 'fr-ca' ||
-      stepContext.context.activity.locale.toLowerCase() === 'fr-fr'
-    ) {
-      applicationId = process.env.LuisAppIdFR;
-      endpointKey = process.env.LuisAPIKeyFR;
-      endpoint = `https://${process.env.LuisAPIHostNameFR}.api.cognitive.microsoft.com`;
-    } else {
-      applicationId = process.env.LuisAppIdEN;
-      endpointKey = process.env.LuisAPIKeyEN;
-      endpoint = `https://${process.env.LuisAPIHostNameEN}.api.cognitive.microsoft.com`;
-    }
-
-    // LUIZ Recogniser processing
-    const recognizer = new LuisRecognizer(
-      {
-        applicationId: applicationId,
-        endpointKey: endpointKey,
-        endpoint: endpoint,
-      },
-      {
-        includeAllIntents: true,
-        includeInstanceData: true,
-      },
-      true,
-    );
+    // Setup the LUIS app config and languages
+    LUISAppSetup(stepContext);
 
     // Call prompts recognizer
     const recognizerResult = await recognizer.recognize(stepContext.context);
@@ -172,6 +179,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
     // This message is sent if the user selects that they don't want to continue
     const closeMsg = i18n.__('confirmHomeAddressStepCloseMsg');
     // const callbackConfirmMsg = i18n.__("callbackBotDialogStepStandardMsg");
+
     switch (intent) {
       // Proceed
       case 'promptConfirmYes':

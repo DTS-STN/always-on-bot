@@ -5,10 +5,6 @@ export class UnblockBotDetails {
   public masterError;
   public confirmLookIntoStep;
   public confirmHomeAddressStep;
-  public confirmSendEmailStep;
-  public getAndSendEmailStep;
-  public confirmNotifyROEReceivedStep;
-  public getPreferredMethodOfContactStep;
   public errorCount;
 
   constructor() {
@@ -21,37 +17,10 @@ export class UnblockBotDetails {
     // [STEP 2] Flag that confirms the user wants us to send an email
     this.confirmHomeAddressStep = null;
 
-    // [STEP 2] Flag that confirms the user wants us to send an email
-    this.confirmSendEmailStep = null;
-
-    // [STEP 3] Get and send an email
-    this.getAndSendEmailStep = null;
-
-    // [STEP 4] Determine if the user wants to be notified
-    this.confirmNotifyROEReceivedStep = null;
-
-    // [STEP 5] Get preferred method of contact
-    this.getPreferredMethodOfContactStep = null;
-
     // State machine that stores the error counts of each step
     this.errorCount = {
       confirmLookIntoStep: 0,
       confirmHomeAddressStep: 0,
-      confirmSendEmailStep: 0,
-      getAndSendEmailStep: 0,
-      confirmNotifyROEReceivedStep: 0,
-      getPreferredMethodOfContactStep: 0,
     };
-
-    // TODO: Refactor and add an object that tracks status perhaps something like below
-    /*
-        this.currentStep = '';
-        this.steps = [
-            'confirmLookIntoStep',
-            'confirmSendEmailStep',
-            'getAndSendEmailStep',
-            'confirmNotifyROEReceivedStep',
-        ]
-        */
   }
 }
