@@ -1,5 +1,6 @@
 import {
   TextPrompt,
+  ChoicePrompt,
   ComponentDialog,
   WaterfallDialog,
   ChoiceFactory,
@@ -14,6 +15,7 @@ import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
 import { CallbackBotDetails } from '../callbackBotDetails';
 
 const TEXT_PROMPT = 'TEXT_PROMPT';
+const CHOICE_PROMPT = 'CHOICE_PROMPT';
 export const CONFIRM_LOOK_INTO_STEP = 'CONFIRM_LOOK_INTO_STEP';
 const CONFIRM_LOOK_INTO_WATERFALL_STEP = 'CONFIRM_LOOK_INTO_STEP';
 const MAX_ERROR_COUNT = 3;
@@ -61,6 +63,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
     // Add a text prompt to the dialog stack
     this.addDialog(new TextPrompt(TEXT_PROMPT));
+    this.addDialog(new ChoicePrompt(CHOICE_PROMPT));
 
     this.addDialog(
       new WaterfallDialog(CONFIRM_LOOK_INTO_WATERFALL_STEP, [
@@ -89,7 +92,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     const unblockBotDetails = stepContext.options;
 
     // DEBUG
-    // console.log('DEBUG UNBLOCKBOTDETAILS:', unblockBotDetails);
+    console.log('DEBUG look into initialStep:', unblockBotDetails);
 
     // Set the text for the prompt
     const standardMsg = i18n.__('confirmLookIntoStepStandardMsg');
@@ -146,10 +149,13 @@ export class ConfirmLookIntoStep extends ComponentDialog {
   /**
    * Offer to have a Service Canada Officer contact them
    */
-   async secondStep(stepContext) {
+  async secondStep(stepContext) {
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
+
+    // DEBUG
+    // console.log('DEBUG look into secondStep:', unblockBotDetails);
 
     // Setup the LUIS app config and languages
     LUISAppSetup(stepContext);
@@ -161,6 +167,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
     // Top intent tell us which cognitive service to use.
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
+    console.log('Second step - INTENT', intent);
 
     switch (intent) {
       // Proceed
@@ -171,22 +178,20 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       // Don't Proceed, offer callback
       case 'promptConfirmNo':
 
-        unblockBotDetails.confirmLookIntoStep = false;
+      // Set messages
+      const standardMsg = i18n.__('confirmServiceCanadaStepCallbackPrompt');
+      const promptMsg = standardMsg;
+      const promptOptions = i18n.__('confirmLookIntoStepStandardPromptOptions');
+      const promptDetails = {
+        prompt: ChoiceFactory.forChannel(
+          stepContext.context,
+          promptOptions,
+          promptMsg,
+        ),
+      };
 
-        // Set messages
-        const standardMsg = i18n.__('confirmServiceCanadaStepCallbackPrompt');
-        const promptMsg = standardMsg;
-        const promptOptions = i18n.__('confirmLookIntoStepStandardPromptOptions');
-        const promptDetails = {
-          prompt: ChoiceFactory.forChannel(
-            stepContext.context,
-            promptOptions,
-            promptMsg,
-          ),
-        };
-
-        await stepContext.context.sendActivity(closeMsg);
-        return await stepContext.prompt(TEXT_PROMPT, promptDetails);
+      await stepContext.context.sendActivity(closeMsg);
+      return await stepContext.prompt(TEXT_PROMPT, promptDetails);
 
       // Could not understand / No intent
       default: {
@@ -229,9 +234,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
       // Proceed to callback bot
       case 'promptConfirmYes':
-
         unblockBotDetails.confirmLookIntoStep = false;
-
         return await stepContext.replaceDialog(
           CALLBACK_BOT_DIALOG,
           new CallbackBotDetails(),
@@ -239,10 +242,19 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
       // Don't Proceed, ask for rating
       case 'promptConfirmNo':
-        console.log("Don't Proceed, ask for rating");
-        await stepContext.context.sendActivity(closeMsg);
         unblockBotDetails.confirmLookIntoStep = false;
-        return await stepContext.endDialog(unblockBotDetails);
+        await stepContext.context.sendActivity(closeMsg);
+
+          const feedbackMsg = i18n.__('mainDialogFeedbackMsg');
+
+          // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+          return await stepContext.prompt(CHOICE_PROMPT, {
+            prompt: feedbackMsg,
+            choices: ChoiceFactory.toChoices(['😡', '🙁', '😐', '🙂', '😄']),
+          });
+
+
+        // return await stepContext.endDialog(unblockBotDetails);
 
       // Could not understand / None intent, try again
       default: {

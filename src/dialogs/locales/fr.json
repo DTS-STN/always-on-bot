@@ -15,7 +15,10 @@
   "confirmHomeAddressStepQueryMsg": "Oh no, I'm unable to update your information right now. I can have a Service Canada officer call you on the phone to help you with your pension application. Does that sound good to you?",
   "confirmHomeAddressConfirm1Msg": "Ok, so your address is: ",
   "confirmHomeAddressConfirm2Msg": ". Is everything spelled correctly? Can you confirm this is your home address?",
-  "confirmHomeAddressStepStandardPromptOptions": ["Yes please!", "No thanks"],
+  "confirmHomeAddressStepStandardPromptOptions": [
+    "Yes, this is correct",
+    "No, this is not correct"
+  ],
   "confirmHomeAddressSavedFirstMsg": "Ok, I've saved your home address and your pension file is up to date. You're all set for now!",
   "confirmHomeAddressSavedSecondMsg": "Once your file is processed you will recieve more information my mail.",
   "confirmHomeAddressSavedThirdMsg": "Just a reminder: you'll recieve your first Old Age Security payment one month after your 65th birthday.",

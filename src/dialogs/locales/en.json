@@ -7,7 +7,7 @@
   ],
   "OKMsg": "Ok, no problem.",
   "callbackBotDialogMasterErrorMsg": "Sorry Mary, I’m not able to help you with that. If you want to schedule a call with one of our agents, you can access our callback service here: [insert link here].",
-  "callbackBotDialogStepStandardMsg": "I can have a Service Canada officer call you on the phone to help you with your missing record of employment. Does that sound good to you?",
+  "callbackBotDialogStepStandardMsg": "I can have a Service Canada officer call you on the phone to help you with your pension application. Does that sound good to you?",
   "mainDialogFeedbackMsg": "Before you go, could I ask you to rate the service you received today?",
   "mainDialogGreatDayMsg": "Thank you for your time!",
   "confirmCallbackStandardPromptOptions": ["Yes please!", "No thanks"],

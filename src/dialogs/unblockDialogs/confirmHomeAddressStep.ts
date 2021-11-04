@@ -180,6 +180,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
 
     } else {
       unblockBotDetails.confirmHomeAddressStep = -1;
+      unblockBotDetails.errorCount.confirmHomeAddressStep++;
       return await stepContext.beginDialog(
         CONFIRM_HOME_ADDRESS_STEP,
         unblockBotDetails,
@@ -198,7 +199,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
     LUISAppSetup(stepContext);
 
     // Debug
-    console.log('THIRD STEP - SAVE ADDRESS', stepContext.context);
+    // console.log('THIRD STEP - SAVE ADDRESS', stepContext.context);
 
     // Call prompts recognizer
     const recognizerResult = await recognizer.recognize(stepContext.context);
@@ -226,7 +227,8 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
       // Don't Proceed
       case 'promptConfirmNo':
         console.log('INTENT: ', intent);
-        unblockBotDetails.confirmHomeAddressStep = false;
+        unblockBotDetails.confirmHomeAddressStep = -1;
+        unblockBotDetails.errorCount.confirmHomeAddressStep++;
 
         return await stepContext.beginDialog(
           CONFIRM_HOME_ADDRESS_STEP,
