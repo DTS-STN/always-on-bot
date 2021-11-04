@@ -10,13 +10,13 @@ environments:
 releases:
 
   - name: oasubapi-{{ requiredEnv "BRANCH" }}
-    chart: ../helm/charts/oas-unblock-bot
+    chart: ../helm/charts/oas-unblock-bot-bdm-dev
     namespace: oas-ub-{{ requiredEnv "BRANCH" }}
     values:
-      - overrides/oas-unblock-bot-api.yaml.gotmpl
+      - overrides/oas-unblock-bot-bdm-dev-api.yaml.gotmpl
     labels:
         category: prototype
-        app: oas-unblock-bot
+        app: oas-unblock-bot-bdm-dev
         tier: api
     wait: false
     installed: true
