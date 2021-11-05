@@ -61,7 +61,8 @@ export class UnblockBotDialog extends ComponentDialog {
 
     // DEBUG
     // console.log('DEBUG: confirmLookIntoStep:', unblockBotDetails);
-    console.log('confirmLookIntoStep', unblockBotDetails.confirmLookIntoStep);
+    console.log('UNBLOCK LOOKINTO:', unblockBotDetails);
+
     switch (unblockBotDetails.confirmLookIntoStep) {
       // The confirmLookIntoStep flag in the state machine isn't set
       // so we are sending the user to that step
@@ -95,7 +96,7 @@ export class UnblockBotDialog extends ComponentDialog {
   const unblockBotDetails = stepContext.result;
 
   // DEBUG
-  // console.log('DEBUG: confirmHomeAddressStep:', unblockBotDetails);
+  console.log('UNBLOCK ADDRESS:', unblockBotDetails);
 
   // Check if a master error occured and then end the dialog
   if (unblockBotDetails.masterError) {
@@ -133,7 +134,7 @@ export class UnblockBotDialog extends ComponentDialog {
     const unblockBotDetails = stepContext.result;
 
     // DEBUG
-    console.log('DEBUG finalStep: ', unblockBotDetails);
+    console.log('UNBLOCK FINALSTEP: ', unblockBotDetails);
 
     // Check if a master error has occured
     if (unblockBotDetails.masterError) {
