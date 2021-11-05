@@ -154,9 +154,6 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
 
-    // DEBUG
-    // console.log('DEBUG look into secondStep:', unblockBotDetails);
-
     // Setup the LUIS app config and languages
     LUISAppSetup(stepContext);
 
@@ -167,7 +164,9 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
     // Top intent tell us which cognitive service to use.
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
-    console.log('Second step - INTENT', intent);
+
+    // DEBUG
+    console.log('LOOKINTO - Second step',unblockBotDetails, intent);
 
     switch (intent) {
       // Proceed
@@ -195,7 +194,6 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
       // Could not understand / No intent
       default: {
-        // console.log('NO INTENT');
         unblockBotDetails.confirmLookIntoStep = -1;
         unblockBotDetails.errorCount.confirmLookIntoStep++;
 
@@ -225,10 +223,9 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
     // Top intent tell us which cognitive service to use.
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
-    console.log('Final step - INTENT', intent);
 
-    // set Close message
-    const closeMsg = i18n.__('confirmLookIntoStepCloseMsg');
+    //DEBUG
+    console.log('LOOKINTO Final step', unblockBotDetails, intent);
 
     switch (intent) {
 
@@ -243,15 +240,13 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       // Don't Proceed, ask for rating
       case 'promptConfirmNo':
         unblockBotDetails.confirmLookIntoStep = false;
-        await stepContext.context.sendActivity(closeMsg);
+        const feedbackMsg = i18n.__('mainDialogFeedbackMsg');
 
-          const feedbackMsg = i18n.__('mainDialogFeedbackMsg');
-
-          // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-          return await stepContext.prompt(CHOICE_PROMPT, {
-            prompt: feedbackMsg,
-            choices: ChoiceFactory.toChoices(['😡', '🙁', '😐', '🙂', '😄']),
-          });
+        // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
+        return await stepContext.prompt(CHOICE_PROMPT, {
+          prompt: feedbackMsg,
+          choices: ChoiceFactory.toChoices(['😡', '🙁', '😐', '🙂', '😄']),
+        });
 
 
         // return await stepContext.endDialog(unblockBotDetails);
@@ -259,7 +254,6 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       // Could not understand / None intent, try again
       default: {
         // Catch all
-        console.log('NO INTENT');
         unblockBotDetails.confirmLookIntoStep = -1;
         unblockBotDetails.errorCount.confirmLookIntoStep++;
 
