@@ -112,9 +112,10 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
       // Throw the master error flag
       unblockBotDetails.masterError = true;
       unblockBotDetails.confirmHomeAddressStep = null;
+
       return await stepContext.replaceDialog(
         CALLBACK_BOT_DIALOG,
-        new CallbackBotDetails(),
+        new CallbackBotDetails()
       );
 
     }
@@ -170,14 +171,6 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
         ),
       };
       return await stepContext.prompt(TEXT_PROMPT, promptDetails);
-
-    // Yes please, initiate a callback
-    // } else if(userInput === "Yes please!") {
-    //   unblockBotDetails.confirmHomeAddressStep = null;
-    //   return await stepContext.replaceDialog(
-    //     CALLBACK_BOT_DIALOG,
-    //     new CallbackBotDetails(),
-    //   );
 
     // Unknown utterance
     } else {

@@ -71,8 +71,8 @@
   "confirmHomeAddressStepStandardPromptOptions": ["Yes please!", "No thanks"],
   "confirmHomeAddressResultsPromptMsg": "We found the following options. Please select the correct address:",
   "confirmHomeAddressResultsPromptOptions": [
-    "42 Sussex Drive",
-    "42 Sussex Drive, Ottawa, ON K1M 1M4"
+    "42 Sussex Dr",
+    "42 Sussex Dr, Ottawa"
   ],
   "confirmHomeAddressSavedFirstMsg": "Ok, I've saved your home address and your pension file is up to date. You're all set for now!",
   "confirmHomeAddressSavedSecondMsg": "Once your file is processed you will recieve more information my mail.",

@@ -232,6 +232,8 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       // Proceed to callback bot
       case 'promptConfirmYes':
         unblockBotDetails.confirmLookIntoStep = false;
+        unblockBotDetails.confirmHomeAddressStep = false;
+
         return await stepContext.replaceDialog(
           CALLBACK_BOT_DIALOG,
           new CallbackBotDetails(),
@@ -239,17 +241,14 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
       // Don't Proceed, ask for rating
       case 'promptConfirmNo':
+
+        // Set remaining steps to false (skip to the rating step)
         unblockBotDetails.confirmLookIntoStep = false;
-        const feedbackMsg = i18n.__('mainDialogFeedbackMsg');
+        unblockBotDetails.confirmHomeAddressStep = false;
+        const confirmLookIntoStepCloseMsg = i18n.__('confirmLookIntoStepCloseMsg');
 
-        // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-        return await stepContext.prompt(CHOICE_PROMPT, {
-          prompt: feedbackMsg,
-          choices: ChoiceFactory.toChoices(['😡', '🙁', '😐', '🙂', '😄']),
-        });
-
-
-        // return await stepContext.endDialog(unblockBotDetails);
+        await stepContext.context.sendActivity(confirmLookIntoStepCloseMsg);
+        return await stepContext.endDialog(unblockBotDetails);
 
       // Could not understand / None intent, try again
       default: {
