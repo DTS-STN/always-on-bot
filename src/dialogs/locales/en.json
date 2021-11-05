@@ -68,7 +68,10 @@
   "confirmHomeAddressStepQueryMsg": "Oh no, I'm unable to update your information right now. I can have a Service Canada officer call you on the phone to help you with your pension application. Does that sound good to you?",
   "confirmHomeAddressConfirm1Msg": "Ok, so your address is: ",
   "confirmHomeAddressConfirm2Msg": ". Is everything spelled correctly? Can you confirm this is your home address?",
-  "confirmHomeAddressStepStandardPromptOptions": ["Yes please!", "No thanks"],
+  "confirmHomeAddressStepStandardPromptOptions": [
+    "Yes, correct!",
+    "No, it's not"
+  ],
   "confirmHomeAddressResultsPromptMsg": "We found the following options. Please select the correct address:",
   "confirmHomeAddressResultsPromptOptions": [
     "42 Sussex Dr",

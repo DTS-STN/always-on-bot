@@ -195,13 +195,15 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
     // Set the movie magic success
     const userInput = stepContext._info.result?stepContext._info.result:'';
 
+
+
     // DEBUG
-    console.log('THIRD STEP - SELECT ADDRESS', unblockBotDetails, 'fake');
+    console.log('THIRD STEP - SELECT ADDRESS', unblockBotDetails, userInput);
 
     switch (userInput) {
       case "42 Sussex":
-      case "42 Sussex Drive":
-      case "42 Sussex Drive, Ottawa, ON K1M 1M4":
+      case "42 Sussex Dr":
+      case "42 Sussex Dr, Ottawa":
       case "123":
 
         // Set the text for the prompt
