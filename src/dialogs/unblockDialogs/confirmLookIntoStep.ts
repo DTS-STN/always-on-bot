@@ -177,20 +177,10 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       // Don't Proceed, offer callback
       case 'promptConfirmNo':
 
-      // Set messages
-      const standardMsg = i18n.__('confirmServiceCanadaStepCallbackPrompt');
-      const promptMsg = standardMsg;
-      const promptOptions = i18n.__('confirmLookIntoStepStandardPromptOptions');
-      const promptDetails = {
-        prompt: ChoiceFactory.forChannel(
-          stepContext.context,
-          promptOptions,
-          promptMsg,
-        ),
-      };
-
-      await stepContext.context.sendActivity(closeMsg);
-      return await stepContext.prompt(TEXT_PROMPT, promptDetails);
+        return await stepContext.replaceDialog(
+          CALLBACK_BOT_DIALOG,
+          new CallbackBotDetails(),
+        );
 
       // Could not understand / No intent
       default: {
@@ -233,7 +223,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       case 'promptConfirmYes':
         unblockBotDetails.confirmLookIntoStep = false;
         unblockBotDetails.confirmHomeAddressStep = false;
-
+        // return await stepContext.endDialog(unblockBotDetails);
         return await stepContext.replaceDialog(
           CALLBACK_BOT_DIALOG,
           new CallbackBotDetails(),
