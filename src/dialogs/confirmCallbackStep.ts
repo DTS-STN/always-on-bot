@@ -45,14 +45,13 @@ export class ConfirmCallbackStep extends ComponentDialog {
     let okMsg = i18n.__('OKMsg');
     let standardMsg = i18n.__('callbackBotDialogStepStandardMsg');
 
-    const dc = new DialogContext(CONFIRM_HOME_ADDRESS_STEP_WATERFALL_STEP,UnblockBotDetails);
-
-    console.log(dc);
-
-    if(callbackBotDetails.errorCount.confirmHomeAddressStep >= MAX_ERROR_COUNT) {
-      okMsg = false;
-      standardMsg = i18n.__('confirmHomeAddressFailedErrorMsg');
-    }
+    // TODO!
+    // const dc = new DialogContext(CONFIRM_HOME_ADDRESS_STEP_WATERFALL_STEP,UnblockBotDetails,);
+    // console.log(dc);
+    // if(callbackBotDetails.errorCount.confirmHomeAddressStep >= MAX_ERROR_COUNT) {
+    //   okMsg = false;
+    //   standardMsg = i18n.__('confirmHomeAddressFailedErrorMsg');
+    // }
 
     // Set the text for the retry prompt
     const retryMsg = i18n.__('confirmCallbackStepRetryMsg');
