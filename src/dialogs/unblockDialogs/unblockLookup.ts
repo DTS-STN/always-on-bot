@@ -19,7 +19,7 @@ const CHOICE_PROMPT = 'CHOICE_PROMPT';
 export const CONFIRM_LOOK_INTO_STEP = 'CONFIRM_LOOK_INTO_STEP';
 const CONFIRM_LOOK_INTO_WATERFALL_STEP = 'CONFIRM_LOOK_INTO_STEP';
 const MAX_ERROR_COUNT = 3;
-const LOOKUP_RESULT = true;
+const LOOKUP_RESULT = false;
 
 // Luis Application Settings
 let applicationId = '';
@@ -122,9 +122,9 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     ) {
 
       // Set dialog messages
-      const standardMsg = LOOKUP_RESULT?i18n.__('unblockLookup_unblocked_msg'):i18n.__('unblockLookup_unblocked_msg');
-      let promptMsg = LOOKUP_RESULT?i18n.__('unblockLookup_unblocked_prompt_msg'):i18n.__('unblockLookup_unblocked_prompt_msg');
-      const promptOptions = LOOKUP_RESULT?i18n.__('unblockLookup_unblocked_prompt_opts'):i18n.__('unblockLookup_unblocked_prompt_opts');
+      const standardMsg = LOOKUP_RESULT?i18n.__('unblockLookup_unblocked_msg'):i18n.__('unblockLookup_blocked_msg');
+      let promptMsg = LOOKUP_RESULT?i18n.__('unblockLookup_unblocked_prompt_msg'):i18n.__('unblockLookup_blocked_prompt_msg');
+      const promptOptions = LOOKUP_RESULT?i18n.__('unblockLookup_unblocked_prompt_opts'):i18n.__('unblockLookup_blocked_prompt_opts');
       const retryMsg = i18n.__('confirmLookIntoStepRetryMsg');
       promptMsg = unblockBotDetails.confirmLookIntoStep === -1 ? retryMsg : promptMsg;
       const promptDetails = {
