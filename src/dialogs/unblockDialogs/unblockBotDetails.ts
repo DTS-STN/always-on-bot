@@ -5,6 +5,7 @@ export class UnblockBotDetails {
   public masterError;
   public confirmLookIntoStep;
   public unblockDirectDeposit;
+  public unblockDirectDepositState;
   public errorCount;
 
   constructor() {
@@ -16,6 +17,12 @@ export class UnblockBotDetails {
 
     // [STEP 2] Requests they unblock their direct deposit
     this.unblockDirectDeposit = null;
+
+    this.unblockDirectDepositState = {
+      institute: null,
+      transit: null,
+      account: null
+    };
 
     // State machine that stores the error counts of each step
     this.errorCount = {

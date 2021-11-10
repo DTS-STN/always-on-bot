@@ -127,7 +127,6 @@ export class UnblockDirectDepositStep extends ComponentDialog {
       const retryMsg          = i18n.__('unblock_direct_deposit_retry');
       const promptMsg = unblockBotDetails.unblockDirectDeposit === -1 ? retryMsg : bankInstituteMsg;
 
-
       await stepContext.context.sendActivity(standardMsg);
       await stepContext.context.sendActivity(infoMsg);
       return await stepContext.prompt(TEXT_PROMPT, { prompt: promptMsg });
@@ -144,37 +143,23 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
-
-    // Setup the LUIS app config and languages
-    LUISAppSetup(stepContext);
-
-    // Call prompts recognizer
-    const recognizerResult = await recognizer.recognize(stepContext.context);
-
-
-    // Top intent tell us which cognitive service to use.
-    const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
+    const userInput = stepContext._info ? stepContext._info.result : false;
 
     // DEBUG
-    console.log('unblockBankInstitute',unblockBotDetails, intent);
+    console.log('unblockBankInstitute',unblockBotDetails, userInput);
 
-    switch (intent) {
-      // Proceed
-      case 'promptConfirmYes':
-        unblockBotDetails.unblockDirectDeposit = null; //becomes an object
+    switch (userInput) {
+      case '001':
+      case '333':
+        // Update step state
+        unblockBotDetails.unblockDirectDepositState.institute = userInput;
 
-        return await stepContext.endDialog(unblockBotDetails);
+        // Set dialog messages and prompt
+        const bankTransitMsg  = i18n.__('unblock_direct_deposit_transit');
+        return await stepContext.prompt(TEXT_PROMPT, { prompt: bankTransitMsg });
 
-      // Don't Proceed, offer callback
-      case 'promptConfirmNo':
+      default:
 
-        return await stepContext.replaceDialog(
-          CALLBACK_BOT_DIALOG,
-          new CallbackBotDetails(),
-        );
-
-      // Could not understand / No intent
-      default: {
         unblockBotDetails.unblockDirectDeposit = -1;
         unblockBotDetails.errorCount.unblockDirectDeposit++;
 
@@ -182,8 +167,9 @@ export class UnblockDirectDepositStep extends ComponentDialog {
           CONFIRM_DIRECT_DEPOSIT_STEP,
           unblockBotDetails,
         );
-      }
+
     }
+
   }
 
   /**
@@ -193,37 +179,23 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
-
-    // Setup the LUIS app config and languages
-    LUISAppSetup(stepContext);
-
-    // Call prompts recognizer
-    const recognizerResult = await recognizer.recognize(stepContext.context);
-
-    const closeMsg = i18n.__('confirmLookIntoStepCloseMsg');
-
-    // Top intent tell us which cognitive service to use.
-    const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
+    // console.log(stepContext);
+    const userInput = stepContext._info ? stepContext._info.result : false;
 
     // DEBUG
-    console.log('unblockBankTransit',unblockBotDetails, intent);
+    console.log('unblockBankTransit',unblockBotDetails, userInput);
 
-    switch (intent) {
-      // Proceed
-      case 'promptConfirmYes':
-        unblockBotDetails.unblockDirectDeposit = null;
-        return await stepContext.endDialog(unblockBotDetails);
+    switch (userInput) {
+      case '55555':
+        // Update step state
+        unblockBotDetails.unblockDirectDepositState.transit = userInput;
 
-      // Don't Proceed, offer callback
-      case 'promptConfirmNo':
+        // Set dialog messages and prompt
+        const bankAccountMsg  = i18n.__('unblock_direct_deposit_account');
+        return await stepContext.prompt(TEXT_PROMPT, { prompt: bankAccountMsg });
 
-        return await stepContext.replaceDialog(
-          CALLBACK_BOT_DIALOG,
-          new CallbackBotDetails(),
-        );
+      default:
 
-      // Could not understand / No intent
-      default: {
         unblockBotDetails.unblockDirectDeposit = -1;
         unblockBotDetails.errorCount.unblockDirectDeposit++;
 
@@ -231,8 +203,9 @@ export class UnblockDirectDepositStep extends ComponentDialog {
           CONFIRM_DIRECT_DEPOSIT_STEP,
           unblockBotDetails,
         );
-      }
+
     }
+
   }
 
   /**
@@ -242,37 +215,30 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
-
-    // Setup the LUIS app config and languages
-    LUISAppSetup(stepContext);
-
-    // Call prompts recognizer
-    const recognizerResult = await recognizer.recognize(stepContext.context);
-
-    const closeMsg = i18n.__('confirmLookIntoStepCloseMsg');
-
-    // Top intent tell us which cognitive service to use.
-    const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
+    console.log(stepContext);
+    const userInput = stepContext._info ? stepContext._info.result : false;
 
     // DEBUG
-    console.log('unblockBankAccount',unblockBotDetails, intent);
+    console.log('unblockBankAccount',unblockBotDetails, userInput);
 
-    switch (intent) {
-      // Proceed
-      case 'promptConfirmYes':
-        unblockBotDetails.unblockDirectDeposit = null;
+    switch (userInput) {
+      case '7777777':
+        // Update step state
+        unblockBotDetails.unblockDirectDepositState.account = userInput;
+
+        // Set dialog messages and prompt
+        const directDepositValid  = i18n.__('unblock_direct_deposit_valid_msg');
+        const directDepositTip  = i18n.__('unblock_direct_deposit_valid_tip');
+        const directDepositReminder  = i18n.__('unblock_direct_deposit_valid_reminder');
+
+        await stepContext.context.sendActivity(directDepositValid);
+        await stepContext.context.sendActivity(directDepositTip);
+        await stepContext.context.sendActivity(directDepositReminder);
+
         return await stepContext.endDialog(unblockBotDetails);
 
-      // Don't Proceed, offer callback
-      case 'promptConfirmNo':
+      default:
 
-        return await stepContext.replaceDialog(
-          CALLBACK_BOT_DIALOG,
-          new CallbackBotDetails(),
-        );
-
-      // Could not understand / No intent
-      default: {
         unblockBotDetails.unblockDirectDeposit = -1;
         unblockBotDetails.errorCount.unblockDirectDeposit++;
 
@@ -280,7 +246,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
           CONFIRM_DIRECT_DEPOSIT_STEP,
           unblockBotDetails,
         );
-      }
+
     }
   }
 

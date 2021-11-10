@@ -72,7 +72,7 @@
   "unblock_direct_deposit_institute": "What is your 3-digit bank institution number?",
   "unblock_direct_deposit_transit": "What is your 5-digit bank transit number?",
   "unblock_direct_deposit_account": "What is your 7-digit bank account number?",
-  "unblock_direct_deposit_valid_msg": "Hmm, looks like this isn't a valid bank institution number, let's try again.",
+  "unblock_direct_deposit_valid_msg": "Your banking details have been added into your file, and your direct deposit information is up to date. You're all set for now!",
   "unblock_direct_deposit_valid_tip": "Once it's been processed, you will receive more information regarding the payment details of your pension by mail. This information typically comes one month before your 65th birthday.",
   "unblock_direct_deposit_valid_reminder": "Just a reminder: you'll receive your first Old Age Security payment one month after your 65th birthday.",
   "unblock_direct_deposit_retry": "Hmm, looks like this isn't a valid bank institution number, let's try again.",
