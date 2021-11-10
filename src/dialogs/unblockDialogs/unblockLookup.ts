@@ -19,6 +19,7 @@ const CHOICE_PROMPT = 'CHOICE_PROMPT';
 export const CONFIRM_LOOK_INTO_STEP = 'CONFIRM_LOOK_INTO_STEP';
 const CONFIRM_LOOK_INTO_WATERFALL_STEP = 'CONFIRM_LOOK_INTO_STEP';
 const MAX_ERROR_COUNT = 3;
+const LOOKUP_RESULT = true;
 
 // Luis Application Settings
 let applicationId = '';
@@ -67,9 +68,9 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
     this.addDialog(
       new WaterfallDialog(CONFIRM_LOOK_INTO_WATERFALL_STEP, [
-        this.initialStep.bind(this),
-        this.secondStep.bind(this),
-        this.finalStep.bind(this),
+        this.unblockLookupStart.bind(this),
+        this.unblockLookupUserConfirm.bind(this),
+        this.unblockLookupEnd.bind(this),
       ]),
     );
 
@@ -87,18 +88,12 @@ export class ConfirmLookIntoStep extends ComponentDialog {
    * If the user errors out then we're going to set the flag to false and assume they can't / don't
    * want to proceed
    */
-  async initialStep(stepContext) {
+  async unblockLookupStart(stepContext) {
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
 
     // DEBUG
-    console.log('DEBUG look into initialStep:', unblockBotDetails);
-
-    // Set the text for the prompt
-    const standardMsg = i18n.__('confirmLookIntoStepStandardMsg');
-
-    // Set the text for the retry prompt
-    const retryMsg = i18n.__('confirmLookIntoStepRetryMsg');
+    console.log('unblockLookupStart:', unblockBotDetails);
 
     // Check if the error count is greater than the max threshold
     if (unblockBotDetails.errorCount.confirmLookIntoStep >= MAX_ERROR_COUNT) {
@@ -115,6 +110,9 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       return await stepContext.endDialog(unblockBotDetails);
     }
 
+
+
+
     // Check the user state to see if unblockBotDetails.confirm_look_into_step is set to null or -1
     // If it is in the error state (-1) or or is set to null prompt the user
     // If it is false the user does not want to proceed
@@ -122,16 +120,13 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       unblockBotDetails.confirmLookIntoStep === null ||
       unblockBotDetails.confirmLookIntoStep === -1
     ) {
-      // Setup the prompt message
-      var promptMsg = standardMsg;
 
-      // The current step is an error state
-      if (unblockBotDetails.confirmLookIntoStep === -1) {
-        promptMsg = retryMsg;
-      }
-
-      const promptOptions = i18n.__('confirmLookIntoStepStandardPromptOptions');
-
+      // Set dialog messages
+      const standardMsg = LOOKUP_RESULT?i18n.__('unblockLookup_unblocked_msg'):i18n.__('unblockLookup_unblocked_msg');
+      let promptMsg = LOOKUP_RESULT?i18n.__('unblockLookup_unblocked_prompt_msg'):i18n.__('unblockLookup_unblocked_prompt_msg');
+      const promptOptions = LOOKUP_RESULT?i18n.__('unblockLookup_unblocked_prompt_opts'):i18n.__('unblockLookup_unblocked_prompt_opts');
+      const retryMsg = i18n.__('confirmLookIntoStepRetryMsg');
+      promptMsg = unblockBotDetails.confirmLookIntoStep === -1 ? retryMsg : promptMsg;
       const promptDetails = {
         prompt: ChoiceFactory.forChannel(
           stepContext.context,
@@ -139,8 +134,9 @@ export class ConfirmLookIntoStep extends ComponentDialog {
           promptMsg,
         ),
       };
-
+      await stepContext.context.sendActivity(standardMsg);
       return await stepContext.prompt(TEXT_PROMPT, promptDetails);
+
     } else {
       return await stepContext.next(false);
     }
@@ -149,7 +145,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
   /**
    * Offer to have a Service Canada Officer contact them
    */
-  async secondStep(stepContext) {
+  async unblockLookupUserConfirm(stepContext) {
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
@@ -166,7 +162,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
 
     // DEBUG
-    console.log('LOOKINTO - Second step',unblockBotDetails, intent);
+    console.log('unblockLookupUserConfirm',unblockBotDetails, intent);
 
     switch (intent) {
       // Proceed
@@ -200,7 +196,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
    * We use LUIZ to process the prompt reply and then
    * update the state machine (unblockBotDetails)
    */
-  async finalStep(stepContext) {
+  async unblockLookupEnd(stepContext) {
 
     // Setup the LUIS app config and languages
     LUISAppSetup(stepContext);
@@ -215,7 +211,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
 
     //DEBUG
-    console.log('LOOKINTO Final step', unblockBotDetails, intent);
+    console.log('unblockLookupEnd', unblockBotDetails, intent);
 
     switch (intent) {
 
