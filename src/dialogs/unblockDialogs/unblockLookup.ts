@@ -155,13 +155,9 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
 
-    // Setup the LUIS app config and languages
+    // Setup the LUIS to recognize intents
     LUISAppSetup(stepContext);
-
-    // Call prompts recognizer
     const recognizerResult = await recognizer.recognize(stepContext.context);
-
-    // Top intent tell us which cognitive service to use.
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
 
     // DEBUG
@@ -176,6 +172,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       // Don't Proceed, offer callback
       case 'promptConfirmNo':
 
+        // unblockBotDetails.confirmLookIntoStep = false;
         // return await stepContext.replaceDialog(
         //   CALLBACK_BOT_DIALOG,
         //   new CallbackBotDetails(),

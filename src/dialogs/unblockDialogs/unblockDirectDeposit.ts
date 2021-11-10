@@ -33,12 +33,12 @@ const LUISAppSetup = (stepContext) => {
     stepContext.context.activity.locale.toLowerCase() === 'fr-fr'
   ) {
     applicationId = process.env.LuisAppIdFR;
-    endpointKey = process.env.LuisAPIKeyFR;
-    endpoint = `https://${process.env.LuisAPIHostNameFR}.api.cognitive.microsoft.com`;
+    endpointKey   = process.env.LuisAPIKeyFR;
+    endpoint      = `https://${process.env.LuisAPIHostNameFR}.api.cognitive.microsoft.com`;
   } else {
     applicationId = process.env.LuisAppIdEN;
-    endpointKey = process.env.LuisAPIKeyEN;
-    endpoint = `https://${process.env.LuisAPIHostNameEN}.api.cognitive.microsoft.com`;
+    endpointKey   = process.env.LuisAPIKeyEN;
+    endpoint      = `https://${process.env.LuisAPIHostNameEN}.api.cognitive.microsoft.com`;
   }
 
   // LUIZ Recogniser processing
@@ -97,14 +97,8 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     // DEBUG
     console.log('unblockDirectDepositInit:', unblockBotDetails);
 
-    // Set the text for the prompt
-    const standardMsg = i18n.__('confirmLookIntoStepStandardMsg');
-
-    // Set the text for the retry prompt
-    const retryMsg = i18n.__('confirmLookIntoStepRetryMsg');
-
     // Check if the error count is greater than the max threshold
-    if (unblockBotDetails.errorCount.confirmLookIntoStep >= MAX_ERROR_COUNT) {
+    if (unblockBotDetails.errorCount.unblockDirectDeposit >= MAX_ERROR_COUNT) {
       // Throw the master error flag
       unblockBotDetails.masterError = true;
 
@@ -122,28 +116,22 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     // If it is in the error state (-1) or or is set to null prompt the user
     // If it is false the user does not want to proceed
     if (
-      unblockBotDetails.confirmLookIntoStep === null ||
-      unblockBotDetails.confirmLookIntoStep === -1
+      unblockBotDetails.unblockDirectDeposit === null ||
+      unblockBotDetails.unblockDirectDeposit === -1
     ) {
-      // Setup the prompt message
-      var promptMsg = standardMsg;
 
-      // The current step is an error state
-      if (unblockBotDetails.confirmLookIntoStep === -1) {
-        promptMsg = retryMsg;
-      }
+      // Set dialog messages
+      const standardMsg       = i18n.__('unblock_direct_deposit_msg');
+      const infoMsg           = i18n.__('unblock_direct_deposit_how_to');
+      const bankInstituteMsg  = i18n.__('unblock_direct_deposit_institute');
+      const retryMsg          = i18n.__('unblock_direct_deposit_retry');
+      const promptMsg = unblockBotDetails.unblockDirectDeposit === -1 ? retryMsg : bankInstituteMsg;
 
-      const promptOptions = i18n.__('confirmLookIntoStepStandardPromptOptions');
 
-      const promptDetails = {
-        prompt: ChoiceFactory.forChannel(
-          stepContext.context,
-          promptOptions,
-          promptMsg,
-        ),
-      };
+      await stepContext.context.sendActivity(standardMsg);
+      await stepContext.context.sendActivity(infoMsg);
+      return await stepContext.prompt(TEXT_PROMPT, { prompt: promptMsg });
 
-      return await stepContext.prompt(TEXT_PROMPT, promptDetails);
     } else {
       return await stepContext.next(false);
     }
@@ -163,7 +151,6 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     // Call prompts recognizer
     const recognizerResult = await recognizer.recognize(stepContext.context);
 
-    const closeMsg = i18n.__('confirmLookIntoStepCloseMsg');
 
     // Top intent tell us which cognitive service to use.
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
@@ -174,7 +161,8 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     switch (intent) {
       // Proceed
       case 'promptConfirmYes':
-        unblockBotDetails.confirmLookIntoStep = null;
+        unblockBotDetails.unblockDirectDeposit = null; //becomes an object
+
         return await stepContext.endDialog(unblockBotDetails);
 
       // Don't Proceed, offer callback
@@ -187,8 +175,8 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
       // Could not understand / No intent
       default: {
-        unblockBotDetails.confirmLookIntoStep = -1;
-        unblockBotDetails.errorCount.confirmLookIntoStep++;
+        unblockBotDetails.unblockDirectDeposit = -1;
+        unblockBotDetails.errorCount.unblockDirectDeposit++;
 
         return await stepContext.replaceDialog(
           CONFIRM_DIRECT_DEPOSIT_STEP,
@@ -223,7 +211,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     switch (intent) {
       // Proceed
       case 'promptConfirmYes':
-        unblockBotDetails.confirmLookIntoStep = null;
+        unblockBotDetails.unblockDirectDeposit = null;
         return await stepContext.endDialog(unblockBotDetails);
 
       // Don't Proceed, offer callback
@@ -236,8 +224,8 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
       // Could not understand / No intent
       default: {
-        unblockBotDetails.confirmLookIntoStep = -1;
-        unblockBotDetails.errorCount.confirmLookIntoStep++;
+        unblockBotDetails.unblockDirectDeposit = -1;
+        unblockBotDetails.errorCount.unblockDirectDeposit++;
 
         return await stepContext.replaceDialog(
           CONFIRM_DIRECT_DEPOSIT_STEP,
@@ -272,7 +260,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     switch (intent) {
       // Proceed
       case 'promptConfirmYes':
-        unblockBotDetails.confirmLookIntoStep = null;
+        unblockBotDetails.unblockDirectDeposit = null;
         return await stepContext.endDialog(unblockBotDetails);
 
       // Don't Proceed, offer callback
@@ -285,8 +273,8 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
       // Could not understand / No intent
       default: {
-        unblockBotDetails.confirmLookIntoStep = -1;
-        unblockBotDetails.errorCount.confirmLookIntoStep++;
+        unblockBotDetails.unblockDirectDeposit = -1;
+        unblockBotDetails.errorCount.unblockDirectDeposit++;
 
         return await stepContext.replaceDialog(
           CONFIRM_DIRECT_DEPOSIT_STEP,
@@ -322,7 +310,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
       // Proceed to callback bot
       case 'promptConfirmYes':
-        unblockBotDetails.confirmLookIntoStep = false;
+        unblockBotDetails.unblockDirectDeposit = false;
         unblockBotDetails.confirmHomeAddressStep = false;
         // return await stepContext.endDialog(unblockBotDetails);
         return await stepContext.replaceDialog(
@@ -334,7 +322,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
       case 'promptConfirmNo':
 
         // Set remaining steps to false (skip to the rating step)
-        unblockBotDetails.confirmLookIntoStep = false;
+        unblockBotDetails.unblockDirectDeposit = false;
         unblockBotDetails.confirmHomeAddressStep = false;
         const confirmLookIntoStepCloseMsg = i18n.__('confirmLookIntoStepCloseMsg');
 
@@ -344,8 +332,8 @@ export class UnblockDirectDepositStep extends ComponentDialog {
       // Could not understand / None intent, try again
       default: {
         // Catch all
-        unblockBotDetails.confirmLookIntoStep = -1;
-        unblockBotDetails.errorCount.confirmLookIntoStep++;
+        unblockBotDetails.unblockDirectDeposit = -1;
+        unblockBotDetails.errorCount.unblockDirectDeposit++;
 
         return await stepContext.replaceDialog(
           CONFIRM_DIRECT_DEPOSIT_STEP,
