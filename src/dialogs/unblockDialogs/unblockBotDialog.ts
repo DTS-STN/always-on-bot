@@ -7,10 +7,12 @@ import {
 //   ConfirmHomeAddressStep,
 //   CONFIRM_HOME_ADDRESS_STEP,
 // } from './confirmHomeAddressStep';
+
 import {
   UnblockDirectDepositStep,
   CONFIRM_DIRECT_DEPOSIT_STEP,
 } from './unblockDirectDeposit';
+
 import i18n from '../locales/i18nConfig';
 import { CallbackBotDialog } from '../callbackBotDialog';
 
@@ -147,7 +149,7 @@ export class UnblockBotDialog extends ComponentDialog {
         return await stepContext.endDialog(unblockBotDetails);
       } else {
         // If no master error occured continue on to the next step
-        switch (unblockBotDetails.confirmHomeAddressStep) {
+        switch (unblockBotDetails.unblockDirectDeposit) {
           // The confirmLookIntoStep flag in the state machine isn't set
           // so we are sending the user to that step
           case null:

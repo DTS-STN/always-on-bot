@@ -14,12 +14,17 @@ import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
 
 import { CallbackBotDetails } from '../callbackBotDetails';
 
+import {
+  UnblockDirectDepositStep,
+  CONFIRM_DIRECT_DEPOSIT_STEP,
+} from './unblockDirectDeposit';
+
 const TEXT_PROMPT = 'TEXT_PROMPT';
 const CHOICE_PROMPT = 'CHOICE_PROMPT';
 export const CONFIRM_LOOK_INTO_STEP = 'CONFIRM_LOOK_INTO_STEP';
 const CONFIRM_LOOK_INTO_WATERFALL_STEP = 'CONFIRM_LOOK_INTO_STEP';
 const MAX_ERROR_COUNT = 3;
-const LOOKUP_RESULT = false;
+const LOOKUP_RESULT = true;
 
 // Luis Application Settings
 let applicationId = '';
@@ -156,8 +161,6 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     // Call prompts recognizer
     const recognizerResult = await recognizer.recognize(stepContext.context);
 
-    const closeMsg = i18n.__('confirmLookIntoStepCloseMsg');
-
     // Top intent tell us which cognitive service to use.
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
 
@@ -167,26 +170,26 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     switch (intent) {
       // Proceed
       case 'promptConfirmYes':
-        unblockBotDetails.confirmLookIntoStep = null;
-        return await stepContext.endDialog(unblockBotDetails);
+        unblockBotDetails.confirmLookIntoStep = true;
+        return await stepContext.next(unblockBotDetails);
 
       // Don't Proceed, offer callback
       case 'promptConfirmNo':
 
-        return await stepContext.replaceDialog(
-          CALLBACK_BOT_DIALOG,
-          new CallbackBotDetails(),
-        );
+        // return await stepContext.replaceDialog(
+        //   CALLBACK_BOT_DIALOG,
+        //   new CallbackBotDetails(),
+        // );
 
       // Could not understand / No intent
       default: {
         unblockBotDetails.confirmLookIntoStep = -1;
         unblockBotDetails.errorCount.confirmLookIntoStep++;
 
-        return await stepContext.replaceDialog(
-          CONFIRM_LOOK_INTO_STEP,
-          unblockBotDetails,
-        );
+        // return await stepContext.replaceDialog(
+        //   CONFIRM_LOOK_INTO_STEP,
+        //   unblockBotDetails,
+        // );
       }
     }
   }
@@ -217,20 +220,15 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
       // Proceed to callback bot
       case 'promptConfirmYes':
-        unblockBotDetails.confirmLookIntoStep = false;
-        unblockBotDetails.confirmHomeAddressStep = false;
-        // return await stepContext.endDialog(unblockBotDetails);
-        return await stepContext.replaceDialog(
-          CALLBACK_BOT_DIALOG,
-          new CallbackBotDetails(),
-        );
+        unblockBotDetails.confirmLookIntoStep = true;
+        return await stepContext.next(unblockBotDetails);
 
       // Don't Proceed, ask for rating
       case 'promptConfirmNo':
 
         // Set remaining steps to false (skip to the rating step)
         unblockBotDetails.confirmLookIntoStep = false;
-        unblockBotDetails.confirmHomeAddressStep = false;
+        unblockBotDetails.unblockDirectDeposit = false;
         const confirmLookIntoStepCloseMsg = i18n.__('confirmLookIntoStepCloseMsg');
 
         await stepContext.context.sendActivity(confirmLookIntoStepCloseMsg);
