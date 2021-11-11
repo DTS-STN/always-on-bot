@@ -75,10 +75,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     this.addDialog(
       new WaterfallDialog(CONFIRM_DIRECT_DEPOSIT_WATERFALL_STEP, [
         this.unblockDirectDepositStart.bind(this),
-        this.unblockBankInstitute.bind(this),
-        // this.unblockBankTransit.bind(this),
-        // this.unblockBankAccount.bind(this),
-        this.unblockDirectDepositEnd.bind(this),
+        this.unblockBankInstitute.bind(this)
       ]),
     );
 
@@ -198,7 +195,15 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     }
 
     if(unblockBotDetails.unblockDirectDeposit === true) {
-      return await stepContext.next(unblockBotDetails);
+      const validMsg = i18n.__('unblock_direct_deposit_valid_msg');
+      const validTip = i18n.__('unblock_direct_deposit_valid_tip');
+      const validReminder = i18n.__('unblock_direct_deposit_valid_reminder');
+
+      await stepContext.context.sendActivity(validMsg);
+      await stepContext.context.sendActivity(validTip);
+      await stepContext.context.sendActivity(validReminder);
+
+      return await stepContext.endDialog(unblockBotDetails);
     } else {
       return await stepContext.replaceDialog(
         CONFIRM_DIRECT_DEPOSIT_STEP,
@@ -206,31 +211,5 @@ export class UnblockDirectDepositStep extends ComponentDialog {
       );
     }
 
-  }
-
-  /**
-   * Validation step in the waterfall.
-   * We use LUIZ to process the prompt reply and then
-   * update the state machine (unblockBotDetails)
-   */
-  async unblockDirectDepositEnd(stepContext) {
-    // Get the results of the last ran step
-    const unblockBotDetails = stepContext.result;
-
-    // Check if a master error has occurred
-    if (unblockBotDetails.masterError === true) {
-      const masterErrorMsg = i18n.__('callbackBotDialogMasterErrorMsg');
-      await stepContext.context.sendActivity(masterErrorMsg);
-    }
-
-    const validMsg = i18n.__('unblock_direct_deposit_valid_msg');
-    const validTip = i18n.__('unblock_direct_deposit_valid_tip');
-    const validReminder = i18n.__('unblock_direct_deposit_valid_reminder');
-
-    await stepContext.context.sendActivity(validMsg);
-    await stepContext.context.sendActivity(validTip);
-    await stepContext.context.sendActivity(validReminder);
-
-    return await stepContext.endDialog(unblockBotDetails);
   }
 }
