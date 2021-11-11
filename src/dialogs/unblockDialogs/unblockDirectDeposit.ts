@@ -18,7 +18,14 @@ const TEXT_PROMPT = 'TEXT_PROMPT';
 const CHOICE_PROMPT = 'CHOICE_PROMPT';
 export const CONFIRM_DIRECT_DEPOSIT_STEP = 'CONFIRM_DIRECT_DEPOSIT_STEP';
 const CONFIRM_DIRECT_DEPOSIT_WATERFALL_STEP = 'CONFIRM_DIRECT_DEPOSIT_STEP';
+
+// Error handling
 const MAX_ERROR_COUNT = 3;
+let INSTITUTE = false
+let TRANSIT = false;
+const INSTITUTE_LENGTH = 3;
+const TRANSIT_LENGTH = 5;
+const ACCOUNT_LENGTH = 7;
 
 // Luis Application Settings
 let applicationId = '';
@@ -69,9 +76,8 @@ export class UnblockDirectDepositStep extends ComponentDialog {
       new WaterfallDialog(CONFIRM_DIRECT_DEPOSIT_WATERFALL_STEP, [
         this.unblockDirectDepositStart.bind(this),
         this.unblockBankInstitute.bind(this),
-        this.unblockBankTransit.bind(this),
-        this.unblockBankAccount.bind(this),
-        this.unblockBankInstitute.bind(this),
+        // this.unblockBankTransit.bind(this),
+        // this.unblockBankAccount.bind(this),
         this.unblockDirectDepositEnd.bind(this),
       ]),
     );
@@ -81,54 +87,79 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
   /**
    * Initial step in the waterfall. This will kick of the UnblockDirectDepositStep step
-   *
-   * If the confirmLookIntoStep flag is set in the state machine then we can just
-   * end this whole dialog
-   *
-   * If the confirmLookIntoStep flag is set to null then we need to get a response from the user
-   *
-   * If the user errors out then we're going to set the flag to false and assume they can't / don't
-   * want to proceed
    */
   async unblockDirectDepositStart(stepContext) {
+
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
 
     // DEBUG
-    console.log('unblockDirectDepositInit:', unblockBotDetails);
+    // console.log('unblockDirectDepositInit:', unblockBotDetails);
 
     // Check if the error count is greater than the max threshold
     if (unblockBotDetails.errorCount.unblockDirectDeposit >= MAX_ERROR_COUNT) {
+
       // Throw the master error flag
       unblockBotDetails.masterError = true;
 
-      // Set master error message to send
-      const errorMsg = i18n.__('masterErrorMsg');
+      console.log('DD ERROR #'+unblockBotDetails.errorCount.unblockDirectDeposit);
 
-      // Send master error message
-      await stepContext.context.sendActivity(errorMsg);
+      // Throw the master error flag
+      unblockBotDetails.masterError = true;
+      unblockBotDetails.unblockDirectDeposit = null;
 
-      // End the dialog and pass the updated details state machine
-      return await stepContext.endDialog(unblockBotDetails);
+      return await stepContext.replaceDialog(
+        CALLBACK_BOT_DIALOG,
+        new CallbackBotDetails()
+      );
     }
 
-    // Check the user state to see if unblockBotDetails.confirm_look_into_step is set to null or -1
     // If it is in the error state (-1) or or is set to null prompt the user
     // If it is false the user does not want to proceed
     if (
       unblockBotDetails.unblockDirectDeposit === null ||
-      unblockBotDetails.unblockDirectDeposit === -1
+      unblockBotDetails.unblockDirectDeposit === -1 ||
+      unblockBotDetails.unblockDirectDeposit === 0
     ) {
 
       // Set dialog messages
       const standardMsg       = i18n.__('unblock_direct_deposit_msg');
       const infoMsg           = i18n.__('unblock_direct_deposit_how_to');
-      const bankInstituteMsg  = i18n.__('unblock_direct_deposit_institute');
-      const retryMsg          = i18n.__('unblock_direct_deposit_retry');
-      const promptMsg = unblockBotDetails.unblockDirectDeposit === -1 ? retryMsg : bankInstituteMsg;
+      const listOfItems       = i18n.__('unblock_direct_deposit_prompt_opts');
+      let promptMsg           = '';
+      let retryMsg            = '';
 
-      await stepContext.context.sendActivity(standardMsg);
-      await stepContext.context.sendActivity(infoMsg);
+      // If first pass through, show welcome messaging
+      if(unblockBotDetails.unblockDirectDeposit === null) {
+        await stepContext.context.sendActivity(standardMsg);
+        await stepContext.context.sendActivity(listOfItems);
+        await stepContext.context.sendActivity(infoMsg);
+      }
+
+      // State of unblock direct deposit determines message prompts
+      if(TRANSIT === true) { //ACCOUNT
+        promptMsg = i18n.__('unblock_direct_deposit_account');
+        retryMsg= i18n.__('unblock_direct_deposit_account_retry');
+
+        if(unblockBotDetails.unblockDirectDeposit === -1)
+          await stepContext.context.sendActivity(retryMsg);
+
+      } else if(INSTITUTE === true) { //TRANSIT
+        promptMsg = i18n.__('unblock_direct_deposit_transit');
+        retryMsg= i18n.__('unblock_direct_deposit_transit_retry');
+
+        if(unblockBotDetails.unblockDirectDeposit === -1)
+          await stepContext.context.sendActivity(retryMsg);
+
+      } else { //INSTITUTE
+        promptMsg =  i18n.__('unblock_direct_deposit_institute');
+        retryMsg = i18n.__('unblock_direct_deposit_institute_retry');
+
+        if(unblockBotDetails.unblockDirectDeposit === -1)
+          await stepContext.context.sendActivity(retryMsg);
+
+      }
+
       return await stepContext.prompt(TEXT_PROMPT, { prompt: promptMsg });
 
     } else {
@@ -143,111 +174,38 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
-    const userInput = stepContext._info ? stepContext._info.result : false;
+    const userInput = stepContext._info ? stepContext._info.result : null;
+
+    //TODO
+    // Implement regex to see if it is a valid number
 
     // DEBUG
-    console.log('unblockBankInstitute',unblockBotDetails, userInput);
+    // console.log('unblockBankInstitute',unblockBotDetails);
 
-    switch (userInput) {
-      case '001':
-      case '333':
-        // Update step state
-        unblockBotDetails.unblockDirectDepositState.institute = userInput;
-
-        // Set dialog messages and prompt
-        const bankTransitMsg  = i18n.__('unblock_direct_deposit_transit');
-        return await stepContext.prompt(TEXT_PROMPT, { prompt: bankTransitMsg });
-
-      default:
-
-        unblockBotDetails.unblockDirectDeposit = -1;
-        unblockBotDetails.errorCount.unblockDirectDeposit++;
-
-        return await stepContext.replaceDialog(
-          CONFIRM_DIRECT_DEPOSIT_STEP,
-          unblockBotDetails,
-        );
-
+    if(userInput === "333") {
+      INSTITUTE = true;
+      unblockBotDetails.unblockDirectDeposit = 0;
+      unblockBotDetails.errorCount.unblockDirectDeposit = 0;
+    } else if(userInput === "55555") {
+      TRANSIT = true;
+      unblockBotDetails.unblockDirectDeposit = 0;
+      unblockBotDetails.errorCount.unblockDirectDeposit = 0;
+    } else if (userInput === "7777777") {
+      unblockBotDetails.unblockDirectDeposit = true;
+    } else {
+      unblockBotDetails.unblockDirectDeposit = -1;
+      unblockBotDetails.errorCount.unblockDirectDeposit++;
     }
 
-  }
-
-  /**
-   * Offer to have a Service Canada Officer contact them
-   */
-   async unblockBankTransit(stepContext) {
-
-    // Get the user details / state machine
-    const unblockBotDetails = stepContext.options;
-    // console.log(stepContext);
-    const userInput = stepContext._info ? stepContext._info.result : false;
-
-    // DEBUG
-    console.log('unblockBankTransit',unblockBotDetails, userInput);
-
-    switch (userInput) {
-      case '55555':
-        // Update step state
-        unblockBotDetails.unblockDirectDepositState.transit = userInput;
-
-        // Set dialog messages and prompt
-        const bankAccountMsg  = i18n.__('unblock_direct_deposit_account');
-        return await stepContext.prompt(TEXT_PROMPT, { prompt: bankAccountMsg });
-
-      default:
-
-        unblockBotDetails.unblockDirectDeposit = -1;
-        unblockBotDetails.errorCount.unblockDirectDeposit++;
-
-        return await stepContext.replaceDialog(
-          CONFIRM_DIRECT_DEPOSIT_STEP,
-          unblockBotDetails,
-        );
-
+    if(unblockBotDetails.unblockDirectDeposit === true) {
+      return await stepContext.next(unblockBotDetails);
+    } else {
+      return await stepContext.replaceDialog(
+        CONFIRM_DIRECT_DEPOSIT_STEP,
+        unblockBotDetails,
+      );
     }
 
-  }
-
-  /**
-   * Offer to have a Service Canada Officer contact them
-   */
-   async unblockBankAccount(stepContext) {
-
-    // Get the user details / state machine
-    const unblockBotDetails = stepContext.options;
-    console.log(stepContext);
-    const userInput = stepContext._info ? stepContext._info.result : false;
-
-    // DEBUG
-    console.log('unblockBankAccount',unblockBotDetails, userInput);
-
-    switch (userInput) {
-      case '7777777':
-        // Update step state
-        unblockBotDetails.unblockDirectDepositState.account = userInput;
-
-        // Set dialog messages and prompt
-        const directDepositValid  = i18n.__('unblock_direct_deposit_valid_msg');
-        const directDepositTip  = i18n.__('unblock_direct_deposit_valid_tip');
-        const directDepositReminder  = i18n.__('unblock_direct_deposit_valid_reminder');
-
-        await stepContext.context.sendActivity(directDepositValid);
-        await stepContext.context.sendActivity(directDepositTip);
-        await stepContext.context.sendActivity(directDepositReminder);
-
-        return await stepContext.endDialog(unblockBotDetails);
-
-      default:
-
-        unblockBotDetails.unblockDirectDeposit = -1;
-        unblockBotDetails.errorCount.unblockDirectDeposit++;
-
-        return await stepContext.replaceDialog(
-          CONFIRM_DIRECT_DEPOSIT_STEP,
-          unblockBotDetails,
-        );
-
-    }
   }
 
   /**
@@ -256,56 +214,23 @@ export class UnblockDirectDepositStep extends ComponentDialog {
    * update the state machine (unblockBotDetails)
    */
   async unblockDirectDepositEnd(stepContext) {
+    // Get the results of the last ran step
+    const unblockBotDetails = stepContext.result;
 
-    // Setup the LUIS app config and languages
-    LUISAppSetup(stepContext);
-
-    // Get the user details / state machine
-    const unblockBotDetails = stepContext.options;
-
-    // Call prompts recognizer
-    const recognizerResult = await recognizer.recognize(stepContext.context);
-
-    // Top intent tell us which cognitive service to use.
-    const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
-
-    //DEBUG
-    console.log('unblockDirectDepositEnd', unblockBotDetails, intent);
-
-    switch (intent) {
-
-      // Proceed to callback bot
-      case 'promptConfirmYes':
-        unblockBotDetails.unblockDirectDeposit = false;
-        unblockBotDetails.confirmHomeAddressStep = false;
-        // return await stepContext.endDialog(unblockBotDetails);
-        return await stepContext.replaceDialog(
-          CALLBACK_BOT_DIALOG,
-          new CallbackBotDetails(),
-        );
-
-      // Don't Proceed, ask for rating
-      case 'promptConfirmNo':
-
-        // Set remaining steps to false (skip to the rating step)
-        unblockBotDetails.unblockDirectDeposit = false;
-        unblockBotDetails.confirmHomeAddressStep = false;
-        const confirmLookIntoStepCloseMsg = i18n.__('confirmLookIntoStepCloseMsg');
-
-        await stepContext.context.sendActivity(confirmLookIntoStepCloseMsg);
-        return await stepContext.endDialog(unblockBotDetails);
-
-      // Could not understand / None intent, try again
-      default: {
-        // Catch all
-        unblockBotDetails.unblockDirectDeposit = -1;
-        unblockBotDetails.errorCount.unblockDirectDeposit++;
-
-        return await stepContext.replaceDialog(
-          CONFIRM_DIRECT_DEPOSIT_STEP,
-          unblockBotDetails,
-        );
-      }
+    // Check if a master error has occurred
+    if (unblockBotDetails.masterError === true) {
+      const masterErrorMsg = i18n.__('callbackBotDialogMasterErrorMsg');
+      await stepContext.context.sendActivity(masterErrorMsg);
     }
+
+    const validMsg = i18n.__('unblock_direct_deposit_valid_msg');
+    const validTip = i18n.__('unblock_direct_deposit_valid_tip');
+    const validReminder = i18n.__('unblock_direct_deposit_valid_reminder');
+
+    await stepContext.context.sendActivity(validMsg);
+    await stepContext.context.sendActivity(validTip);
+    await stepContext.context.sendActivity(validReminder);
+
+    return await stepContext.endDialog(unblockBotDetails);
   }
 }

@@ -96,45 +96,6 @@ export class UnblockBotDialog extends ComponentDialog {
   }
 
   /**
-  * Confirm the user's home address
-  */
-  // async confirmHomeAddressStep(stepContext) {
-  // // Get the state machine from the last step
-  // const unblockBotDetails = stepContext.result;
-
-  // // DEBUG
-  // console.log('UNBLOCK ADDRESS:', unblockBotDetails);
-
-  // // Check if a master error occured and then end the dialog
-  // if (unblockBotDetails.masterError) {
-  //   return await stepContext.endDialog(unblockBotDetails);
-  // } else {
-  //   // If no master error occured continue on to the next step
-  //   switch (unblockBotDetails.confirmHomeAddressStep) {
-  //     // The confirmLookIntoStep flag in the state machine isn't set
-  //     // so we are sending the user to that step
-  //     case null:
-  //       return await stepContext.beginDialog(
-  //         CONFIRM_HOME_ADDRESS_STEP,
-  //         unblockBotDetails,
-  //       );
-
-  //     // The confirmLookIntoStep flag in the state machine is set to true
-  //     // so we are sending the user to next step
-  //     case true:
-  //       return await stepContext.next();
-
-  //     // The confirmLookIntoStep flag in the state machine is set to false
-  //     // so we are sending to the end because they don't want to continue
-  //     case false:
-  //     default:
-  //       return await stepContext.endDialog(unblockBotDetails);
-  //     }
-  //   }
-  // }
-
-
-  /**
   * Unblock the user's direct deposit account
   */
      async unblockDirectDepositStep(stepContext) {

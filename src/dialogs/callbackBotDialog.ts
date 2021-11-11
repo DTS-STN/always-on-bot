@@ -83,10 +83,6 @@ export class CallbackBotDialog extends ComponentDialog {
   async welcomeStep(stepContext: WaterfallStepContext) {
     // Get the callback Bot details / state machine for the current user
     const callbackBotDetails = stepContext.options as CallbackBotDetails;
-
-    // const welcomeMsg = i18n.__('callbackBotDialogWelcomeMsg');
-    // await stepContext.context.sendActivity(welcomeMsg);
-
     return await stepContext.next(callbackBotDetails);
   }
 
@@ -466,13 +462,13 @@ export class CallbackBotDialog extends ComponentDialog {
    * Final step in the waterfall. This will end the callbackBot dialog
    */
   async finalStep(stepContext) {
+
     // Get the results of the last ran step
     const callbackBotDetails = stepContext.result;
 
     // Check if a master error has occurred
     if (callbackBotDetails.masterError === true) {
       const masterErrorMsg = i18n.__('callbackBotDialogMasterErrorMsg');
-
       await stepContext.context.sendActivity(masterErrorMsg);
     }
 
