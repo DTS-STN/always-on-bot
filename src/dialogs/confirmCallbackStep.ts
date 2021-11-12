@@ -94,7 +94,7 @@ export class ConfirmCallbackStep extends ComponentDialog {
       }
 
       const promptOptions: any = i18n.__(
-        'confirmCallbackStandardPromptOptions',
+        'confirmCallbackStandardPromptOptions'
       );
       const promptDetails = {
         prompt: ChoiceFactory.forChannel(

@@ -88,7 +88,7 @@ export class GetPreferredCallbackDateAndTimeStep extends ComponentDialog {
 
       // Set the options for the quick reply buttons
       const promptOptions: any = i18n.__(
-        'getPreferredCallbackDateAndTimeStepStandardPromptOptions',
+        'getPreferredCallbackDateAndTimeStepStandardPromptOptions'
       );
 
       const promptDetails = {
@@ -112,7 +112,7 @@ export class GetPreferredCallbackDateAndTimeStep extends ComponentDialog {
       choices: ChoiceFactory.toChoices([
         ' Sep 1 2021',
         'Spe 4 2021',
-        'Sep 19 2021',
+        'Sep 19 2021'
       ]),
       prompt: 'Please choose your prefer date.'
     });

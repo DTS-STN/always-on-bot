@@ -95,8 +95,8 @@ export class GetPreferredMethodOfContactStep extends ComponentDialog {
         prompt: ChoiceFactory.forChannel(
           stepContext.context,
           promptOptions,
-          promptMsg,
-        ),
+          promptMsg
+        )
       };
 
       return await stepContext.prompt(TEXT_PROMPT, promptDetails);
@@ -147,33 +147,26 @@ export class GetPreferredMethodOfContactStep extends ComponentDialog {
         callbackBotDetails.getPreferredMethodOfContactStep = true;
         callbackBotDetails.preferredEmail = true;
         console.log('text retry 11111');
-        // callbackBotDetails.confirmEmailStep = null;
-        // await stepContext.context.sendActivity(sendEmailMsg);
         return await stepContext.replaceDialog(
           CONFIRM_EMAIL_STEP,
           callbackBotDetails
         );
-      // return await stepContext.endDialog(callbackBotDetails);
 
       // Proceed with Text Message
       case 'promptConfirmChoiceText':
         console.log('INTENT: ', intent);
         callbackBotDetails.getPreferredMethodOfContactStep = true;
         callbackBotDetails.preferredText = true;
-        // callbackBotDetails.confirmPhoneStep = null;
-        // await stepContext.context.sendActivity(sendTextMsg);
         return await stepContext.replaceDialog(
           CONFIRM_PHONE_STEP,
           callbackBotDetails
         );
-      //return await stepContext.endDialog(callbackBotDetails);
 
       // Proceed with Both Messages
       case 'promptConfirmChoiceBoth':
         console.log('INTENT: ', intent);
         callbackBotDetails.getPreferredMethodOfContactStep = true;
         callbackBotDetails.preferredEmailAndText = true;
-        // await stepContext.context.sendActivity(sendBothMsg);
 
         return await stepContext.endDialog(callbackBotDetails);
 

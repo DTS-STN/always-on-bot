@@ -73,7 +73,7 @@ export class ConfirmEmailStep extends ComponentDialog {
       callbackBotDetails.confirmEmailStep === -1
     ) {
       // Setup the prompt message
-      var promptMsg = '';
+      let promptMsg = '';
       // The current step is an error state
       if (callbackBotDetails.confirmEmailStep === -1) {
         promptMsg = retryMsg;
@@ -87,8 +87,8 @@ export class ConfirmEmailStep extends ComponentDialog {
         prompt: ChoiceFactory.forChannel(
           stepContext.context,
           promptOptions,
-          promptMsg,
-        ),
+          promptMsg
+        )
       };
 
       return await stepContext.prompt(TEXT_PROMPT, promptDetails);

@@ -89,11 +89,10 @@ export class UnblockBotDialog extends ComponentDialog {
     }
   }
 
-  /**
-  * Unblock the user's direct deposit account
-  */
+  // Unblock the user's direct deposit account
   async unblockDirectDepositStep(stepContext) {
-  // Get the state machine from the last step
+
+    // Get the state machine from the last step
   const unblockBotDetails = stepContext.result;
 
   // DEBUG

@@ -73,7 +73,7 @@ export class ConfirmPhoneStep extends ComponentDialog {
       callbackBotDetails.confirmPhoneStep === -1
     ) {
       // Setup the prompt message
-      var promptMsg = '';
+      let promptMsg = '';
 
       // The current step is an error state
       if (callbackBotDetails.confirmPhoneStep === -1) {

@@ -133,11 +133,11 @@ export class ConfirmAuthWordStep extends ComponentDialog {
       {
         applicationId: applicationId,
         endpointKey: endpointKey,
-        endpoint: endpoint,
+        endpoint: endpoint
       },
       {
         includeAllIntents: true,
-        includeInstanceData: true,
+        includeInstanceData: true
       },
       true
     );
