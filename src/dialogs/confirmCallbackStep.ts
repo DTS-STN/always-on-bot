@@ -45,10 +45,12 @@ export class ConfirmCallbackStep extends ComponentDialog {
     let okMsg;
     let standardMsg;
 
+    console.log(stepContext)
+
     switch(stepContext.stack[0].id){
       case 'CONFIRM_CALLBACK_WATERFALL_STEP':
         okMsg = false;
-        standardMsg = i18n.__('confirmHomeAddressFailedErrorMsg');
+        standardMsg = i18n.__('unblock_direct_deposit_main_error');
       default:
         okMsg = i18n.__('OKMsg');
         standardMsg = i18n.__('callbackBotDialogStepStandardMsg');

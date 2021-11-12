@@ -126,37 +126,32 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     const unblockBotDetails = stepContext.options;
     const userInput = stepContext._info ? stepContext._info.result : null;
 
-    //TODO
-    // Implement regex to see if it is a valid number
+    // Validate numeric input
+    const INSTITUTE_LENGTH = 3;
+    const TRANSIT_LENGTH = 5;
+    const ACCOUNT_LENGTH = 7;
+    const number = /^\d+$/;
+    let validNumber = number.test(userInput);
 
-    // DEBUG
-    // console.log('unblockBankInstitute',unblockBotDetails);
-
-    if(userInput === "333") {
+    // If valid number matches requested value lenght
+    if (validNumber && userInput.length === INSTITUTE_LENGTH) {
       INSTITUTE = true;
       unblockBotDetails.unblockDirectDeposit = 0;
       unblockBotDetails.errorCount.unblockDirectDeposit = 0;
-    } else if(userInput === "55555") {
+    } else if (validNumber && userInput.length === TRANSIT_LENGTH) {
       TRANSIT = true;
       unblockBotDetails.unblockDirectDeposit = 0;
       unblockBotDetails.errorCount.unblockDirectDeposit = 0;
-    } else if (userInput === "7777777") {
+    } else if (validNumber && userInput.length === ACCOUNT_LENGTH) {
       unblockBotDetails.unblockDirectDeposit = true;
     } else {
       unblockBotDetails.unblockDirectDeposit = -1;
       unblockBotDetails.errorCount.unblockDirectDeposit++;
     }
 
+    // Next step for pass, or repeat as needed
     if(unblockBotDetails.unblockDirectDeposit === true) {
-      const validMsg = i18n.__('unblock_direct_deposit_valid_msg');
-      const validTip = i18n.__('unblock_direct_deposit_valid_tip');
-      const validReminder = i18n.__('unblock_direct_deposit_valid_reminder');
-
-      await stepContext.context.sendActivity(validMsg);
-      await stepContext.context.sendActivity(validTip);
-      await stepContext.context.sendActivity(validReminder);
-
-      return await stepContext.endDialog(unblockBotDetails);
+      return await stepContext.next(unblockBotDetails);
     } else {
       return await stepContext.replaceDialog(
         CONFIRM_DIRECT_DEPOSIT_STEP,
@@ -164,5 +159,24 @@ export class UnblockDirectDepositStep extends ComponentDialog {
       );
     }
 
+  }
+
+  /**
+   * Final message prompt
+   */
+  async unblockDirectDepositEnd(stepContext) {
+
+    // Get the results of the last ran step
+    const unblockBotDetails = stepContext.result;
+
+    const validMsg = i18n.__('unblock_direct_deposit_valid_msg');
+    const validTip = i18n.__('unblock_direct_deposit_valid_tip');
+    const validReminder = i18n.__('unblock_direct_deposit_valid_reminder');
+
+    await stepContext.context.sendActivity(validMsg);
+    await stepContext.context.sendActivity(validTip);
+    await stepContext.context.sendActivity(validReminder);
+
+    return await stepContext.endDialog(unblockBotDetails);
   }
 }

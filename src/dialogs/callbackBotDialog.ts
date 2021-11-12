@@ -39,6 +39,8 @@ import { GetUserEmailStep, GET_USER_EMAIL_STEP } from './getUserEmailStep';
 export const CALLBACK_BOT_DIALOG = 'CALLBACK_BOT_DIALOG';
 const MAIN_CALLBACK_BOT_WATERFALL_DIALOG = 'MAIN_CALLBACK_BOT_WATERFALL_DIALOG';
 const CALLBACK_BOT_DETAILS = 'CALLBACK_BOT_DETAILS';
+const MAX_ERROR_COUNT = 3;
+
 export class CallbackBotDialog extends ComponentDialog {
   constructor(id?: string) {
     super(id || CALLBACK_BOT_DIALOG);
@@ -468,7 +470,7 @@ export class CallbackBotDialog extends ComponentDialog {
 
     // Check if a master error has occurred
     if (callbackBotDetails.masterError === true) {
-      const masterErrorMsg = i18n.__('callbackBotDialogMasterErrorMsg');
+      let masterErrorMsg = i18n.__('callbackBotDialogMasterErrorMsg');
       await stepContext.context.sendActivity(masterErrorMsg);
     }
 
