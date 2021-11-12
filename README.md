@@ -196,3 +196,6 @@ See configurations at:
 ## Config Changelog
 
 - 2021/10/05: les.lakewood@hrsdc-rhdcc.gc.ca - Initial Draft based on ei-callback-bot
+- 2021/10/09: les.lakewood@hrsdc-rhdcc.gc.ca - Confirm Home Address unblock flow added
+- 2021/10/10: les.lakewood@hrsdc-rhdcc.gc.ca - Confirm Home Address unblock flow archived
+- 2021/10/12: les.lakewood@hrsdc-rhdcc.gc.ca - Unblock Direct Deposit flow added
