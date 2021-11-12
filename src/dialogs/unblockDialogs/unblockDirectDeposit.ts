@@ -83,7 +83,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
       }
 
       // State of unblock direct deposit determines message prompts
-      if(TRANSIT === true) { //ACCOUNT
+      if(TRANSIT === true) { // ACCOUNT
         promptMsg = i18n.__('unblock_direct_deposit_account');
         retryMsg= i18n.__('unblock_direct_deposit_account_retry');
 
@@ -91,7 +91,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
           await stepContext.context.sendActivity(retryMsg)
         }
 
-      } else if(INSTITUTE === true) { //TRANSIT
+      } else if(INSTITUTE === true) { // TRANSIT
         promptMsg = i18n.__('unblock_direct_deposit_transit');
         retryMsg= i18n.__('unblock_direct_deposit_transit_retry');
 
@@ -99,7 +99,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
           await stepContext.context.sendActivity(retryMsg);
         }
 
-      } else { //INSTITUTE
+      } else { // INSTITUTE
         promptMsg =  i18n.__('unblock_direct_deposit_institute');
         retryMsg = i18n.__('unblock_direct_deposit_institute_retry');
 
@@ -130,8 +130,8 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     const INSTITUTE_LENGTH = 3;
     const TRANSIT_LENGTH = 5;
     const ACCOUNT_LENGTH = 7;
-    const number = /^\d+$/;
-    let validNumber = number.test(userInput);
+    const numberRegex = /^\d+$/;
+    const validNumber = numberRegex.test(userInput);
 
     // If valid number matches requested value lenght
     if (validNumber && userInput.length === INSTITUTE_LENGTH) {

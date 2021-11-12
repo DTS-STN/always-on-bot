@@ -53,7 +53,7 @@ const LUISAppSetup = (stepContext) => {
       includeAllIntents: true,
       includeInstanceData: true
     },
-    true,
+    true
   );
 }
 
@@ -71,7 +71,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
         this.unblockLookupStart.bind(this),
         this.unblockLookupUserConfirm.bind(this),
         this.unblockLookupEnd.bind(this)
-      ]),
+      ])
     );
 
     this.initialDialogId = CONFIRM_LOOK_INTO_WATERFALL_STEP;
@@ -202,7 +202,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     // Top intent tell us which cognitive service to use.
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
 
-    //DEBUG
+    // DEBUG
     console.log('unblockLookupEnd', unblockBotDetails, intent);
 
     switch (intent) {

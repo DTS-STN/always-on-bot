@@ -1,12 +1,8 @@
 import { ComponentDialog, WaterfallDialog } from 'botbuilder-dialogs';
 import {
   ConfirmLookIntoStep,
-  CONFIRM_LOOK_INTO_STEP,
+  CONFIRM_LOOK_INTO_STEP
 } from './unblockLookup';
-// import {
-//   ConfirmHomeAddressStep,
-//   CONFIRM_HOME_ADDRESS_STEP,
-// } from './confirmHomeAddressStep';
 
 import {
   UnblockDirectDepositStep,
@@ -25,7 +21,6 @@ export class UnblockBotDialog extends ComponentDialog {
 
     // Add the ConfirmLookIntoStep dialog to the dialog stack
     this.addDialog(new ConfirmLookIntoStep());
-    // this.addDialog(new ConfirmHomeAddressStep());
     this.addDialog(new UnblockDirectDepositStep());
     this.addDialog(new CallbackBotDialog());
 
@@ -33,10 +28,9 @@ export class UnblockBotDialog extends ComponentDialog {
       new WaterfallDialog(MAIN_UNBLOCK_BOT_WATERFALL_DIALOG, [
         this.welcomeStep.bind(this),
         this.confirmLookIntoStep.bind(this),
-        // this.confirmHomeAddressStep.bind(this),
         this.unblockDirectDepositStep.bind(this),
-        this.finalStep.bind(this),
-      ]),
+        this.finalStep.bind(this)
+      ])
     );
 
     this.initialDialogId = MAIN_UNBLOCK_BOT_WATERFALL_DIALOG;
@@ -68,7 +62,7 @@ export class UnblockBotDialog extends ComponentDialog {
     const unblockBotDetails = stepContext.result;
 
     // DEBUG
-    console.log('UNBLOCK LOOKUP:', unblockBotDetails);
+    // console.log('UNBLOCK LOOKUP:', unblockBotDetails);
 
     switch (unblockBotDetails.confirmLookIntoStep) {
       // The confirmLookIntoStep flag in the state machine isn't set
@@ -76,7 +70,7 @@ export class UnblockBotDialog extends ComponentDialog {
       case null:
         return await stepContext.beginDialog(
           CONFIRM_LOOK_INTO_STEP,
-          unblockBotDetails,
+          unblockBotDetails
         );
 
       // The confirmLookIntoStep flag in the state machine is set to true
@@ -96,44 +90,41 @@ export class UnblockBotDialog extends ComponentDialog {
   }
 
   /**
-  * Unblock the user's direct deposit account
-  */
-     async unblockDirectDepositStep(stepContext) {
-      // Get the state machine from the last step
-      const unblockBotDetails = stepContext.result;
+  * Unblock the user's direct deposit account */
+  async unblockDirectDepositStep(stepContext) {
+  // Get the state machine from the last step
+  const unblockBotDetails = stepContext.result;
 
-      // DEBUG
-      console.log('DIRECT DEPOSIT STEP:', unblockBotDetails);
+  // DEBUG
+  // console.log('DIRECT DEPOSIT STEP:', unblockBotDetails);
 
-      // Check if a master error occured and then end the dialog
-      if (unblockBotDetails.masterError) {
+  // Check if a master error occured and then end the dialog
+  if (unblockBotDetails.masterError) {
+    return await stepContext.endDialog(unblockBotDetails);
+  } else {
+    // If no master error occured continue on to the next step
+    switch (unblockBotDetails.unblockDirectDeposit) {
+      // The confirmLookIntoStep flag in the state machine isn't set
+      // so we are sending the user to that step
+      case null:
+        return await stepContext.beginDialog(
+          CONFIRM_DIRECT_DEPOSIT_STEP,
+          unblockBotDetails,
+        );
+
+      // The confirmLookIntoStep flag in the state machine is set to true
+      // so we are sending the user to next step
+      case true:
+        return await stepContext.next();
+
+      // The confirmLookIntoStep flag in the state machine is set to false
+      // so we are sending to the end because they don't want to continue
+      case false:
+      default:
         return await stepContext.endDialog(unblockBotDetails);
-      } else {
-        // If no master error occured continue on to the next step
-        switch (unblockBotDetails.unblockDirectDeposit) {
-          // The confirmLookIntoStep flag in the state machine isn't set
-          // so we are sending the user to that step
-          case null:
-            return await stepContext.beginDialog(
-              CONFIRM_DIRECT_DEPOSIT_STEP,
-              unblockBotDetails,
-            );
-
-          // The confirmLookIntoStep flag in the state machine is set to true
-          // so we are sending the user to next step
-          case true:
-            return await stepContext.next();
-
-          // The confirmLookIntoStep flag in the state machine is set to false
-          // so we are sending to the end because they don't want to continue
-          case false:
-          default:
-            return await stepContext.endDialog(unblockBotDetails);
-          }
-        }
       }
-
-
+    }
+  }
 
   /**
    * Final step in the waterfall. This will end the unblockbot dialog
@@ -143,7 +134,7 @@ export class UnblockBotDialog extends ComponentDialog {
     const unblockBotDetails = stepContext.result;
 
     // DEBUG
-    console.log('UNBLOCK FINALSTEP: ', unblockBotDetails);
+    // console.log('UNBLOCK FINALSTEP: ', unblockBotDetails);
 
     // Check if a master error has occured
     if (unblockBotDetails.masterError) {
