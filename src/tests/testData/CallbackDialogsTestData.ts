@@ -21,7 +21,7 @@
          expectedResult: undefined,
          expectedStatus: "complete",
          initialData: {},
-         name: "Full flow with \'no\' at confirmation",
+         name: "Full flow with 'no' at confirmation",
          steps: [
              ["hi", "To what city would you like to travel?"],
              ["Seattle", "From what city will you be travelling?"],
@@ -57,7 +57,7 @@
          expectedStatus: "complete",
          initialData: {
              destination: "Seattle",
-             origin: "New York'
+             origin: "New York"
          },
          name: "Destination and origin given",
          steps: [
