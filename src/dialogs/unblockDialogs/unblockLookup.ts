@@ -3,7 +3,7 @@ import {
   ChoicePrompt,
   ComponentDialog,
   WaterfallDialog,
-  ChoiceFactory,
+  ChoiceFactory
 } from 'botbuilder-dialogs';
 
 import { LuisRecognizer } from 'botbuilder-ai';
@@ -13,11 +13,6 @@ import i18n from '../locales/i18nConfig';
 import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
 
 import { CallbackBotDetails } from '../callbackBotDetails';
-
-import {
-  UnblockDirectDepositStep,
-  CONFIRM_DIRECT_DEPOSIT_STEP,
-} from './unblockDirectDeposit';
 
 const TEXT_PROMPT = 'TEXT_PROMPT';
 const CHOICE_PROMPT = 'CHOICE_PROMPT';
@@ -52,11 +47,11 @@ const LUISAppSetup = (stepContext) => {
     {
       applicationId: applicationId,
       endpointKey: endpointKey,
-      endpoint: endpoint,
+      endpoint: endpoint
     },
     {
       includeAllIntents: true,
-      includeInstanceData: true,
+      includeInstanceData: true
     },
     true,
   );
@@ -75,7 +70,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       new WaterfallDialog(CONFIRM_LOOK_INTO_WATERFALL_STEP, [
         this.unblockLookupStart.bind(this),
         this.unblockLookupUserConfirm.bind(this),
-        this.unblockLookupEnd.bind(this),
+        this.unblockLookupEnd.bind(this)
       ]),
     );
 
@@ -98,7 +93,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     const unblockBotDetails = stepContext.options;
 
     // DEBUG
-    console.log('unblockLookupStart:', unblockBotDetails);
+    // console.log('unblockLookupStart:', unblockBotDetails);
 
     // Check if the error count is greater than the max threshold
     if (unblockBotDetails.errorCount.confirmLookIntoStep >= MAX_ERROR_COUNT) {
@@ -133,8 +128,8 @@ export class ConfirmLookIntoStep extends ComponentDialog {
         prompt: ChoiceFactory.forChannel(
           stepContext.context,
           promptOptions,
-          promptMsg,
-        ),
+          promptMsg
+        )
       };
       await stepContext.context.sendActivity(standardMsg);
       return await stepContext.prompt(TEXT_PROMPT, promptDetails);
@@ -172,7 +167,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
         unblockBotDetails.confirmLookIntoStep = false;
         return await stepContext.replaceDialog(
           CALLBACK_BOT_DIALOG,
-          new CallbackBotDetails(),
+          new CallbackBotDetails()
         );
 
       // Could not understand / No intent
@@ -182,7 +177,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
         return await stepContext.replaceDialog(
           CONFIRM_LOOK_INTO_STEP,
-          unblockBotDetails,
+          unblockBotDetails
         );
       }
     }
@@ -236,7 +231,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
         return await stepContext.replaceDialog(
           CONFIRM_LOOK_INTO_STEP,
-          unblockBotDetails,
+          unblockBotDetails
         );
       }
     }
