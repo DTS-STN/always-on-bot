@@ -462,7 +462,7 @@ export class CallbackBotDialog extends ComponentDialog {
 
     // Check if a master error has occurred
     if (callbackBotDetails.masterError === true) {
-      let masterErrorMsg = i18n.__('callbackBotDialogMasterErrorMsg');
+      const masterErrorMsg = i18n.__('callbackBotDialogMasterErrorMsg');
       await stepContext.context.sendActivity(masterErrorMsg);
     }
 
