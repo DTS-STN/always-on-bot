@@ -2,7 +2,7 @@ import {
   TextPrompt,
   ComponentDialog,
   WaterfallDialog,
-  ChoiceFactory,
+  ChoiceFactory
 } from 'botbuilder-dialogs';
 
 import { LuisRecognizer } from 'botbuilder-ai';
@@ -46,13 +46,13 @@ const LUISAppSetup = (stepContext) => {
     {
       applicationId: applicationId,
       endpointKey: endpointKey,
-      endpoint: endpoint,
+      endpoint: endpoint
     },
     {
       includeAllIntents: true,
-      includeInstanceData: true,
+      includeInstanceData: true
     },
-    true,
+    true
   );
 }
 
@@ -69,8 +69,8 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
         this.secondStep.bind(this),
         this.thirdStep.bind(this),
         this.fourthStep.bind(this),
-        this.finalStep.bind(this),
-      ]),
+        this.finalStep.bind(this)
+      ])
     );
 
     this.initialDialogId = CONFIRM_HOME_ADDRESS_STEP_WATERFALL_STEP;
@@ -101,8 +101,6 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
     // Set the text for the retry prompt
     const retryMsg = i18n.__('confirmHomeAddressStepRetryMsg');
 
-    // Set the text for the prompt
-    const queryMsg = i18n.__('confirmHomeAddressStepQueryMsg');
 
     // Check if the error count is greater than the max threshold
     if (unblockBotDetails.errorCount.confirmHomeAddressStep >= MAX_ERROR_COUNT) {
@@ -129,7 +127,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
     ) {
 
       // Setup the prompt message
-      var promptMsg = '';
+      let promptMsg = '';
 
       // The current step is an error state
       if (unblockBotDetails.confirmHomeAddressStep === -1) {
@@ -157,7 +155,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
     // DEBUG
     console.log('SECOND STEP - CONFIRM ADDRESS', unblockBotDetails, userInput);
 
-    if(userInput.match("42 Sussex") || userInput === "123" ) {
+    if(userInput.match('42 Sussex') || userInput === '123' ) {
 
       // Set messages
       const standardMsg = i18n.__('confirmHomeAddressResultsPromptMsg');
@@ -167,8 +165,8 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
         prompt: ChoiceFactory.forChannel(
           stepContext.context,
           promptOptions,
-          promptMsg,
-        ),
+          promptMsg
+        )
       };
       return await stepContext.prompt(TEXT_PROMPT, promptDetails);
 
@@ -180,7 +178,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
       unblockBotDetails.errorCount.confirmHomeAddressStep++;
       return await stepContext.replaceDialog(
         CONFIRM_HOME_ADDRESS_STEP,
-        unblockBotDetails,
+        unblockBotDetails
       );
     }
 
@@ -196,15 +194,14 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
     const userInput = stepContext._info.result?stepContext._info.result:'';
 
 
-
     // DEBUG
     console.log('THIRD STEP - SELECT ADDRESS', unblockBotDetails, userInput);
 
     switch (userInput) {
-      case "42 Sussex":
-      case "42 Sussex Dr":
-      case "42 Sussex Dr, Ottawa":
-      case "123":
+      case '42 Sussex':
+      case '42 Sussex Dr':
+      case '42 Sussex Dr, Ottawa':
+      case '123':
 
         // Set the text for the prompt
         const confirm1Msg = i18n.__('confirmHomeAddressConfirm1Msg');
@@ -218,8 +215,8 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
           prompt: ChoiceFactory.forChannel(
             stepContext.context,
             promptOptions,
-            promptMsg,
-          ),
+            promptMsg
+          )
         };
 
         return await stepContext.prompt(TEXT_PROMPT, promptDetails);
@@ -232,7 +229,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
         unblockBotDetails.errorCount.confirmHomeAddressStep++;
         return await stepContext.replaceDialog(
           CONFIRM_HOME_ADDRESS_STEP,
-          unblockBotDetails,
+          unblockBotDetails
         );
 
     }
@@ -275,7 +272,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
 
         return await stepContext.replaceDialog(
           CONFIRM_HOME_ADDRESS_STEP,
-          unblockBotDetails,
+          unblockBotDetails
         );
 
       // Unknown utterance
@@ -286,7 +283,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
         unblockBotDetails.errorCount.confirmHomeAddressStep++;
         return await stepContext.replaceDialog(
           CONFIRM_HOME_ADDRESS_STEP,
-          unblockBotDetails,
+          unblockBotDetails
         );
       }
     }
@@ -328,7 +325,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
         unblockBotDetails.confirmHomeAddressStep = null;
         return await stepContext.replaceDialog(
           CALLBACK_BOT_DIALOG,
-          new CallbackBotDetails(),
+          new CallbackBotDetails()
         );
 
       // Unknown utterance
@@ -339,7 +336,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
         unblockBotDetails.errorCount.confirmHomeAddressStep++;
         return await stepContext.replaceDialog(
           CONFIRM_HOME_ADDRESS_STEP,
-          unblockBotDetails,
+          unblockBotDetails
         );
       }
     }
