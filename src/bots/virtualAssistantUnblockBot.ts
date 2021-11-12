@@ -1,7 +1,7 @@
 import {
   ActivityHandler,
   BotState,
-  StatePropertyAccessor,
+  StatePropertyAccessor
 } from 'botbuilder';
 import { MainDialog } from '../dialogs/mainDialog';
 
@@ -22,7 +22,7 @@ export class VirtualAssistantUnblockBot extends ActivityHandler {
 
     if (!conversationState) {
       throw new Error(
-        '[DialogBot]: Missing parameter. conversationState is required',
+        '[DialogBot]: Missing parameter. conversationState is required'
       );
     }
     if (!userState) {

@@ -69,7 +69,7 @@ export class CallbackBotDetails {
           date: this.date,
           time: this.time,
           authCode: this.authCode
-        },
+        }
       ),
       null,
       '  '
