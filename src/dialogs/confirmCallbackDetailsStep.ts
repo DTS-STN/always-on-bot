@@ -2,11 +2,8 @@ import {
   TextPrompt,
   ComponentDialog,
   WaterfallDialog,
-  ChoiceFactory,
-  WaterfallStepContext,
+  WaterfallStepContext
 } from 'botbuilder-dialogs';
-
-import { LuisRecognizer } from 'botbuilder-ai';
 
 // This is for the i18n stuff
 import i18n from './locales/i18nConfig';
@@ -29,8 +26,8 @@ export class ConfirmCallbackDetailsStep extends ComponentDialog {
     this.addDialog(
       new WaterfallDialog(CONFIRM_CALLBACK_DETAILS_STEP_WATERFALL_STEP, [
         this.initialStep.bind(this),
-        this.finalStep.bind(this),
-      ]),
+        this.finalStep.bind(this)
+      ])
     );
 
     this.initialDialogId = CONFIRM_CALLBACK_DETAILS_STEP_WATERFALL_STEP;
@@ -160,7 +157,7 @@ export class ConfirmCallbackDetailsStep extends ComponentDialog {
 
         return await stepContext.replaceDialog(
           CONFIRM_CALLBACK_DETAILS_STEP,
-          callbackBotDetails,
+          callbackBotDetails
         );
       }
     }

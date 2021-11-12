@@ -3,8 +3,7 @@ import {
   ComponentDialog,
   WaterfallDialog,
   ChoiceFactory,
-  WaterfallStepContext,
-  DialogContext
+  WaterfallStepContext
 } from 'botbuilder-dialogs';
 
 import { LuisRecognizer } from 'botbuilder-ai';
@@ -30,8 +29,8 @@ export class ConfirmCallbackStep extends ComponentDialog {
     this.addDialog(
       new WaterfallDialog(CONFIRM_CALLBACK_WATERFALL_STEP, [
         this.preStep.bind(this),
-        this.finalStep.bind(this),
-      ]),
+        this.finalStep.bind(this)
+      ])
     );
 
     this.initialDialogId = CONFIRM_CALLBACK_WATERFALL_STEP;
@@ -101,8 +100,8 @@ export class ConfirmCallbackStep extends ComponentDialog {
         prompt: ChoiceFactory.forChannel(
           stepContext.context,
           promptOptions,
-          promptMsg,
-        ),
+          promptMsg
+        )
       };
 
       return await stepContext.prompt(TEXT_PROMPT, promptDetails);
@@ -136,7 +135,7 @@ export class ConfirmCallbackStep extends ComponentDialog {
     luisRecognizer = new CallbackRecognizer(lang);
     // Call prompts recognizer
     const recognizerResult = await luisRecognizer.executeLuisQuery(
-      stepContext.context,
+      stepContext.context
     );
 
     // Top intent tell us which cognitive service to use.
@@ -175,7 +174,7 @@ export class ConfirmCallbackStep extends ComponentDialog {
 
         return await stepContext.replaceDialog(
           CONFIRM_CALLBACK_STEP,
-          callbackDetails,
+          callbackDetails
         );
       }
     }

@@ -3,7 +3,7 @@ import {
   ComponentDialog,
   WaterfallDialog,
   ChoiceFactory,
-  WaterfallStepContext,
+  WaterfallStepContext
 } from 'botbuilder-dialogs';
 
 import { LuisRecognizer } from 'botbuilder-ai';
@@ -29,8 +29,8 @@ export class ConfirmPhoneStep extends ComponentDialog {
     this.addDialog(
       new WaterfallDialog(CONFIRM_PHONE_WATERFALL_STEP, [
         this.initialStep.bind(this),
-        this.finalStep.bind(this),
-      ]),
+        this.finalStep.bind(this)
+      ])
     );
 
     this.initialDialogId = CONFIRM_PHONE_WATERFALL_STEP;
@@ -88,8 +88,8 @@ export class ConfirmPhoneStep extends ComponentDialog {
         prompt: ChoiceFactory.forChannel(
           stepContext.context,
           promptOptions,
-          promptMsg,
-        ),
+          promptMsg
+        )
       };
 
       return await stepContext.prompt(TEXT_PROMPT, promptDetails);
@@ -121,13 +121,11 @@ export class ConfirmPhoneStep extends ComponentDialog {
 
     // Call prompts recognizer
     const recognizerResult = await luisRecognizer.executeLuisQuery(
-      stepContext.context,
+      stepContext.context
     );
 
     // Top intent tell us which cognitive service to use.
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
-
-    const closeMsg = i18n.__('confirmNotifyROEReceivedStepCloseMsg');
 
     switch (intent) {
       // Proceed
@@ -146,12 +144,10 @@ export class ConfirmPhoneStep extends ComponentDialog {
         console.log('INTENT: ', intent);
         callbackBotDetails.confirmPhoneStep = false;
 
-        // await stepContext.context.sendActivity(closeMsg);
-
         // return await stepContext.endDialog(callbackBotDetails);
         return await stepContext.replaceDialog(
           GET_USER_PHONE_NUMBER_STEP,
-          callbackBotDetails,
+          callbackBotDetails
         );
       // Could not understand / None intent
       default: {
@@ -162,7 +158,7 @@ export class ConfirmPhoneStep extends ComponentDialog {
 
         return await stepContext.replaceDialog(
           CONFIRM_PHONE_STEP,
-          callbackBotDetails,
+          callbackBotDetails
         );
       }
     }

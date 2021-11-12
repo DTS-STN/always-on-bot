@@ -4,7 +4,7 @@ import {
   ComponentDialog,
   WaterfallDialog,
   ChoiceFactory,
-  WaterfallStepContext,
+  WaterfallStepContext
 } from 'botbuilder-dialogs';
 import { CallbackBotDetails } from './callbackBotDetails';
 
@@ -26,8 +26,8 @@ export class ConfirmAuthWordStep extends ComponentDialog {
     this.addDialog(
       new WaterfallDialog(CONFIRM_AUTH_WORD_WATERFALL_STEP, [
         this.initialStep.bind(this),
-        this.finalStep.bind(this),
-      ]),
+        this.finalStep.bind(this)
+      ])
     );
 
     this.initialDialogId = CONFIRM_AUTH_WORD_WATERFALL_STEP;
@@ -84,15 +84,15 @@ export class ConfirmAuthWordStep extends ComponentDialog {
         promptMsg = goodbyeMsg;
       }
       const promptOptions = i18n.__(
-        'callbackGoodByeGreetingStandardPromptOptions',
+        'callbackGoodByeGreetingStandardPromptOptions'
       );
 
       const promptDetails = {
         prompt: ChoiceFactory.forChannel(
           stepContext.context,
           promptOptions,
-          promptMsg,
-        ),
+          promptMsg
+        )
       };
 
       return await stepContext.prompt(TEXT_PROMPT, promptDetails);
@@ -139,7 +139,7 @@ export class ConfirmAuthWordStep extends ComponentDialog {
         includeAllIntents: true,
         includeInstanceData: true,
       },
-      true,
+      true
     );
 
     // Call prompts recognizer
@@ -169,7 +169,7 @@ export class ConfirmAuthWordStep extends ComponentDialog {
 
         return await stepContext.replaceDialog(
           CONFIRM_AUTH_WORD_STEP,
-          callbackBotDetails,
+          callbackBotDetails
         );
     }
   }
