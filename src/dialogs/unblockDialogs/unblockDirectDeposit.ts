@@ -2,11 +2,8 @@ import {
   TextPrompt,
   ChoicePrompt,
   ComponentDialog,
-  WaterfallDialog,
-  ChoiceFactory,
+  WaterfallDialog
 } from 'botbuilder-dialogs';
-
-import { LuisRecognizer } from 'botbuilder-ai';
 
 import i18n from '../locales/i18nConfig';
 
@@ -36,8 +33,8 @@ export class UnblockDirectDepositStep extends ComponentDialog {
       new WaterfallDialog(CONFIRM_DIRECT_DEPOSIT_WATERFALL_STEP, [
         this.unblockDirectDepositStart.bind(this),
         this.unblockBankInstitute.bind(this),
-        this.unblockDirectDepositEnd.bind(this),
-      ]),
+        this.unblockDirectDepositEnd.bind(this)
+      ])
     );
 
     this.initialDialogId = CONFIRM_DIRECT_DEPOSIT_WATERFALL_STEP;
@@ -59,7 +56,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
       return await stepContext.replaceDialog(
         CALLBACK_BOT_DIALOG,
-        new CallbackBotDetails(),
+        new CallbackBotDetails()
       );
     }
 
@@ -90,22 +87,25 @@ export class UnblockDirectDepositStep extends ComponentDialog {
         promptMsg = i18n.__('unblock_direct_deposit_account');
         retryMsg= i18n.__('unblock_direct_deposit_account_retry');
 
-        if(unblockBotDetails.unblockDirectDeposit === -1)
-          await stepContext.context.sendActivity(retryMsg);
+        if(unblockBotDetails.unblockDirectDeposit === -1) {
+          await stepContext.context.sendActivity(retryMsg)
+        }
 
       } else if(INSTITUTE === true) { //TRANSIT
         promptMsg = i18n.__('unblock_direct_deposit_transit');
         retryMsg= i18n.__('unblock_direct_deposit_transit_retry');
 
-        if(unblockBotDetails.unblockDirectDeposit === -1)
+        if(unblockBotDetails.unblockDirectDeposit === -1) {
           await stepContext.context.sendActivity(retryMsg);
+        }
 
       } else { //INSTITUTE
         promptMsg =  i18n.__('unblock_direct_deposit_institute');
         retryMsg = i18n.__('unblock_direct_deposit_institute_retry');
 
-        if(unblockBotDetails.unblockDirectDeposit === -1)
+        if(unblockBotDetails.unblockDirectDeposit === -1) {
           await stepContext.context.sendActivity(retryMsg);
+        }
 
       }
 
@@ -155,10 +155,9 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     } else {
       return await stepContext.replaceDialog(
         CONFIRM_DIRECT_DEPOSIT_STEP,
-        unblockBotDetails,
+        unblockBotDetails
       );
     }
-
   }
 
   /**
