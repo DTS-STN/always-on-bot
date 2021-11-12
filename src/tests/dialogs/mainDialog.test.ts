@@ -45,7 +45,7 @@ describe('MainDialog', () => {
                 //  console.log('test 2',reply)
 
                 expect(realReply.text).to.be.equal('testData.taskConfirmationMessagte');
-                //assert.strictEqual(client.dialogTurnResult.status, 'waiting');
+                // assert.strictEqual(client.dialogTurnResult.status, 'waiting');
 
                 // reply = await client.sendActivity(testData.invokedDialogResponse);
                 //   assert.strictEqual(reply.text, 'Cancelling...');
