@@ -55,6 +55,7 @@
   "getAndSendEmailStepConfirmMsg": "Ok, email sent!",
   "masterErrorMsg": "Sorry Mary, I’m not able to help you with that. If you want to schedule a phone call with a Service Canada officer, you can access our callback service here: [insert link here].",
   "unBlockBotDialogWelcomeMsg": "Hi Mary, I’m your virtual assistant!",
+
   "unblockLookup_unblocked_msg": "I have nearly enough information to complete your enrolment into OAS. I need your most up-to-date direct deposit information in order for us to speed up our process and get you ready to receive your first payment on time.",
   "unblockLookup_unblocked_prompt_msg": "I just need to update your most recent direct deposit details to finish the process. Does that sound good?",
   "unblockLookup_unblocked_prompt_opts": ["Yes, thank you", "No thanks"],

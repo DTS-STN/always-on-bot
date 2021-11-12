@@ -4,6 +4,7 @@
 export class CallbackBotDetails {
   public masterError;
   public confirmCallbackStep;
+  public directDepostErrorCallback;
   public confirmCallbackDetailsStep;
   public getUserPhoneNumberStep;
   public confirmAuthWordStep;
@@ -26,6 +27,7 @@ export class CallbackBotDetails {
     this.masterError = null;
 
     this.confirmCallbackStep = null;
+    this.directDepostErrorCallback = null;
     this.preferredEmail = null;
     this.preferredText = null;
     this.preferredEmailAndText = null;
@@ -59,18 +61,8 @@ export class CallbackBotDetails {
       confirmEmailStep: 0,
       confirmPhoneStep: 0,
     };
-
-    // TODO: Refactor and add an object that tracks status perhaps something like below
-    /*
-        this.currentStep = '';
-        this.steps = [
-            'confirmLookIntoStep',
-            'confirmSendEmailStep',
-            'getAndSendEmailStep',
-            'confirmNotifyROEReceivedStep',
-        ]
-        */
   }
+
   public toString = () =>
     JSON.stringify(
       Object.assign(

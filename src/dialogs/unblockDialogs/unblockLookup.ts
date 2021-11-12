@@ -115,9 +115,6 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       return await stepContext.endDialog(unblockBotDetails);
     }
 
-
-
-
     // Check the user state to see if unblockBotDetails.confirm_look_into_step is set to null or -1
     // If it is in the error state (-1) or or is set to null prompt the user
     // If it is false the user does not want to proceed
@@ -172,21 +169,21 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       // Don't Proceed, offer callback
       case 'promptConfirmNo':
 
-        // unblockBotDetails.confirmLookIntoStep = false;
-        // return await stepContext.replaceDialog(
-        //   CALLBACK_BOT_DIALOG,
-        //   new CallbackBotDetails(),
-        // );
+        unblockBotDetails.confirmLookIntoStep = false;
+        return await stepContext.replaceDialog(
+          CALLBACK_BOT_DIALOG,
+          new CallbackBotDetails(),
+        );
 
       // Could not understand / No intent
       default: {
         unblockBotDetails.confirmLookIntoStep = -1;
         unblockBotDetails.errorCount.confirmLookIntoStep++;
 
-        // return await stepContext.replaceDialog(
-        //   CONFIRM_LOOK_INTO_STEP,
-        //   unblockBotDetails,
-        // );
+        return await stepContext.replaceDialog(
+          CONFIRM_LOOK_INTO_STEP,
+          unblockBotDetails,
+        );
       }
     }
   }

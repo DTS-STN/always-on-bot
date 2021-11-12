@@ -23,46 +23,6 @@ const CONFIRM_DIRECT_DEPOSIT_WATERFALL_STEP = 'CONFIRM_DIRECT_DEPOSIT_STEP';
 const MAX_ERROR_COUNT = 3;
 let INSTITUTE = false
 let TRANSIT = false;
-const INSTITUTE_LENGTH = 3;
-const TRANSIT_LENGTH = 5;
-const ACCOUNT_LENGTH = 7;
-
-// Luis Application Settings
-let applicationId = '';
-let endpointKey = '';
-let endpoint = '';
-let recognizer;
-
-const LUISAppSetup = (stepContext) => {
-  // Then change LUIZ appID
-  if (
-    stepContext.context.activity.locale.toLowerCase() === 'fr-ca' ||
-    stepContext.context.activity.locale.toLowerCase() === 'fr-fr'
-  ) {
-    applicationId = process.env.LuisAppIdFR;
-    endpointKey   = process.env.LuisAPIKeyFR;
-    endpoint      = `https://${process.env.LuisAPIHostNameFR}.api.cognitive.microsoft.com`;
-  } else {
-    applicationId = process.env.LuisAppIdEN;
-    endpointKey   = process.env.LuisAPIKeyEN;
-    endpoint      = `https://${process.env.LuisAPIHostNameEN}.api.cognitive.microsoft.com`;
-  }
-
-  // LUIZ Recogniser processing
-  recognizer = new LuisRecognizer(
-    {
-      applicationId: applicationId,
-      endpointKey: endpointKey,
-      endpoint: endpoint,
-    },
-    {
-      includeAllIntents: true,
-      includeInstanceData: true,
-    },
-    true,
-  );
-}
-
 
 export class UnblockDirectDepositStep extends ComponentDialog {
   constructor() {
@@ -75,7 +35,8 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     this.addDialog(
       new WaterfallDialog(CONFIRM_DIRECT_DEPOSIT_WATERFALL_STEP, [
         this.unblockDirectDepositStart.bind(this),
-        this.unblockBankInstitute.bind(this)
+        this.unblockBankInstitute.bind(this),
+        this.unblockDirectDepositEnd.bind(this),
       ]),
     );
 
@@ -90,24 +51,15 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
 
-    // DEBUG
-    // console.log('unblockDirectDepositInit:', unblockBotDetails);
-
     // Check if the error count is greater than the max threshold
     if (unblockBotDetails.errorCount.unblockDirectDeposit >= MAX_ERROR_COUNT) {
 
-      // Throw the master error flag
-      unblockBotDetails.masterError = true;
-
-      console.log('DD ERROR #'+unblockBotDetails.errorCount.unblockDirectDeposit);
-
-      // Throw the master error flag
       unblockBotDetails.masterError = true;
       unblockBotDetails.unblockDirectDeposit = null;
 
       return await stepContext.replaceDialog(
         CALLBACK_BOT_DIALOG,
-        new CallbackBotDetails()
+        new CallbackBotDetails(),
       );
     }
 
@@ -157,6 +109,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
       }
 
+      // Prompt the user to enter their bank information
       return await stepContext.prompt(TEXT_PROMPT, { prompt: promptMsg });
 
     } else {
