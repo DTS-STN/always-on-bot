@@ -6,7 +6,7 @@ import {
 
 import {
   UnblockDirectDepositStep,
-  CONFIRM_DIRECT_DEPOSIT_STEP,
+  CONFIRM_DIRECT_DEPOSIT_STEP
 } from './unblockDirectDeposit';
 
 import i18n from '../locales/i18nConfig';
@@ -90,7 +90,8 @@ export class UnblockBotDialog extends ComponentDialog {
   }
 
   /**
-  * Unblock the user's direct deposit account */
+  * Unblock the user's direct deposit account
+  */
   async unblockDirectDepositStep(stepContext) {
   // Get the state machine from the last step
   const unblockBotDetails = stepContext.result;
@@ -109,7 +110,7 @@ export class UnblockBotDialog extends ComponentDialog {
       case null:
         return await stepContext.beginDialog(
           CONFIRM_DIRECT_DEPOSIT_STEP,
-          unblockBotDetails,
+          unblockBotDetails
         );
 
       // The confirmLookIntoStep flag in the state machine is set to true

@@ -54,7 +54,7 @@ export class MainDialog extends ComponentDialog {
    */
   public async run(
     turnContext: TurnContext,
-    accessor: StatePropertyAccessor<DialogState>,
+    accessor: StatePropertyAccessor<DialogState>
   ) {
     const dialogSet = new DialogSet(accessor);
     dialogSet.add(this);
@@ -97,7 +97,7 @@ export class MainDialog extends ComponentDialog {
    * This is the final step in the main waterfall dialog.
    */
   async finalStep(
-    stepContext: WaterfallStepContext,
+    stepContext: WaterfallStepContext
   ): Promise<DialogTurnResult> {
     const greatDayMsg = i18n.__('mainDialogGreatDayMsg');
 
