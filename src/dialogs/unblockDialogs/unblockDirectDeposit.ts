@@ -20,6 +20,7 @@ const CONFIRM_DIRECT_DEPOSIT_WATERFALL_STEP = 'CONFIRM_DIRECT_DEPOSIT_STEP';
 const MAX_ERROR_COUNT = 3;
 let INSTITUTE = false
 let TRANSIT = false;
+let ACCOUNT = false;
 
 export class UnblockDirectDepositStep extends ComponentDialog {
   constructor() {
@@ -127,23 +128,30 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     const userInput = stepContext._info ? stepContext._info.result : null;
 
     // Validate numeric input
-    const INSTITUTE_LENGTH = 3;
-    const TRANSIT_LENGTH = 5;
-    const ACCOUNT_LENGTH = 7;
+    let numLength = 0;
+    if(TRANSIT === true) { // Account
+      numLength = 7;
+    } else if(INSTITUTE === true) { // Transit
+      numLength = 5;
+    } else { // Institute
+      numLength = 3;
+    }
     const numberRegex = /^\d+$/;
     const validNumber = numberRegex.test(userInput);
 
     // If valid number matches requested value lenght
-    if (validNumber && userInput.length === INSTITUTE_LENGTH) {
+    if (validNumber && userInput.length === numLength && INSTITUTE === false) {
       INSTITUTE = true;
       unblockBotDetails.unblockDirectDeposit = 0;
       unblockBotDetails.errorCount.unblockDirectDeposit = 0;
-    } else if (validNumber && userInput.length === TRANSIT_LENGTH) {
+    } else if (validNumber && userInput.length === numLength && TRANSIT === false) {
       TRANSIT = true;
       unblockBotDetails.unblockDirectDeposit = 0;
       unblockBotDetails.errorCount.unblockDirectDeposit = 0;
-    } else if (validNumber && userInput.length === ACCOUNT_LENGTH) {
-      unblockBotDetails.unblockDirectDeposit = true;
+    } else if (validNumber && userInput.length === numLength && INSTITUTE === true && TRANSIT === true && ACCOUNT === false) {
+      unblockBotDetails.unblockDirectDeposit = true; // Proceed
+      TRANSIT = false; // Reset
+      INSTITUTE = false; // Reset
     } else {
       unblockBotDetails.unblockDirectDeposit = -1;
       unblockBotDetails.errorCount.unblockDirectDeposit++;
