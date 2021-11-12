@@ -7,16 +7,16 @@ import {
   WaterfallDialog,
   DialogTurnResult,
   WaterfallStepContext,
-  DialogState,
+  DialogState
 } from 'botbuilder-dialogs';
 
-import { TurnContext, StatePropertyAccessor, UserState } from 'botbuilder';
+import { TurnContext, StatePropertyAccessor } from 'botbuilder';
 
 import i18n from './locales/i18nConfig';
 import { UnblockBotDetails } from './unblockDialogs/unblockBotDetails';
 import {
   UNBLOCK_BOT_DIALOG,
-  UnblockBotDialog,
+  UnblockBotDialog
 } from './unblockDialogs/unblockBotDialog';
 
 const CHOICE_PROMPT = 'CHOICE_PROMPT';
@@ -39,8 +39,8 @@ export class MainDialog extends ComponentDialog {
       new WaterfallDialog(MAIN_WATERFALL_DIALOG, [
         this.initialStep.bind(this),
         this.rateStep.bind(this),
-        this.finalStep.bind(this),
-      ]),
+        this.finalStep.bind(this)
+      ])
     );
 
     this.initialDialogId = MAIN_WATERFALL_DIALOG;
@@ -70,7 +70,7 @@ export class MainDialog extends ComponentDialog {
    * Initial step in the waterfall. This will kick of the callbackBot dialog
    */
   async initialStep(
-    stepContext: WaterfallStepContext,
+    stepContext: WaterfallStepContext
   ): Promise<DialogTurnResult> {
     // Here we are start the unblock dialog in the prototype,
     // in the real case, the callback flow will trigger from unblock bot, which
@@ -89,7 +89,7 @@ export class MainDialog extends ComponentDialog {
     // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
     return await stepContext.prompt(CHOICE_PROMPT, {
       prompt: feedbackMsg,
-      choices: ChoiceFactory.toChoices(['😡', '🙁', '😐', '🙂', '😄']),
+      choices: ChoiceFactory.toChoices(['😡', '🙁', '😐', '🙂', '😄'])
     });
   }
 

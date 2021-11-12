@@ -20,7 +20,7 @@ export class UnblockBotDetails {
     // State machine that stores the error counts of each step
     this.errorCount = {
       confirmLookIntoStep: 0,
-      unblockDirectDeposit: 0,
+      unblockDirectDeposit: 0
     };
   }
 }
