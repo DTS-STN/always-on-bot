@@ -53,7 +53,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     if (unblockBotDetails.errorCount.unblockDirectDeposit >= MAX_ERROR_COUNT) {
 
       unblockBotDetails.masterError = true;
-      unblockBotDetails.unblockDirectDeposit = null;
+      unblockBotDetails.unblockDirectDeposit = -1;
 
       return await stepContext.replaceDialog(
         CALLBACK_BOT_DIALOG,
