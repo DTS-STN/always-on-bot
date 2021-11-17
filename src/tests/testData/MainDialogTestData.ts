@@ -1,7 +1,7 @@
 
  module.exports = [
      {
-         expectedResult: "ddd",
+         expectedResult: 'ddd',
          initialData: null,
          name: 'tomorrow',
          steps: [
@@ -10,7 +10,7 @@
          ]
      },
      {
-         expectedResult: "ddd",
+         expectedResult: 'ddd',
          initialData: null,
          name: 'the day after tomorrow',
          steps: [
@@ -19,7 +19,7 @@
          ]
      },
      {
-         expectedResult: "ddd",
+         expectedResult: 'ddd',
          initialData: null,
          name: 'two days from now',
          steps: [
@@ -28,15 +28,15 @@
          ]
      },
      {
-         expectedResult: "ddd",
-         initialData: { date: "ddd" },
+         expectedResult: 'ddd',
+         initialData: { date: 'ddd' },
          name: 'valid input given (tomorrow)',
          steps: [
              ['hi', null]
          ]
      },
      {
-         expectedResult: "ddd",
+         expectedResult: 'ddd',
          initialData: {},
          name: 'retry prompt',
          steps: [

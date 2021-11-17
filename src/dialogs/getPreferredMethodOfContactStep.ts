@@ -2,7 +2,7 @@ import {
   TextPrompt,
   ComponentDialog,
   WaterfallDialog,
-  ChoiceFactory,
+  ChoiceFactory
 } from 'botbuilder-dialogs';
 
 import { LuisRecognizer } from 'botbuilder-ai';
@@ -30,8 +30,8 @@ export class GetPreferredMethodOfContactStep extends ComponentDialog {
     this.addDialog(
       new WaterfallDialog(GET_PREFERRED_METHOD_OF_CONTACT_WATERFALL_STEP, [
         this.initialStep.bind(this),
-        this.finalStep.bind(this),
-      ]),
+        this.finalStep.bind(this)
+      ])
     );
 
     this.initialDialogId = GET_PREFERRED_METHOD_OF_CONTACT_WATERFALL_STEP;
@@ -88,15 +88,15 @@ export class GetPreferredMethodOfContactStep extends ComponentDialog {
 
       // Set the options for the quick reply buttons
       const promptOptions = i18n.__(
-        'getPreferredMethodOfContactStepStandardPromptOptions',
+        'getPreferredMethodOfContactStepStandardPromptOptions'
       );
 
       const promptDetails = {
         prompt: ChoiceFactory.forChannel(
           stepContext.context,
           promptOptions,
-          promptMsg,
-        ),
+          promptMsg
+        )
       };
 
       return await stepContext.prompt(TEXT_PROMPT, promptDetails);
@@ -128,7 +128,7 @@ export class GetPreferredMethodOfContactStep extends ComponentDialog {
     luisRecognizer = new CallbackRecognizer(lang);
     // Call prompts recognizer
     const recognizerResult = await luisRecognizer.executeLuisQuery(
-      stepContext.context,
+      stepContext.context
     );
 
     // Setup the possible messages that could go out
@@ -147,33 +147,26 @@ export class GetPreferredMethodOfContactStep extends ComponentDialog {
         callbackBotDetails.getPreferredMethodOfContactStep = true;
         callbackBotDetails.preferredEmail = true;
         console.log('text retry 11111');
-        // callbackBotDetails.confirmEmailStep = null;
-        // await stepContext.context.sendActivity(sendEmailMsg);
         return await stepContext.replaceDialog(
           CONFIRM_EMAIL_STEP,
-          callbackBotDetails,
+          callbackBotDetails
         );
-      // return await stepContext.endDialog(callbackBotDetails);
 
       // Proceed with Text Message
       case 'promptConfirmChoiceText':
         console.log('INTENT: ', intent);
         callbackBotDetails.getPreferredMethodOfContactStep = true;
         callbackBotDetails.preferredText = true;
-        // callbackBotDetails.confirmPhoneStep = null;
-        // await stepContext.context.sendActivity(sendTextMsg);
         return await stepContext.replaceDialog(
           CONFIRM_PHONE_STEP,
-          callbackBotDetails,
+          callbackBotDetails
         );
-      //return await stepContext.endDialog(callbackBotDetails);
 
       // Proceed with Both Messages
       case 'promptConfirmChoiceBoth':
         console.log('INTENT: ', intent);
         callbackBotDetails.getPreferredMethodOfContactStep = true;
         callbackBotDetails.preferredEmailAndText = true;
-        // await stepContext.context.sendActivity(sendBothMsg);
 
         return await stepContext.endDialog(callbackBotDetails);
 
@@ -186,7 +179,7 @@ export class GetPreferredMethodOfContactStep extends ComponentDialog {
 
         return await stepContext.replaceDialog(
           GET_PREFERRED_METHOD_OF_CONTACT_STEP,
-          callbackBotDetails,
+          callbackBotDetails
         );
       }
     }

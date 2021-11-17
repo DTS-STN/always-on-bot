@@ -2,7 +2,7 @@ import { RecognizerResult, TurnContext } from 'botbuilder';
 import {
   LuisApplication,
   LuisRecognizer,
-  LuisRecognizerOptionsV3,
+  LuisRecognizerOptionsV3
 } from 'botbuilder-ai';
 
 export class CallbackRecognizer {
@@ -10,7 +10,7 @@ export class CallbackRecognizer {
   private applicationId;
   private endpointKey;
   private endpoint;
-  constructor(lang: String) {
+  constructor(lang: string) {
     // Then change LUIZ appID
     if (lang === 'fr') {
       this.applicationId = process.env.LuisCallbackAppIdFR;
@@ -24,7 +24,7 @@ export class CallbackRecognizer {
     const luisConfig: LuisApplication = {
       applicationId: this.applicationId,
       endpointKey: this.endpointKey,
-      endpoint: this.endpoint,
+      endpoint: this.endpoint
     };
     const luisIsConfigured =
       luisConfig &&
@@ -37,7 +37,7 @@ export class CallbackRecognizer {
       const recognizerOptions: LuisRecognizerOptionsV3 = {
         apiVersion: 'v3',
         includeAllIntents: true,
-        includeInstanceData: true,
+        includeInstanceData: true
       };
 
       this.recognizer = new LuisRecognizer(luisConfig, recognizerOptions, true);
@@ -53,7 +53,7 @@ export class CallbackRecognizer {
    * @param {TurnContext} context
    */
   public async executeLuisQuery(
-    context: TurnContext,
+    context: TurnContext
   ): Promise<RecognizerResult> {
     return this.recognizer.recognize(context);
   }
