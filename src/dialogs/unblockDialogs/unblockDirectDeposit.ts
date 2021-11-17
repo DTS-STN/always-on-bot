@@ -63,6 +63,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
     // If it is in the error state (-1) or or is set to null prompt the user
     // If it is false the user does not want to proceed
+    // If it is 0, we hvae some direct deposit info but not all of it
     if (
       unblockBotDetails.unblockDirectDeposit === null ||
       unblockBotDetails.unblockDirectDeposit === -1 ||

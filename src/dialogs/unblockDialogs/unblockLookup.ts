@@ -6,6 +6,7 @@ import {
   ChoiceFactory
 } from 'botbuilder-dialogs';
 
+import {LUISAppSetup} from '../../utils/luisAppSetup';
 import { LuisRecognizer } from 'botbuilder-ai';
 
 import i18n from '../locales/i18nConfig';
@@ -20,42 +21,6 @@ export const CONFIRM_LOOK_INTO_STEP = 'CONFIRM_LOOK_INTO_STEP';
 const CONFIRM_LOOK_INTO_WATERFALL_STEP = 'CONFIRM_LOOK_INTO_STEP';
 const MAX_ERROR_COUNT = 3;
 const LOOKUP_RESULT = true;
-
-// Luis Application Settings
-let applicationId = '';
-let endpointKey = '';
-let endpoint = '';
-let recognizer;
-
-const LUISAppSetup = (stepContext) => {
-  // Then change LUIZ appID
-  if (
-    stepContext.context.activity.locale.toLowerCase() === 'fr-ca' ||
-    stepContext.context.activity.locale.toLowerCase() === 'fr-fr'
-  ) {
-    applicationId = process.env.LuisAppIdFR;
-    endpointKey = process.env.LuisAPIKeyFR;
-    endpoint = `https://${process.env.LuisAPIHostNameFR}.api.cognitive.microsoft.com`;
-  } else {
-    applicationId = process.env.LuisAppIdEN;
-    endpointKey = process.env.LuisAPIKeyEN;
-    endpoint = `https://${process.env.LuisAPIHostNameEN}.api.cognitive.microsoft.com`;
-  }
-
-  // LUIZ Recogniser processing
-  recognizer = new LuisRecognizer(
-    {
-      applicationId: applicationId,
-      endpointKey: endpointKey,
-      endpoint: endpoint
-    },
-    {
-      includeAllIntents: true,
-      includeInstanceData: true
-    },
-    true
-  );
-}
 
 
 export class ConfirmLookIntoStep extends ComponentDialog {
@@ -148,7 +113,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     const unblockBotDetails = stepContext.options;
 
     // Setup the LUIS to recognize intents
-    LUISAppSetup(stepContext);
+    const recognizer = LUISAppSetup(stepContext);
     const recognizerResult = await recognizer.recognize(stepContext.context);
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
 
@@ -191,7 +156,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
   async unblockLookupEnd(stepContext) {
 
     // Setup the LUIS app config and languages
-    LUISAppSetup(stepContext);
+    const recognizer = LUISAppSetup(stepContext);
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
