@@ -6,6 +6,7 @@ import {
 } from 'botbuilder-dialogs';
 
 import { LuisRecognizer } from 'botbuilder-ai';
+import {LUISAppSetup} from '../../utils/luisAppSetup';
 
 import i18n from '../locales/i18nConfig';
 
@@ -19,43 +20,6 @@ const CONFIRM_HOME_ADDRESS_STEP_WATERFALL_STEP =
 
 const MAX_ERROR_COUNT = 3;
 
-
-// Luis Application Settings
-let applicationId = '';
-let endpointKey = '';
-let endpoint = '';
-let recognizer;
-
-const LUISAppSetup = (stepContext) => {
-  // Then change LUIZ appID
-  if (
-    stepContext.context.activity.locale.toLowerCase() === 'fr-ca' ||
-    stepContext.context.activity.locale.toLowerCase() === 'fr-fr'
-  ) {
-    applicationId = process.env.LuisAppIdFR;
-    endpointKey = process.env.LuisAPIKeyFR;
-    endpoint = `https://${process.env.LuisAPIHostNameFR}.api.cognitive.microsoft.com`;
-  } else {
-    applicationId = process.env.LuisAppIdEN;
-    endpointKey = process.env.LuisAPIKeyEN;
-    endpoint = `https://${process.env.LuisAPIHostNameEN}.api.cognitive.microsoft.com`;
-  }
-
-  // LUIZ Recogniser processing
-  recognizer = new LuisRecognizer(
-    {
-      applicationId: applicationId,
-      endpointKey: endpointKey,
-      endpoint: endpoint
-    },
-    {
-      includeAllIntents: true,
-      includeInstanceData: true
-    },
-    true
-  );
-}
-
 export class ConfirmHomeAddressStep extends ComponentDialog {
   constructor() {
     super(CONFIRM_HOME_ADDRESS_STEP);
@@ -65,11 +29,11 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
 
     this.addDialog(
       new WaterfallDialog(CONFIRM_HOME_ADDRESS_STEP_WATERFALL_STEP, [
-        this.initialStep.bind(this),
-        this.secondStep.bind(this),
-        this.thirdStep.bind(this),
-        this.fourthStep.bind(this),
-        this.finalStep.bind(this)
+        this.homeAddressStart.bind(this),
+        this.homeAddressConfirm.bind(this),
+        this.homeAddressSelect.bind(this),
+        this.homeAddressSave.bind(this),
+        this.homeAddressEnd.bind(this)
       ])
     );
 
@@ -87,13 +51,13 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
    * If the user errors out then we're going to set the flag to false and assume they can't / don't
    * want to proceed
    */
-  async initialStep(stepContext) {
+  async homeAddressStart(stepContext:any) {
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
 
     // DEBUG
-    console.log('INITIAL STEP - HOME ADDRESS', unblockBotDetails);
+    // console.log('INITIAL STEP - HOME ADDRESS', unblockBotDetails);
 
     // Set the text for the prompt
     const standardMsg = i18n.__('confirmHomeAddressStepStandardMsg');
@@ -109,7 +73,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
 
       // Throw the master error flag
       unblockBotDetails.masterError = true;
-      unblockBotDetails.confirmHomeAddressStep = null;
+      unblockBotDetails.confirmHomeAddressStep = -1;
 
       return await stepContext.replaceDialog(
         CALLBACK_BOT_DIALOG,
@@ -144,7 +108,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
   }
 
   // Address Search Step
-  async secondStep(stepContext) {
+  async homeAddressConfirm(stepContext:any) {
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
@@ -153,7 +117,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
     const userInput = stepContext._info.result;
 
     // DEBUG
-    console.log('SECOND STEP - CONFIRM ADDRESS', unblockBotDetails, userInput);
+    // console.log('SECOND STEP - CONFIRM ADDRESS', unblockBotDetails, userInput);
 
     if(userInput.match('42 Sussex') || userInput === '123' ) {
 
@@ -185,7 +149,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
   }
 
    // Address Search Step
-   async thirdStep(stepContext) {
+   async homeAddressSelect(stepContext:any) {
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
@@ -195,7 +159,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
 
 
     // DEBUG
-    console.log('THIRD STEP - SELECT ADDRESS', unblockBotDetails, userInput);
+    // console.log('THIRD STEP - SELECT ADDRESS', unblockBotDetails, userInput);
 
     switch (userInput) {
       case '42 Sussex':
@@ -236,13 +200,13 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
   }
 
   // Address Save Step
-  async fourthStep(stepContext) {
+  async homeAddressSave(stepContext:any) {
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
 
     // Setup the LUIS app config and languages
-    LUISAppSetup(stepContext);
+    const recognizer = LUISAppSetup(stepContext);
 
     // Call prompts recognizer
     const recognizerResult = await recognizer.recognize(stepContext.context);
@@ -251,7 +215,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
 
     // Debug
-    console.log('FOURTH STEP - SAVE ADDRESS', unblockBotDetails, intent);
+    // console.log('FOURTH STEP - SAVE ADDRESS', unblockBotDetails, intent);
 
     switch (intent) {
       // Proceed
@@ -295,12 +259,12 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
    * update the state machine (unblockBotDetails)
    */
 
-  async finalStep(stepContext) {
+  async homeAddressEnd(stepContext:any) {
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
 
     // Setup the LUIS app config and languages
-    LUISAppSetup(stepContext);
+    const recognizer = LUISAppSetup(stepContext);
 
     // Call prompts recognizer
     const recognizerResult = await recognizer.recognize(stepContext.context);
@@ -309,7 +273,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
 
     // Debug
-    console.log('FINAL STEP - HOME ADDRESS', unblockBotDetails, intent);
+    // console.log('FINAL STEP - HOME ADDRESS', unblockBotDetails, intent);
 
     switch (intent) {
 

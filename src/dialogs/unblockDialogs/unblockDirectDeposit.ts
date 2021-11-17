@@ -18,9 +18,10 @@ const CONFIRM_DIRECT_DEPOSIT_WATERFALL_STEP = 'CONFIRM_DIRECT_DEPOSIT_STEP';
 
 // Error handling
 const MAX_ERROR_COUNT = 3;
+const ACCOUNT = false;
 let INSTITUTE = false
 let TRANSIT = false;
-let ACCOUNT = false;
+
 
 export class UnblockDirectDepositStep extends ComponentDialog {
   constructor() {
