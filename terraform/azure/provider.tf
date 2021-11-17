@@ -10,10 +10,4 @@ terraform {
     container_name       = "oas-unblock-bot-bdm-dev"
     key                  = "terraform.tfstate"
   }  
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 2.78"
-    }
-  }
 }
