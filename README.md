@@ -199,3 +199,4 @@ See configurations at:
 - 2021/10/09: les.lakewood@hrsdc-rhdcc.gc.ca - Confirm Home Address unblock flow added
 - 2021/10/10: les.lakewood@hrsdc-rhdcc.gc.ca - Confirm Home Address unblock flow archived
 - 2021/10/12: les.lakewood@hrsdc-rhdcc.gc.ca - Unblock Direct Deposit flow added
+- 2021/10/17: les.lakewood@hrsdc-rhdcc.gc.ca - Adding adaptive cards

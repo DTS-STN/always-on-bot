@@ -20,7 +20,7 @@ const ACCOUNT = false;
 let INSTITUTE = false
 let TRANSIT = false;
 
-// WIP: EXPERIMENTING WITH ADAPTIVE CARDS IN START STEP, REMOVE LATER
+// WIP: EXPERIMENTING WITH ADAPTIVE CARDS IN START STEP, REMOVE LATER (true/null)
 const CARD_DEBUG = null;
 
 export class UnblockDirectDepositStep extends ComponentDialog {
@@ -79,11 +79,11 @@ export class UnblockDirectDepositStep extends ComponentDialog {
       let retryMsg            = '';
 
       // If first pass through, show welcome messaging
-      if(unblockBotDetails.unblockDirectDeposit === null) {
-        await stepContext.context.sendActivity(standardMsg);
-        await stepContext.context.sendActivity(listOfItems);
-        await stepContext.context.sendActivity(infoMsg);
-      }
+      // if(unblockBotDetails.unblockDirectDeposit === null) {
+      //   await stepContext.context.sendActivity(standardMsg);
+      //   await stepContext.context.sendActivity(listOfItems);
+      //   await stepContext.context.sendActivity(infoMsg);
+      // }
 
       // State of unblock direct deposit determines message prompts
       if(TRANSIT === true) { // ACCOUNT
@@ -198,7 +198,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
                  },
                  {
                    'type': 'Image',
-                   'url': 'https://adaptivecards.io/content/cats/1.png'
+                   'url': 'https://www.canada.ca/content/canadasite/en/revenue-agency/services/e-services/e-services-individuals/account-individuals/manage-direct-deposit/_jcr_content/par/img_0_0/image.img.gif/1511363454177.gif'
                  }
                ]
              }
@@ -252,17 +252,24 @@ export class UnblockDirectDepositStep extends ComponentDialog {
            '$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',
            'type': 'AdaptiveCard',
             'version': '1.0',
-            'body': [
-             {
-               'type': 'TextBlock',
-               'text': `${infoMsg}`,
-               'wrap': true
-             },
-             {
-               'type': 'Image',
-               'url': 'https://www.canada.ca/content/canadasite/en/revenue-agency/services/e-services/e-services-individuals/account-individuals/manage-direct-deposit/_jcr_content/par/img_0_0/image.img.gif/1511363454177.gif'
-             }
-           ]
+            'body' : [
+              {
+                'type': 'TextBlock',
+                'text': `${infoMsg}`,
+                'wrap': true,
+                'fontType': 'default'
+              },
+              {
+                'type': 'Spacing',
+                'text': `${infoMsg}`,
+                'wrap': true,
+                'fontType': 'default'
+              },
+              {
+                'type': 'Image',
+                'url': 'https://www.canada.ca/content/canadasite/en/revenue-agency/services/e-services/e-services-individuals/account-individuals/manage-direct-deposit/_jcr_content/par/img_0_0/image.img.gif/1511363454177.gif'
+              }
+            ]
          };
 
          card = CardFactory.adaptiveCard(standardMsgSchema);
