@@ -20,8 +20,193 @@ const ACCOUNT = false;
 let INSTITUTE = false
 let TRANSIT = false;
 
-// WIP: EXPERIMENTING WITH ADAPTIVE CARDS IN START STEP, REMOVE LATER (true/null)
-const CARD_DEBUG = null;
+
+
+const inlineFormSchema = (standardMsg,infoMsg ) => {
+  return {
+    '$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',
+    'type': 'AdaptiveCard',
+      'version': '1.0',
+      'body': [
+      {
+        'type': 'TextBlock',
+        'text': `${standardMsg}`,
+        'wrap': true
+      },
+      {'type': 'FactSet',
+        'facts': [
+          {
+            'title': '1',
+            'value': 'Institution Number'
+          },
+          {
+            'title': '2',
+            'value': 'Transit Number'
+          },
+          {
+            'title': '3',
+            'value': 'Account Number'
+          }
+        ]
+      },
+      {
+        'type': 'TextBlock',
+        'text': `${infoMsg}`,
+        'wrap': true
+      },
+      {
+        'type': 'Input.Text',
+        'label': 'Institution number',
+        'maxLength': 3,
+        'placeholder' : 'Enter your 3 digit institution number',
+        'id': 'instituteNumber',
+        'errorMessage': 'We need a valid institution number',
+        'regex' : '^[0-9]{3}$',
+        'isRequired': true
+      },
+      {
+        'label': 'Transit Number',
+        'type': 'Input.Text',
+        'maxLength': 5,
+        'id': 'transitNumber',
+        'placeholder' : 'Enter your 5 digit transit number',
+        'errorMessage': 'We need a valid transit number',
+        'regex' : '^[0-9]{5}$',
+        'isRequired': true
+      },
+      {
+        'type': 'Input.Text',
+        'label': 'Account number',
+        'maxLength': 7,
+        'id': 'accountNumber',
+        'placeholder' : 'Enter your 7 digit account number',
+        'errorMessage': 'We need a valid account number',
+        'regex' : '^[0-9]{7}$',
+        'isRequired': true
+      }
+    ],
+    'actions': [
+      {
+        'type': 'Action.Submit',
+        'title': 'Submit my bank information',
+        'data': {
+          'id': '1234567890'
+        }
+      },
+      {
+        'type': 'Action.ShowCard',
+        'title': 'Where do I find these numbers?',
+        'tooltip' : 'Click here to see where the numbers are',
+        'card': {
+          'type': 'AdaptiveCard',
+          'body': [
+            {
+              'type': 'TextBlock',
+              'text': 'Here is the location of the numbers we were telling you about'
+            },
+            {
+              'type': 'Image',
+              'url': 'https://www.canada.ca/content/canadasite/en/revenue-agency/services/e-services/e-services-individuals/account-individuals/manage-direct-deposit/_jcr_content/par/img_0_0/image.img.gif/1511363454177.gif'
+            }
+          ]
+        }
+      }
+    ]
+  }
+};
+
+const standardMsgSchema = (standardMsg) => {
+
+  // In practice you'll probably get this from a service
+  // see http://adaptivecards.io/samples/ for inspiration
+
+  return {
+   '$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',
+   'type': 'AdaptiveCard',
+     'version': '1.0',
+     'body': [
+     {
+       'type': 'TextBlock',
+       'text': `${standardMsg}`,
+       'wrap': true,
+       'fontType': 'default'
+     },
+     {'type': 'FactSet',
+       'facts': [
+         {
+           'title': '1',
+           'value': 'Institution Number'
+         },
+         {
+           'title': '2',
+           'value': 'Transit Number'
+         },
+         {
+           'title': '3',
+           'value': 'Account Number'
+         }
+       ]
+     }
+   ]
+ }
+};
+
+const infoMsgSchema = (infoMsg:any) => {
+  return {
+  '$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',
+  'type': 'AdaptiveCard',
+    'version': '1.0',
+    'body' : [
+      {
+        'type': 'TextBlock',
+        'text': `${infoMsg}`,
+        'wrap': true,
+        'fontType': 'default'
+      },
+      {
+        'type': 'Image',
+        'url': 'https://www.canada.ca/content/canadasite/en/revenue-agency/services/e-services/e-services-individuals/account-individuals/manage-direct-deposit/_jcr_content/par/img_0_0/image.img.gif/1511363454177.gif'
+      }
+    ]
+  }
+};
+
+const actionMsgSchema = (infoMsg:any) => {
+  return {
+  '$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',
+  'type': 'AdaptiveCard',
+    'version': '1.0',
+    'body' : [
+      {
+        'type': 'TextBlock',
+        'text': `${infoMsg}`,
+        'wrap': true,
+        'fontType': 'default'
+      }
+    ],
+    'actions': [
+      {
+        'type': 'Action.ShowCard',
+        'title': 'Where do I find these numbers?',
+        'tooltip' : 'Click here to see where the numbers are',
+        'card': {
+          'type': 'AdaptiveCard',
+          'body': [
+            {
+              'type': 'TextBlock',
+              'text': `${infoMsg}`,
+              'wrap': true
+            },
+            {
+              'type': 'Image',
+              'url': 'https://www.canada.ca/content/canadasite/en/revenue-agency/services/e-services/e-services-individuals/account-individuals/manage-direct-deposit/_jcr_content/par/img_0_0/image.img.gif/1511363454177.gif'
+            }
+          ]
+        }
+      }
+    ]
+  }
+};
 
 export class UnblockDirectDepositStep extends ComponentDialog {
   constructor() {
@@ -45,7 +230,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
   /**
    * Initial step in the waterfall. This will kick of the UnblockDirectDepositStep step
    */
-  async unblockDirectDepositStart(stepContext) {
+  async unblockDirectDepositStart(stepContext:any) {
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
@@ -78,13 +263,6 @@ export class UnblockDirectDepositStep extends ComponentDialog {
       let promptMsg           = '';
       let retryMsg            = '';
 
-      // If first pass through, show welcome messaging
-      // if(unblockBotDetails.unblockDirectDeposit === null) {
-      //   await stepContext.context.sendActivity(standardMsg);
-      //   await stepContext.context.sendActivity(listOfItems);
-      //   await stepContext.context.sendActivity(infoMsg);
-      // }
-
       // State of unblock direct deposit determines message prompts
       if(TRANSIT === true) { // ACCOUNT
         promptMsg = i18n.__('unblock_direct_deposit_account');
@@ -112,190 +290,78 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
       }
 
-      if(CARD_DEBUG === true) {
-        // In practice you'll probably get this from a service
-        // see http://adaptivecards.io/samples/ for inspiration
-        const adaptiveCardData = {
-         '$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',
-         'type': 'AdaptiveCard',
-          'version': '1.0',
-          'body': [
-           {
-             'type': 'TextBlock',
-             'text': `${standardMsg}`,
-             'wrap': true
-           },
-           {'type': 'FactSet',
-             'facts': [
-               {
-                 'title': '1',
-                 'value': 'Institution Number'
-               },
-               {
-                 'title': '2',
-                 'value': 'Transit Number'
-               },
-               {
-                 'title': '3',
-                 'value': 'Account Number'
-               }
-             ]
-           },
-           {
-             'type': 'TextBlock',
-             'text': `${infoMsg}`,
-             'wrap': true
-           },
-           {
-             'type': 'Input.Text',
-             'label': 'Institution number',
-             'maxLength': 3,
-             'placeholder' : 'Enter your 3 digit institution number',
-             'id': 'instituteNumber',
-             'errorMessage': 'We need a valid institution number',
-             'regex' : '^[0-9]{3}$',
-             'isRequired': true
-           },
-           {
-             'label': 'Transit Number',
-             'type': 'Input.Text',
-             'maxLength': 5,
-             'id': 'transitNumber',
-             'placeholder' : 'Enter your 5 digit transit number',
-             'errorMessage': 'We need a valid transit number',
-             'regex' : '^[0-9]{5}$',
-             'isRequired': true
-           },
-           {
-             'type': 'Input.Text',
-             'label': 'Account number',
-             'maxLength': 7,
-             'id': 'accountNumber',
-             'placeholder' : 'Enter your 7 digit account number',
-             'errorMessage': 'We need a valid account number',
-             'regex' : '^[0-9]{7}$',
-             'isRequired': true
-           }
-         ],
-         'actions': [
-           {
-             'type': 'Action.Submit',
-             'title': 'Submit my bank information',
-             'data': {
-               'id': '1234567890'
-             }
-           },
-           {
-             'type': 'Action.ShowCard',
-             'title': 'Where do I find these numbers?',
-             'tooltip' : 'Click here to see where the numbers are',
-             'card': {
-               'type': 'AdaptiveCard',
-               'body': [
-                 {
-                   'type': 'TextBlock',
-                   'text': 'Here is the location of the numbers we were telling you about'
-                 },
-                 {
-                   'type': 'Image',
-                   'url': 'https://www.canada.ca/content/canadasite/en/revenue-agency/services/e-services/e-services-individuals/account-individuals/manage-direct-deposit/_jcr_content/par/img_0_0/image.img.gif/1511363454177.gif'
-                 }
-               ]
-             }
-           }
-         ]
-       };
+      // WIP: EXPERIMENTING WITH ADAPTIVE CARDS IN START STEP, REMOVE LATER (true/null)
+      const ADAPTIVE_CARD_FORM = null;
+      const ADAPTIVE_CARD_HYBRID = null;
+      const ADAPTIVE_CARD_ACTIONS = true;
 
-       const card = CardFactory.adaptiveCard(adaptiveCardData);
-       const message = MessageFactory.attachment(card);
-       await stepContext.context.sendActivity(message);
+      if(ADAPTIVE_CARD_FORM === true) {
+
+        // Shows inline form version
+        const card = CardFactory.adaptiveCard(inlineFormSchema(standardMsg,infoMsg));
+        const message = MessageFactory.attachment(card);
+        await stepContext.context.sendActivity(message);
+
+      } else if (ADAPTIVE_CARD_HYBRID === true) {
+
+        // If first pass through, show welcome messaging
+        if(unblockBotDetails.unblockDirectDeposit === null) {
+
+          let card:any;
+          let message:any;
+
+          card = CardFactory.adaptiveCard(standardMsgSchema(standardMsg));
+          message = MessageFactory.attachment(card);
+          await stepContext.context.sendActivity(message);
+
+          card = CardFactory.adaptiveCard(infoMsgSchema(infoMsg));
+          message = MessageFactory.attachment(card);
+          await stepContext.context.sendActivity(message);
+        }
+
+      } else if (ADAPTIVE_CARD_ACTIONS === true) {
+
+        // If first pass through, show welcome messaging
+        if(unblockBotDetails.unblockDirectDeposit === null) {
+
+          let card:any;
+          let message:any;
+
+          card = CardFactory.adaptiveCard(standardMsgSchema(standardMsg));
+          message = MessageFactory.attachment(card);
+          await stepContext.context.sendActivity(message);
+
+          card = CardFactory.adaptiveCard(actionMsgSchema(infoMsg));
+          message = MessageFactory.attachment(card);
+          await stepContext.context.sendActivity(message);
+        }
 
       } else {
 
-         // If first pass through, show welcome messaging
-       if(unblockBotDetails.unblockDirectDeposit === null) {
+        //  If first pass through, show welcome messaging
+        if(unblockBotDetails.unblockDirectDeposit === null) {
+          await stepContext.context.sendActivity(standardMsg);
+          await stepContext.context.sendActivity(listOfItems);
+          await stepContext.context.sendActivity(infoMsg);
+        }
 
-         let card:any;
-         let message:any;
+      }
 
-         const standardMsgSchema = {
-           '$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',
-           'type': 'AdaptiveCard',
-            'version': '1.0',
-            'body': [
-             {
-               'type': 'TextBlock',
-               'text': `${standardMsg}`,
-               'wrap': true,
-               'fontType': 'default'
-             },
-             {'type': 'FactSet',
-               'facts': [
-                 {
-                   'title': '1',
-                   'value': 'Institution Number'
-                 },
-                 {
-                   'title': '2',
-                   'value': 'Transit Number'
-                 },
-                 {
-                   'title': '3',
-                   'value': 'Account Number'
-                 }
-               ]
-             }
-           ]
-         };
-
-         const infoMsgSchema = {
-           '$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',
-           'type': 'AdaptiveCard',
-            'version': '1.0',
-            'body' : [
-              {
-                'type': 'TextBlock',
-                'text': `${infoMsg}`,
-                'wrap': true,
-                'fontType': 'default'
-              },
-              {
-                'type': 'Spacing',
-                'text': `${infoMsg}`,
-                'wrap': true,
-                'fontType': 'default'
-              },
-              {
-                'type': 'Image',
-                'url': 'https://www.canada.ca/content/canadasite/en/revenue-agency/services/e-services/e-services-individuals/account-individuals/manage-direct-deposit/_jcr_content/par/img_0_0/image.img.gif/1511363454177.gif'
-              }
-            ]
-         };
-
-         card = CardFactory.adaptiveCard(standardMsgSchema);
-         message = MessageFactory.attachment(card);
-         await stepContext.context.sendActivity(message);
-
-         card = CardFactory.adaptiveCard(infoMsgSchema);
-         message = MessageFactory.attachment(card);
-         await stepContext.context.sendActivity(message);
-       }
-
-     }
+      console.log('PROMPT',promptMsg)
 
        // Prompt the user to enter their bank information
        return await stepContext.prompt(TEXT_PROMPT, { prompt: promptMsg });
 
-
-    } else {
-      return await stepContext.next(false);
+      } else {
+        return await stepContext.next(false);
+      }
     }
-  }
+
 
   /**
    * Offer to have a Service Canada Officer contact them
    */
-  async unblockBankInstitute(stepContext) {
+  async unblockBankInstitute(stepContext:any) {
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
