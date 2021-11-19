@@ -16,7 +16,7 @@ describe('MainDialog', () => {
         const sut = new MainDialog();
       // Create array with test case data.
       const standardMsg = i18n.__('confirmSendEmailStepStandardMsg');
-      const firstMsg = i18n.__('unBlockBotDialogWelcomeMsg');
+      const firstMsg = i18n.__('unblockLookup_welcome_msg');
       const secondMsg = i18n.__('confirmLookIntoStepStandardMsg');
       const leaveMsg = i18n.__('confirmCallbackStepCloseMsg');
       const testCases = [

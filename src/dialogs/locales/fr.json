@@ -11,17 +11,17 @@
   "confirmServiceCanadaStepCloseMsg": "D'accord pas de problème. Je serai là si tu as besoin de moi !",
 
   "confirmUnblockAddressStandardMsg": "Il semble donc que tout ce qui manque est votre adresse personnelle. Quelle est votre adresse domiciliaire actuelle?",
-  "confirmHomeAddressStepRetryMsg": "Oops, I'm not sure what you meant. Can you confirm your home address?",
-  "confirmHomeAddressStepQueryMsg": "Oh no, I'm unable to update your information right now. I can have a Service Canada officer call you on the phone to help you with your pension application. Does that sound good to you?",
-  "confirmHomeAddressConfirm1Msg": "Ok, so your address is: ",
+  "confirmHomeAddressStepRetryMsg": "FR - Oops, I'm not sure what you meant. Can you confirm your home address?",
+  "confirmHomeAddressStepQueryMsg": "FR - Oh no, I'm unable to update your information right now. I can have a Service Canada officer call you on the phone to help you with your pension application. Does that sound good to you?",
+  "confirmHomeAddressConfirm1Msg": "FR - Ok, so your address is: ",
   "confirmHomeAddressConfirm2Msg": ". Is everything spelled correctly? Can you confirm this is your home address?",
   "confirmHomeAddressStepStandardPromptOptions": [
     "Yes, this is correct",
     "No, this is not correct"
   ],
-  "confirmHomeAddressSavedFirstMsg": "Ok, I've saved your home address and your pension file is up to date. You're all set for now!",
-  "confirmHomeAddressSavedSecondMsg": "Once your file is processed you will recieve more information my mail.",
-  "confirmHomeAddressSavedThirdMsg": "Just a reminder: you'll recieve your first Old Age Security payment one month after your 65th birthday.",
+  "confirmHomeAddressSavedFirstMsg": "FR - Ok, I've saved your home address and your pension file is up to date. You're all set for now!",
+  "confirmHomeAddressSavedSecondMsg": "FR - Once your file is processed you will recieve more information my mail.",
+  "confirmHomeAddressSavedThirdMsg": "FR - Just a reminder: you'll recieve your first Old Age Security payment one month after your 65th birthday.",
 
   "confirmSendEmailStepStandardMsg": "Je vois que vous avez rempli votre demande le 12 février et que la demande elle-même semble bonne. Cependant, nous n'avons toujours pas reçu de relevé d'emploi de votre ancien employeur, Initech.",
   "confirmSendEmailStepRetryMsg": "Désolé, voulez-vous que j'envoie un courriel à votre ancien employeur?",
@@ -31,14 +31,6 @@
   "getAndSendEmailStepStandardMsg": "D'accord, à quelle adresse de courrier électronique dois-je l'envoyer?",
   "getAndSendEmailStepRetryMsg": "Désolé, voulez-vous que j'envoie un courriel à votre ancien employeur?",
   "getAndSendEmailStepConfirmMsg": "D'accord, c'est envoyé!",
-  "confirmNotifyROEReceivedStepStandardMsg": "Voulez-vous que je vous informe lorsque nous aurons reçu le relevé d'emploi?",
-  "confirmNotifyROEReceivedStepRetryMsg": "Désolé, Voulez-vous que je vous informe lorsque nous aurons reçu le relevé d'emploi?",
-  "confirmNotifyROEReceivedStepErrorMsg": "Désolé Mary, Je ne suis pas capable de vous aider avec cela. Si vous voulez planifié un appel avec un de nos agents, vous pouvez accéder a notre service de rappel ici: [insérer le lien lici]",
-  "confirmNotifyROEReceivedStepStandardPromptOptions": [
-    "Oui, informez-moi",
-    "Non, ne m'informez pas"
-  ],
-  "confirmNotifyROEReceivedStepCloseMsg": "FROk, no problem!",
   "getPreferredMethodOfContactStepStandardMsg": "Quel est le meilleur moyen de vous joindre? Je peux envoyer un courriel ou un message texte (ou les deux).",
   "getPreferredMethodOfContactStepRetryMsg": "Désolé, vous préférez recevoir un courriel ou un message texte?",
   "getPreferredMethodOfContactStepSendEmailMsg": "D'accord, je vous enverrai un courriel à mary@adressefaux.com dès que nous aurons reçu votre relevé d'emploi.",
@@ -86,12 +78,13 @@
   "callbackGoodByeGreetingStandardPromptOptions": ["Yes ", "No "],
   "callbackCloseMsg": "Ok, no problem. I'll be here if you need me!",
   "masterErrorMsg": "Sorry Mary, I’m not able to help you with that. If you want to schedule a call with one of our agents, you can access our callback service here: [insert link here].",
-  "unBlockBotDialogWelcomeMsg": "Hi Mary, I’m your virtual assistant!",
   "confirmSendEmailStepStandardPromptOptions": [
     "Yes, send email",
     "No, don't send email"
   ],
   "callbackConfirmationQueryMsg": "Would you like us to send you a confirmation through text or e-mail?",
+
+  "unblockLookup_welcome_msg": "FR - Hi Mary, I’m your virtual assistant!",
   "unblockLookup_unblocked_msg": "FR - I have nearly enough information to complete your enrolment into OAS. I need your most up-to-date direct deposit information in order for us to speed up our process and get you ready to receive your first payment on time.",
   "unblockLookup_unblocked_prompt_msg": "FR - I just need to update your most recent direct deposit details to finish the process. Does that sound good?",
   "unblockLookup_unblocked_prompt_opts": ["Oui", "Non"],
@@ -100,10 +93,10 @@
   "unblockLookup_blocked_prompt_opts": ["Oui", "Non"],
 
   "unblock_direct_deposit_msg": "FR - Ok great - to get your latest direct deposit information, we will need the following numbers:",
-  "unblock_direct_deposit_prompt_opts": "FR - Your bank institution number, Your bank transit number, Your account number",
+  "unblock_direct_deposit_prompt_opts": "FR - Your institution number, Your bank transit number, Your account number",
   "unblock_direct_deposit_how_to": "FR - All numbers can be found at the bottom of any personal cheques. (Click here to see an example). You maybe also find these numbers by visiting your bank's website or contacting your bank's support line.",
-  "unblock_direct_deposit_institute": "FR - What is your 3-digit bank institution number?",
-  "unblock_direct_deposit_institute_retry": "FR - Hmm, looks like this isn't a valid bank institution number, let's try again.",
+  "unblock_direct_deposit_institute": "FR - What is your 3-digit institution number?",
+  "unblock_direct_deposit_institute_retry": "FR - Hmm, looks like this isn't a valid institution number, let's try again.",
   "unblock_direct_deposit_transit": "FR - What is your 5-digit bank transit number?",
   "unblock_direct_deposit_transit_retry": "FR - Hmm, looks like this isn't a valid transit number, let's try again.",
   "unblock_direct_deposit_account": "FR - What is your 7-digit bank account number?",

@@ -41,8 +41,8 @@ export class ConfirmCallbackStep extends ComponentDialog {
       stepContext.options as CallbackBotDetails;
 
     // Set the text for the prompt
-    let okMsg;
-    let standardMsg;
+    let okMsg:any;
+    let standardMsg:any;
 
     console.log(callbackBotDetails.directDepositError)
 

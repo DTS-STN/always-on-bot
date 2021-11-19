@@ -49,7 +49,7 @@ export class UnblockBotDialog extends ComponentDialog {
     // DEBUG
     // console.log('DEBUG: welcomeSteps:', unblockBotDetails);
 
-    const welcomeMsg = i18n.__('unBlockBotDialogWelcomeMsg');
+    const welcomeMsg = i18n.__('unblockLookup_welcome_msg');
     await stepContext.context.sendActivity(welcomeMsg);
     return await stepContext.next(unblockBotDetails);
   }
