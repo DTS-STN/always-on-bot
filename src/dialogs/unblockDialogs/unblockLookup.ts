@@ -157,20 +157,8 @@ export class ConfirmLookIntoStep extends ComponentDialog {
    */
   async unblockLookupEnd(stepContext:any) {
 
-    // Setup the LUIS app config and languages
-    // const recognizer = LUISAppSetup(stepContext);
-
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
-
-        // DEBUG
-        console.log('unblockLookupEnd', unblockBotDetails);
-
-    // // Call prompts recognizer
-    // const recognizerResult = await recognizer.recognize(stepContext.context);
-
-    // // Top intent tell us which cognitive service to use.
-    // const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
 
     // Setup the LUIS to recognize intents
     const recognizer = LUISAppSetup(stepContext);
