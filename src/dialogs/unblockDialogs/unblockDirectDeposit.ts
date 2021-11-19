@@ -4,11 +4,16 @@ import {
   ComponentDialog,
   WaterfallDialog
 } from 'botbuilder-dialogs';
+import { MessageFactory, CardFactory } from 'botbuilder';
 
 import i18n from '../locales/i18nConfig';
 
-import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
+import {inlineFormSchema,
+  standardMsgSchema,
+  infoMsgSchema,
+  actionMsgSchema} from '../../cards/uiSchemaDirectDeposit'
 
+import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
 import { CallbackBotDetails } from '../callbackBotDetails';
 
 const TEXT_PROMPT = 'TEXT_PROMPT';
@@ -21,7 +26,6 @@ const MAX_ERROR_COUNT = 3;
 const ACCOUNT = false;
 let INSTITUTE = false
 let TRANSIT = false;
-
 
 export class UnblockDirectDepositStep extends ComponentDialog {
   constructor() {
@@ -45,7 +49,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
   /**
    * Initial step in the waterfall. This will kick of the UnblockDirectDepositStep step
    */
-  async unblockDirectDepositStart(stepContext) {
+  async unblockDirectDepositStart(stepContext:any) {
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
@@ -56,9 +60,12 @@ export class UnblockDirectDepositStep extends ComponentDialog {
       unblockBotDetails.masterError = true;
       unblockBotDetails.unblockDirectDeposit = -1;
 
+      const callbackErrorCause = new CallbackBotDetails();
+      callbackErrorCause.directDepositError = true;
+
       return await stepContext.replaceDialog(
         CALLBACK_BOT_DIALOG,
-        new CallbackBotDetails()
+        callbackErrorCause
       );
     }
 
@@ -77,13 +84,6 @@ export class UnblockDirectDepositStep extends ComponentDialog {
       const listOfItems       = i18n.__('unblock_direct_deposit_prompt_opts');
       let promptMsg           = '';
       let retryMsg            = '';
-
-      // If first pass through, show welcome messaging
-      if(unblockBotDetails.unblockDirectDeposit === null) {
-        await stepContext.context.sendActivity(standardMsg);
-        await stepContext.context.sendActivity(listOfItems);
-        await stepContext.context.sendActivity(infoMsg);
-      }
 
       // State of unblock direct deposit determines message prompts
       if(TRANSIT === true) { // ACCOUNT
@@ -112,18 +112,75 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
       }
 
-      // Prompt the user to enter their bank information
-      return await stepContext.prompt(TEXT_PROMPT, { prompt: promptMsg });
+      // WIP: EXPERIMENTING WITH ADAPTIVE CARDS IN START STEP, REMOVE LATER (true/null)
+      const ADAPTIVE_CARD_FORM = null;
+      const ADAPTIVE_CARD_HYBRID = true;
+      const ADAPTIVE_CARD_ACTIONS = null;
 
-    } else {
-      return await stepContext.next(false);
+      if(ADAPTIVE_CARD_FORM === true) {
+
+        // Shows inline form version
+        const card = CardFactory.adaptiveCard(inlineFormSchema(standardMsg,infoMsg));
+        const message = MessageFactory.attachment(card);
+        await stepContext.context.sendActivity(message);
+
+      } else if (ADAPTIVE_CARD_HYBRID === true) {
+
+        // If first pass through, show welcome messaging
+        if(unblockBotDetails.unblockDirectDeposit === null) {
+
+          let card:any;
+          let message:any;
+
+          card = CardFactory.adaptiveCard(standardMsgSchema(standardMsg));
+          message = MessageFactory.attachment(card);
+          await stepContext.context.sendActivity(message);
+
+          card = CardFactory.adaptiveCard(infoMsgSchema(infoMsg));
+          message = MessageFactory.attachment(card);
+          await stepContext.context.sendActivity(message);
+        }
+
+      } else if (ADAPTIVE_CARD_ACTIONS === true) {
+
+        // If first pass through, show welcome messaging
+        if(unblockBotDetails.unblockDirectDeposit === null) {
+
+          let card:any;
+          let message:any;
+
+          card = CardFactory.adaptiveCard(standardMsgSchema(standardMsg));
+          message = MessageFactory.attachment(card);
+          await stepContext.context.sendActivity(message);
+
+          card = CardFactory.adaptiveCard(actionMsgSchema(infoMsg));
+          message = MessageFactory.attachment(card);
+          await stepContext.context.sendActivity(message);
+        }
+
+      } else {
+
+        //  If first pass through, show welcome messaging
+        if(unblockBotDetails.unblockDirectDeposit === null) {
+          await stepContext.context.sendActivity(standardMsg);
+          await stepContext.context.sendActivity(listOfItems);
+          await stepContext.context.sendActivity(infoMsg);
+        }
+
+      }
+
+       // Prompt the user to enter their bank information
+       return await stepContext.prompt(TEXT_PROMPT, { prompt: promptMsg });
+
+      } else {
+        return await stepContext.next(false);
+      }
     }
-  }
 
   /**
    * Offer to have a Service Canada Officer contact them
    */
-  async unblockBankInstitute(stepContext) {
+  async unblockBankInstitute(stepContext:any) {
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
@@ -173,7 +230,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
   /**
    * Final message prompt
    */
-  async unblockDirectDepositEnd(stepContext) {
+  async unblockDirectDepositEnd(stepContext:any) {
 
     // Get the results of the last ran step
     const unblockBotDetails = stepContext.result;

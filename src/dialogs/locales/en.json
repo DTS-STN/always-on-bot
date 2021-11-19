@@ -76,7 +76,9 @@
   "unblock_direct_deposit_valid_tip": "Once it's been processed, you will receive more information regarding the payment details of your pension by mail. This information typically comes one month before your 65th birthday.",
   "unblock_direct_deposit_valid_reminder": "Just a reminder: you'll receive your first Old Age Security payment one month after your 65th birthday.",
   "unblock_direct_deposit_main_error": "Hmm, looks like the numbers you've entered aren't the correct. Please check your direct deposit information before continuing. Alternatively, I can have a Service Canada officer call you on the phone to help you with your pension application. Does that sound good to you?",
-
+  "unblock_direct_deposit_instition_name": "Institution number",
+  "unblock_direct_deposit_transit_name": "Transit number",
+  "unblock_direct_deposit_account_name": "Account number",
   "confirmSendEmailStepStandardMsg": "So, I can see that you completed your application on February 12, and the application itself looks good. However, we still haven’t received a Record of Employment from your previous employer, Initech.",
   "confirmSendEmailStepRetryMsg": "Sorry, do you want me to send an email to your former employer?",
   "confirmSendEmailStepQueryMsg": "If you like, I can send Initech a follow-up email from the Government of Canada. That usually does the trick 😉",

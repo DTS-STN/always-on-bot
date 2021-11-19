@@ -14,6 +14,7 @@ export class CallbackBotDetails {
   public getPreferredMethodOfContactStep;
   public phoneNumber;
   public date;
+  public directDepositError;
   public time;
   public authCode;
   public confirmConfirmationStep;
@@ -41,6 +42,7 @@ export class CallbackBotDetails {
     this.confirmPhoneStep = null;
     this.confirmCallbackDetailsStep = null;
     this.date = '';
+    this.directDepositError = null;
     this.phoneNumber = '';
     this.time = '';
     this.authCode = '';
