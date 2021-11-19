@@ -86,7 +86,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       // Set dialog messages
       const standardMsg = LOOKUP_RESULT?i18n.__('unblockLookup_unblocked_msg'):i18n.__('unblockLookup_blocked_msg');
       let promptMsg = LOOKUP_RESULT?i18n.__('unblockLookup_unblocked_prompt_msg'):i18n.__('unblockLookup_blocked_prompt_msg');
-      const promptOptions = LOOKUP_RESULT?i18n.__('unblockLookup_unblocked_prompt_opts'):i18n.__('unblockLookup_blocked_prompt_opts');
+      const promptOptions = i18n.__('unblockLookup_prompt_opts');
       const retryMsg = i18n.__('confirmLookIntoStepRetryMsg');
       promptMsg = unblockBotDetails.confirmLookIntoStep === -1 ? retryMsg : promptMsg;
       const promptDetails = {
@@ -123,12 +123,14 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     switch (intent) {
       // Proceed
       case 'promptConfirmYes':
+      case 'promptConfirmSendEmailYes':
         unblockBotDetails.confirmLookIntoStep = true;
         return await stepContext.next(unblockBotDetails);
 
       // Don't Proceed, offer callback
       case 'promptConfirmNo':
-
+      case 'promptConfirmSendEmailNo':
+        console.log('NO');
         unblockBotDetails.confirmLookIntoStep = false;
         return await stepContext.replaceDialog(
           CALLBACK_BOT_DIALOG,
@@ -153,32 +155,40 @@ export class ConfirmLookIntoStep extends ComponentDialog {
    * We use LUIZ to process the prompt reply and then
    * update the state machine (unblockBotDetails)
    */
-  async unblockLookupEnd(stepContext) {
+  async unblockLookupEnd(stepContext:any) {
 
     // Setup the LUIS app config and languages
-    const recognizer = LUISAppSetup(stepContext);
+    // const recognizer = LUISAppSetup(stepContext);
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
 
-    // Call prompts recognizer
-    const recognizerResult = await recognizer.recognize(stepContext.context);
+        // DEBUG
+        console.log('unblockLookupEnd', unblockBotDetails);
 
-    // Top intent tell us which cognitive service to use.
+    // // Call prompts recognizer
+    // const recognizerResult = await recognizer.recognize(stepContext.context);
+
+    // // Top intent tell us which cognitive service to use.
+    // const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
+
+    // Setup the LUIS to recognize intents
+    const recognizer = LUISAppSetup(stepContext);
+    const recognizerResult = await recognizer.recognize(stepContext.context);
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
 
-    // DEBUG
-    console.log('unblockLookupEnd', unblockBotDetails, intent);
 
     switch (intent) {
 
       // Proceed to callback bot
       case 'promptConfirmYes':
+      case 'promptConfirmSendEmailYes':
         unblockBotDetails.confirmLookIntoStep = true;
         return await stepContext.next(unblockBotDetails);
 
       // Don't Proceed, ask for rating
       case 'promptConfirmNo':
+      case 'promptConfirmSendEmailNo':
 
         // Set remaining steps to false (skip to the rating step)
         unblockBotDetails.confirmLookIntoStep = false;

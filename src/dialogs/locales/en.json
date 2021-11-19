@@ -58,10 +58,9 @@
   "unblockLookup_welcome_msg": "Hi Mary, I’m your virtual assistant!",
   "unblockLookup_unblocked_msg": "I have nearly enough information to complete your enrolment into OAS. I need your most up-to-date direct deposit information in order for us to speed up our process and get you ready to receive your first payment on time.",
   "unblockLookup_unblocked_prompt_msg": "I just need to update your most recent direct deposit details to finish the process. Does that sound good?",
-  "unblockLookup_unblocked_prompt_opts": ["Yes, thank you", "No thanks"],
+  "unblockLookup_prompt_opts": ["Yes, thank you", "No thanks"],
   "unblockLookup_blocked_msg": "I have nearly enough information to complete your enrolment into OAS. I need your most up-to-date direct deposit information in order for us to speed up our process and get you ready to receive your first payment on time.",
   "unblockLookup_blocked_prompt_msg": "I just need to add your missing direct deposit information to finish the process. Does that sound good?",
-  "unblockLookup_blocked_prompt_opts": ["Yes, thank you", "No thanks"],
 
   "unblock_direct_deposit_msg": "Ok great - to get your latest direct deposit information, we will need the following numbers:",
   "unblock_direct_deposit_prompt_opts": "Your institution number, Your bank transit number, Your account number",
