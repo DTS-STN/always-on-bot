@@ -118,7 +118,7 @@ export const standardMsgSchema = (standardMsg:any) => {
         },
         {
           'title': '2',
-          'value': `${i18n.__('unblock_direct_deposit_institute_name')}`
+          'value': `${i18n.__('unblock_direct_deposit_instition_name')}`
         },
         {
           'title': '3',
