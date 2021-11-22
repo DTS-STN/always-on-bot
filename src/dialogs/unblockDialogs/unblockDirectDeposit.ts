@@ -24,8 +24,8 @@ const CONFIRM_DIRECT_DEPOSIT_WATERFALL_STEP = 'CONFIRM_DIRECT_DEPOSIT_STEP';
 // Error handling
 const MAX_ERROR_COUNT = 3;
 const ACCOUNT = false;
-let INSTITUTE = false
 let TRANSIT = false;
+let INSTITUTE = false
 
 export class UnblockDirectDepositStep extends ComponentDialog {
   constructor() {
@@ -38,7 +38,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     this.addDialog(
       new WaterfallDialog(CONFIRM_DIRECT_DEPOSIT_WATERFALL_STEP, [
         this.unblockDirectDepositStart.bind(this),
-        this.unblockBankInstitute.bind(this),
+        this.unblockBankDetails.bind(this),
         this.unblockDirectDepositEnd.bind(this)
       ])
     );
@@ -85,8 +85,13 @@ export class UnblockDirectDepositStep extends ComponentDialog {
       let promptMsg           = '';
       let retryMsg            = '';
 
+
+      console.log('TRANSIT', TRANSIT);
+      console.log('INSTITUTE', INSTITUTE);
+
       // State of unblock direct deposit determines message prompts
-      if(TRANSIT === true) { // ACCOUNT
+      if(INSTITUTE === true) { // ACCOUNT
+        console.log('account');
         promptMsg = i18n.__('unblock_direct_deposit_account');
         retryMsg= i18n.__('unblock_direct_deposit_account_retry');
 
@@ -94,17 +99,19 @@ export class UnblockDirectDepositStep extends ComponentDialog {
           await stepContext.context.sendActivity(retryMsg)
         }
 
-      } else if(INSTITUTE === true) { // TRANSIT
-        promptMsg = i18n.__('unblock_direct_deposit_transit');
-        retryMsg= i18n.__('unblock_direct_deposit_transit_retry');
+      } else if(TRANSIT === true) { // INSTITUTE
+        console.log('institute');
+        promptMsg =  i18n.__('unblock_direct_deposit_institute');
+        retryMsg = i18n.__('unblock_direct_deposit_institute_retry');
 
         if(unblockBotDetails.unblockDirectDeposit === -1) {
           await stepContext.context.sendActivity(retryMsg);
         }
 
-      } else { // INSTITUTE
-        promptMsg =  i18n.__('unblock_direct_deposit_institute');
-        retryMsg = i18n.__('unblock_direct_deposit_institute_retry');
+      } else { // TRANSIT
+        console.log('transit');
+        promptMsg = i18n.__('unblock_direct_deposit_transit');
+        retryMsg= i18n.__('unblock_direct_deposit_transit_retry');
 
         if(unblockBotDetails.unblockDirectDeposit === -1) {
           await stepContext.context.sendActivity(retryMsg);
@@ -180,7 +187,7 @@ export class UnblockDirectDepositStep extends ComponentDialog {
   /**
    * Offer to have a Service Canada Officer contact them
    */
-  async unblockBankInstitute(stepContext:any) {
+  async unblockBankDetails(stepContext:any) {
 
     // Get the user details / state machine
     const unblockBotDetails = stepContext.options;
@@ -188,23 +195,28 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
     // Validate numeric input
     let numLength = 0;
-    if(TRANSIT === true) { // Account
+    if(INSTITUTE === true) { // Account
       numLength = 7;
-    } else if(INSTITUTE === true) { // Transit
-      numLength = 5;
-    } else { // Institute
+    } else if(TRANSIT === true) { // Transit
       numLength = 3;
+    } else { // Transit
+      numLength = 5;
     }
     const numberRegex = /^\d+$/;
     const validNumber = numberRegex.test(userInput);
 
+    console.log('-------');
+    console.log('TRANSIT', TRANSIT);
+    console.log('INSTITUTE', INSTITUTE);
+    console.log('numLength', numLength);
+
     // If valid number matches requested value lenght
-    if (validNumber && userInput.length === numLength && INSTITUTE === false) {
-      INSTITUTE = true;
+    if (validNumber && userInput.length === numLength && TRANSIT === false) {
+      TRANSIT = true;
       unblockBotDetails.unblockDirectDeposit = 0;
       unblockBotDetails.errorCount.unblockDirectDeposit = 0;
-    } else if (validNumber && userInput.length === numLength && TRANSIT === false) {
-      TRANSIT = true;
+    } else if (validNumber && userInput.length === numLength && INSTITUTE === false) {
+      INSTITUTE = true;
       unblockBotDetails.unblockDirectDeposit = 0;
       unblockBotDetails.errorCount.unblockDirectDeposit = 0;
     } else if (validNumber && userInput.length === numLength && INSTITUTE === true && TRANSIT === true && ACCOUNT === false) {

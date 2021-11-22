@@ -114,11 +114,11 @@ export const standardMsgSchema = (standardMsg:any) => {
        'facts': [
         {
           'title': '1',
-          'value': `${i18n.__('unblock_direct_deposit_instition_name')}`
+          'value': `${i18n.__('unblock_direct_deposit_transit_name')}`
         },
         {
           'title': '2',
-          'value': `${i18n.__('unblock_direct_deposit_transit_name')}`
+          'value': `${i18n.__('unblock_direct_deposit_institute_name')}`
         },
         {
           'title': '3',
