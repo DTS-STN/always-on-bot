@@ -85,7 +85,7 @@ export const inlineFormSchema = (standardMsg:any,infoMsg:any ) => {
             },
             {
               'type': 'Image',
-              'url': 'https://www.canada.ca/content/canadasite/en/revenue-agency/services/e-services/e-services-individuals/account-individuals/manage-direct-deposit/_jcr_content/par/img_0_0/image.img.gif/1511363454177.gif'
+              'url': 'https://wornertcouture.ca/assets/cheque-visual.svg'
             }
           ]
         }
@@ -144,7 +144,7 @@ export const infoMsgSchema = (infoMsg:any) => {
       },
       {
         'type': 'Image',
-        'url': 'https://www.canada.ca/content/canadasite/en/revenue-agency/services/e-services/e-services-individuals/account-individuals/manage-direct-deposit/_jcr_content/par/img_0_0/image.img.gif/1511363454177.gif'
+        'url': 'https://wornertcouture.ca/assets/cheque-visual.svg'
       }
     ]
   }
@@ -178,7 +178,7 @@ export const actionMsgSchema = (infoMsg:any) => {
             },
             {
               'type': 'Image',
-              'url': 'https://www.canada.ca/content/canadasite/en/revenue-agency/services/e-services/e-services-individuals/account-individuals/manage-direct-deposit/_jcr_content/par/img_0_0/image.img.gif/1511363454177.gif'
+              'url': 'https://wornertcouture.ca/assets/cheque-visual.svg'
             }
           ]
         }
