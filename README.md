@@ -152,9 +152,11 @@ Enter text in the emulator. The text will be echoed back by the bot.
 
 - Access LUIS with your GoC email address
 - Make sure you have access to the projects
-  - [oas-callback-bot-luis](https://www.luis.ai/applications/7571e2c3-ca7e-4e70-aac0-da41ae20cd19/versions/0.1/build/intents)
-  - [oas-callback-bot-fr](https://www.luis.ai/applications/d1e58d6e-fb93-4ab8-8cc1-2f2a0f9d1df8/versions/0.1/build/intents)
+  - [oas-unblock-en](https://www.luis.ai/applications/8ffba8be-f92e-401e-821b-ac462772ab7c/versions/0.1/build/intents)
+  - [oas-unblock-fr](https://www.luis.ai/applications/83f33ed1-f700-4bc8-bc50-98d4babffdba/versions/0.1/build/intents)
 - Follow tour steps there to learn how to create and edit intent
+- Make sure to train and publish your app in both environments
+- Make sure that your .env variables are set to use the [FR](https://www.luis.ai/applications/83f33ed1-f700-4bc8-bc50-98d4babffdba/versions/0.1/manage/resources) and [EN](https://www.luis.ai/applications/8ffba8be-f92e-401e-821b-ac462772ab7c/versions/0.1/manage/resources) bot keys
 
 ## Deploy the bot to Azure
 
@@ -212,3 +214,4 @@ The configurations are held in `/terraform/azure`.
 - 2021/10/10: les.lakewood@hrsdc-rhdcc.gc.ca - Confirm Home Address unblock flow archived
 - 2021/10/12: les.lakewood@hrsdc-rhdcc.gc.ca - Unblock Direct Deposit flow added
 - 2021/10/17: les.lakewood@hrsdc-rhdcc.gc.ca - Adding adaptive cards
+- 2021/10/17: les.lakewood@hrsdc-rhdcc.gc.ca - Created new LUIS apps for unblock bot
