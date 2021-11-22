@@ -167,14 +167,26 @@ You will need to be added to the Azure Resource Group ([oas-unlock-bot-bdm-dev](
 
 ## Pipeline Integration
 
-This application leverages GitHub actions and [TeamCity Pipelines](https://teamcity.dts-stn.com/) for performing pre-merge regression testing. On PR creation or update, the Pipelines will run the entire API test collection, as well as the integration tests. The GitHub action will run testing and build docker container for application.
+### TeamCity
 
-[TeamCity](https://teamcity.dts-stn.com/) uses helm tool to deploy the container image to k8s cluster.
+This application leverages GitHub actions and [TeamCity Pipelines](https://teamcity.dts-stn.com/ 'TeamCity Login') for performing pre-merge regression testing. On PR creation or update, the Pipelines will run the entire API test collection, as well as the integration tests. The GitHub action will run testing and build docker container for application.
+
+#### Helm
+
+[TeamCity](https://teamcity.dts-stn.com/ 'TeamCity Login') uses helm tool to deploy the container image to k8s cluster.
 
 See configurations at:
 
 - `/helm`
 - `/helmfile`
+
+#### Terraform
+
+[Terraform](https://www.terraform.io/intro/index.html 'Terraform intro') is an infrastructure as code (IaC) tool that allows you to build, change, and version infrastructure safely and efficiently.
+
+OAS Unblock bot [Terraform is configured here](https://teamcity.dts-stn.com/buildConfiguration/OasUnlockBot_Terraform_TerraformOasUnblockBot?#all-projects 'Unblock Bot Terraform profile').
+
+The configurations are held in `/terraform/azure`.
 
 ## Refactor candidates
 
