@@ -6,7 +6,7 @@ import {
 } from 'botbuilder-dialogs';
 
 import { LuisRecognizer } from 'botbuilder-ai';
-import {LUISAppSetup} from '../../utils/luisAppSetup';
+import {LUISUnblockSetup} from '../../utils/LUISAppSetup';
 
 import i18n from '../locales/i18nConfig';
 
@@ -206,7 +206,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
     const unblockBotDetails = stepContext.options;
 
     // Setup the LUIS app config and languages
-    const recognizer = LUISAppSetup(stepContext);
+    const recognizer = LUISUnblockSetup(stepContext);
 
     // Call prompts recognizer
     const recognizerResult = await recognizer.recognize(stepContext.context);
@@ -264,7 +264,7 @@ export class ConfirmHomeAddressStep extends ComponentDialog {
     const unblockBotDetails = stepContext.options;
 
     // Setup the LUIS app config and languages
-    const recognizer = LUISAppSetup(stepContext);
+    const recognizer = LUISUnblockSetup(stepContext);
 
     // Call prompts recognizer
     const recognizerResult = await recognizer.recognize(stepContext.context);

@@ -1,6 +1,6 @@
 import { LuisRecognizer } from 'botbuilder-ai';
 
-export const LUISAppSetup = (stepContext:any) => {
+export const LUISUnblockSetup = (stepContext:any) => {
 
     // Luis Application Settings
   let applicationId:string;

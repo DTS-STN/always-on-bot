@@ -6,7 +6,7 @@ import {
   ChoiceFactory
 } from 'botbuilder-dialogs';
 
-import {LUISAppSetup} from '../../utils/luisAppSetup';
+import {LUISUnblockSetup} from '../../utils/LUISAppSetup';
 import { LuisRecognizer } from 'botbuilder-ai';
 
 import i18n from '../locales/i18nConfig';
@@ -113,7 +113,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     const unblockBotDetails = stepContext.options;
 
     // Setup the LUIS to recognize intents
-    const recognizer = LUISAppSetup(stepContext);
+    const recognizer = LUISUnblockSetup(stepContext);
     const recognizerResult = await recognizer.recognize(stepContext.context);
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
 
@@ -161,7 +161,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     const unblockBotDetails = stepContext.options;
 
     // Setup the LUIS to recognize intents
-    const recognizer = LUISAppSetup(stepContext);
+    const recognizer = LUISUnblockSetup(stepContext);
     const recognizerResult = await recognizer.recognize(stepContext.context);
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
 
