@@ -93,7 +93,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
         promptMsg = i18n.__('unblockLookup_update_prompt_msg');
       } else {
         adaptiveCard = addACard(lookupAddSchema())
-        promptMsg = i18n.__('unblockLookup_blocked_prompt_msg');
+        promptMsg = i18n.__('unblockLookup_add_prompt_msg');
       }
 
       const promptDetails = {

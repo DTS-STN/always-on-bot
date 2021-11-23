@@ -8,7 +8,7 @@ import {
 import i18n from '../locales/i18nConfig';
 import {addACard} from '../../utils';
 
-import {standardMsgSchema, infoMsgSchema} from '../../cards/uiSchemaDirectDeposit'
+import {whatNumbersToFindSchema, howToFindNumbersSchema} from '../../cards/uiSchemaDirectDeposit'
 
 import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
 import { CallbackBotDetails } from '../callbackBotDetails';
@@ -76,8 +76,6 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     ) {
 
       // Set dialog messages
-      const standardMsg       = i18n.__('unblock_direct_deposit_msg');
-      const infoMsg           = i18n.__('unblock_direct_deposit_how_to');
       let promptMsg           = '';
       let retryMsg            = '';
 
@@ -116,8 +114,8 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
       // If first pass through, show welcome messaging (adative cards)
       if(unblockBotDetails.unblockDirectDeposit === null) {
-        await stepContext.context.sendActivity(addACard(standardMsgSchema(standardMsg)));
-        await stepContext.context.sendActivity(addACard(infoMsgSchema(infoMsg)));
+        await stepContext.context.sendActivity(addACard(whatNumbersToFindSchema()));
+        await stepContext.context.sendActivity(addACard(howToFindNumbersSchema()));
       }
 
       // Prompt the user to enter their bank information
