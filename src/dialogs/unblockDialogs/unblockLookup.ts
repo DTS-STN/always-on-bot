@@ -10,7 +10,7 @@ import {LUISUnblockSetup} from '../../utils/LUISAppSetup';
 import { LuisRecognizer } from 'botbuilder-ai';
 
 import i18n from '../locales/i18nConfig';
-import {lookupUpdateSchema, TextBlock, addACard} from '../../cards';
+import {adaptiveCard, lookupUpdateSchema, TextBlockWithLink, TextBlock} from '../../cards';
 import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
 
 import { CallbackBotDetails } from '../callbackBotDetails';
@@ -64,7 +64,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     if (unblockBotDetails.errorCount.confirmLookIntoStep >= MAX_ERROR_COUNT) {
       unblockBotDetails.masterError = true;
       const errorMsg = i18n.__('masterErrorMsg');
-      await stepContext.context.sendActivity(errorMsg);
+      await adaptiveCard(stepContext, TextBlock(errorMsg));
       return await stepContext.endDialog(unblockBotDetails);
     }
 
@@ -78,7 +78,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
       // Set dialog messages
       let promptMsg:any;
-      let adaptiveCard:any;
+      let cardMessage:string;
       const promptOptions = i18n.__('unblockLookup_prompt_opts');
       const retryMsg = i18n.__('confirmLookIntoStepRetryMsg');
 
@@ -86,10 +86,10 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       const LOOKUP_RESULT = 'foreign-bank-account'; // DEBUG
 
       if(LOOKUP_RESULT === 'foreign-bank-account') {
-        adaptiveCard = addACard(lookupUpdateSchema(i18n.__('unblockLookup_update_reason')))
+        cardMessage = i18n.__('unblockLookup_update_reason');
         promptMsg = i18n.__('unblockLookup_update_prompt_msg');
       } else {
-        adaptiveCard = addACard(TextBlock(i18n.__('unblockLookup_blocked_msg')))
+        cardMessage = i18n.__('unblockLookup_blocked_msg');
         promptMsg = i18n.__('unblockLookup_add_prompt_msg');
       }
 
@@ -101,7 +101,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
         )
       };
 
-      await stepContext.context.sendActivity(adaptiveCard);
+      await adaptiveCard(stepContext, lookupUpdateSchema(cardMessage));
       return await stepContext.prompt(TEXT_PROMPT, promptDetails);
 
     } else {
@@ -187,7 +187,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
         unblockBotDetails.unblockDirectDeposit = false;
         const confirmLookIntoStepCloseMsg = i18n.__('confirmLookIntoStepCloseMsg');
 
-        await stepContext.context.sendActivity(confirmLookIntoStepCloseMsg);
+        await adaptiveCard(stepContext, TextBlock(confirmLookIntoStepCloseMsg));
         return await stepContext.endDialog(unblockBotDetails);
 
       // Could not understand / None intent, try again

@@ -180,21 +180,23 @@ export class UnblockDirectDepositStep extends ComponentDialog {
   }
 
   /**
-   * Final message prompt
+   * End Direct Deposit Waterfall
    */
   async unblockDirectDepositEnd(stepContext:any) {
 
-    // Get the results of the last ran step
+    // Set the messages
     const unblockBotDetails = stepContext.result;
     const validReminder = i18n.__('unblock_direct_deposit_valid_reminder');
     const doneMsg = i18n.__('unblock_direct_deposit_complete');
-    const valid_message = i18n.__('unblock_direct_deposit_valid_msg');
-    const valid_tip = i18n.__('unblock_direct_deposit_valid_tip')
+    const validMsg = i18n.__('unblock_direct_deposit_valid_msg');
+    const tipMsg = i18n.__('unblock_direct_deposit_valid_tip')
 
-    await adaptiveCard(stepContext, TwoTextBlock(valid_message,valid_tip));
+    // Display the prompts
+    await adaptiveCard(stepContext, TwoTextBlock(validMsg, tipMsg));
     await adaptiveCard(stepContext, TextBlock(validReminder));
     await adaptiveCard(stepContext, TextBlock(doneMsg));
 
+    // End the dialog
     return await stepContext.endDialog(unblockBotDetails);
   }
 }

@@ -17,7 +17,31 @@ export const TextBlock = (text:string) => {
  }
 };
 
-export const TwoTextBlock = (one, two) => {
+export const TextBlockWithLink = (text:string, link:string, linkText:string) => {
+  return {
+    '$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',
+    'type': 'AdaptiveCard',
+    'version': '1.0',
+    'body': [
+      {
+        'type': 'TextBlock',
+        'text': `${text}`,
+        'wrap': true
+      }
+    ],
+    'actions': [
+      {
+        'type': 'Action.OpenUrl',
+        'title': `${linkText}`,
+        'url': `${link}`,
+        'spacing' : 'medium',
+        'style': 'positive'
+      }
+    ]
+  }
+};
+
+export const TwoTextBlock = (one:any, two:any) => {
   return {
   '$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',
   'type': 'AdaptiveCard',

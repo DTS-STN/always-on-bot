@@ -11,7 +11,12 @@ import { LuisRecognizer } from 'botbuilder-ai';
 import i18n from './locales/i18nConfig';
 import { CallbackBotDetails } from './callbackBotDetails';
 import { CallbackRecognizer } from './calllbackDialogs/callbackRecognizer';
-import { UnblockBotDetails } from './unblockDialogs/unblockBotDetails';
+
+import {
+  TextBlockWithLink,
+  TextBlock,
+  adaptiveCard}
+from '../cards'
 
 const TEXT_PROMPT = 'TEXT_PROMPT';
 export const CONFIRM_CALLBACK_STEP = 'CONFIRM_CALLBACK_STEP';
@@ -67,7 +72,7 @@ export class ConfirmCallbackStep extends ComponentDialog {
       const errorMsg = i18n.__('confirmCallbackStepErrorMsg');
 
       // Send master error message
-      await stepContext.context.sendActivity(errorMsg);
+      await adaptiveCard(stepContext, TextBlock(errorMsg));
 
       // End the dialog and pass the updated details state machine
       return await stepContext.endDialog(callbackBotDetails);
@@ -90,7 +95,7 @@ export class ConfirmCallbackStep extends ComponentDialog {
 
       // Only show Ok for main dialog
       if(okMsg) {
-        await stepContext.context.sendActivity(okMsg);
+        await adaptiveCard(stepContext, TextBlock(okMsg));
       }
 
       const promptOptions: any = i18n.__(
@@ -141,7 +146,11 @@ export class ConfirmCallbackStep extends ComponentDialog {
     // Top intent tell us which cognitive service to use.
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
 
-    const closeMsg = i18n.__('confirmCallbackStepCloseMsg');
+    // const closeMsg = i18n.__('confirmCallbackStepCloseMsg');
+
+    const closeMsg = i18n.__('unblockLookup_decline_callback_msg');
+    const link = i18n.__('unblockLookup_decline_callback_link');
+    const linkMsg = i18n.__('unblockLookup_decline_callback_link_msg');
 
     switch (intent) {
       // Proceed
@@ -160,7 +169,8 @@ export class ConfirmCallbackStep extends ComponentDialog {
       case 'promptConfirmNo':
         console.log('INTENT: ', intent);
 
-        await stepContext.context.sendActivity(closeMsg);
+        // await stepContext.context.sendActivity(closeMsg);
+        await adaptiveCard(stepContext, TextBlockWithLink(closeMsg, link, linkMsg));
 
         callbackDetails.confirmCallbackStep = false;
         return await stepContext.endDialog(callbackDetails);
