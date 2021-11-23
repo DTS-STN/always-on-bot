@@ -11,7 +11,7 @@ import {
 
 import i18n from '../locales/i18nConfig';
 import { CallbackBotDialog } from '../callbackBotDialog';
-import { TextBlock, addACard } from '../../cards';
+import { TextBlock, addACard, adaptiveCard } from '../../cards';
 
 export const UNBLOCK_BOT_DIALOG = 'UNBLOCK_BOT_DIALOG';
 const MAIN_UNBLOCK_BOT_WATERFALL_DIALOG = 'MAIN_UNBLOCK_BOT_WATERFALL_DIALOG';
@@ -49,7 +49,7 @@ export class UnblockBotDialog extends ComponentDialog {
 
     // DEBUG
     // console.log('DEBUG: welcomeSteps:', unblockBotDetails);
-    await stepContext.context.sendActivity(addACard(TextBlock(i18n.__('unblockLookup_welcome_msg'))));
+    await adaptiveCard(stepContext, TextBlock(i18n.__('unblockLookup_welcome_msg')));
     return await stepContext.next(unblockBotDetails);
   }
 

@@ -10,7 +10,7 @@ import {LUISUnblockSetup} from '../../utils/LUISAppSetup';
 import { LuisRecognizer } from 'botbuilder-ai';
 
 import i18n from '../locales/i18nConfig';
-import {lookupUpdateSchema, lookupAddSchema,addACard} from '../../cards';
+import {lookupUpdateSchema, TextBlock, addACard} from '../../cards';
 import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
 
 import { CallbackBotDetails } from '../callbackBotDetails';
@@ -77,7 +77,6 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     ) {
 
       // Set dialog messages
-
       let promptMsg:any;
       let adaptiveCard:any;
       const promptOptions = i18n.__('unblockLookup_prompt_opts');
@@ -90,7 +89,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
         adaptiveCard = addACard(lookupUpdateSchema(i18n.__('unblockLookup_update_reason')))
         promptMsg = i18n.__('unblockLookup_update_prompt_msg');
       } else {
-        adaptiveCard = addACard(lookupAddSchema())
+        adaptiveCard = addACard(TextBlock(i18n.__('unblockLookup_blocked_msg')))
         promptMsg = i18n.__('unblockLookup_add_prompt_msg');
       }
 

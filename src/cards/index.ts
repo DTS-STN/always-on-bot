@@ -1,8 +1,9 @@
 import { MessageFactory, CardFactory } from 'botbuilder';
 
-export { whatNumbersToFindSchema, howToFindNumbersSchema, saveConfirmationSchema } from './uiSchemaDirectDeposit'
-export { lookupAddSchema, lookupUpdateSchema } from './uiSchemaLookup'
-export { TextBlock } from './uiSchemaUtil'
+export * from './uiSchemaDirectDeposit'
+export * from './uiSchemaLookup'
+export * from './uiSchemaUtil'
+
 
 // Helper function to attach adaptive card.
 export function addACard(schema:any): any {
@@ -11,4 +12,9 @@ export function addACard(schema:any): any {
 
 	card = CardFactory.adaptiveCard(schema);
 	return message = MessageFactory.attachment(card);
+}
+
+// Helper function to return an adaptive card.
+export function adaptiveCard(stepContext:any, card:any): any {
+	return stepContext.context.sendActivity(addACard(card));
 }

@@ -10,9 +10,9 @@ import i18n from '../locales/i18nConfig';
 import {
   whatNumbersToFindSchema,
   howToFindNumbersSchema,
-  saveConfirmationSchema,
+  TwoTextBlock,
   TextBlock,
-  addACard}
+  adaptiveCard}
 from '../../cards'
 
 import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
@@ -84,43 +84,36 @@ export class UnblockDirectDepositStep extends ComponentDialog {
       let promptMsg           = '';
       let retryMsg            = '';
 
-
-      // console.log('TRANSIT', TRANSIT);
-      // console.log('INSTITUTE', INSTITUTE);
-
       // State of unblock direct deposit determines message prompts
       if(INSTITUTE === true) { // ACCOUNT
-        console.log('account');
         promptMsg = i18n.__('unblock_direct_deposit_account');
         retryMsg= i18n.__('unblock_direct_deposit_account_retry');
 
         if(unblockBotDetails.unblockDirectDeposit === -1) {
-          await stepContext.context.sendActivity(retryMsg)
+          await adaptiveCard(stepContext, TextBlock(retryMsg));
         }
 
       } else if(TRANSIT === true) { // INSTITUTE
-        console.log('institute');
         promptMsg =  i18n.__('unblock_direct_deposit_institute');
         retryMsg = i18n.__('unblock_direct_deposit_institute_retry');
 
         if(unblockBotDetails.unblockDirectDeposit === -1) {
-          await stepContext.context.sendActivity(retryMsg);
+          await adaptiveCard(stepContext, TextBlock(retryMsg));
         }
 
       } else { // TRANSIT
-        console.log('transit');
         promptMsg = i18n.__('unblock_direct_deposit_transit');
-        retryMsg= i18n.__('unblock_direct_deposit_transit_retry');
+        retryMsg = i18n.__('unblock_direct_deposit_transit_retry');
 
         if(unblockBotDetails.unblockDirectDeposit === -1) {
-          await stepContext.context.sendActivity(retryMsg);
+          await adaptiveCard(stepContext, TextBlock(retryMsg));
         }
       }
 
       // If first pass through, show welcome messaging (adative cards)
       if(unblockBotDetails.unblockDirectDeposit === null) {
-        await stepContext.context.sendActivity(addACard(whatNumbersToFindSchema()));
-        await stepContext.context.sendActivity(addACard(howToFindNumbersSchema()));
+        await adaptiveCard(stepContext, whatNumbersToFindSchema());
+        await adaptiveCard(stepContext, howToFindNumbersSchema());
       }
 
       // Prompt the user to enter their bank information
@@ -193,14 +186,14 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
     // Get the results of the last ran step
     const unblockBotDetails = stepContext.result;
-    const welcomeMsg = i18n.__('unblockLookup_welcome_msg')
     const validReminder = i18n.__('unblock_direct_deposit_valid_reminder');
     const doneMsg = i18n.__('unblock_direct_deposit_complete');
+    const valid_message = i18n.__('unblock_direct_deposit_valid_msg');
+    const valid_tip = i18n.__('unblock_direct_deposit_valid_tip')
 
-    await stepContext.context.sendActivity(addACard(saveConfirmationSchema()));
-    await stepContext.context.sendActivity(addACard(TextBlock(welcomeMsg)));
-    await stepContext.context.sendActivity(validReminder);
-    await stepContext.context.sendActivity(addACard(TextBlock(doneMsg)));
+    await adaptiveCard(stepContext, TwoTextBlock(valid_message,valid_tip));
+    await adaptiveCard(stepContext, TextBlock(validReminder));
+    await adaptiveCard(stepContext, TextBlock(doneMsg));
 
     return await stepContext.endDialog(unblockBotDetails);
   }

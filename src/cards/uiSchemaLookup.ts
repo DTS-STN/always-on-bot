@@ -37,18 +37,3 @@ export const lookupUpdateSchema = (reason:any) => {
  }
 };
 
-export const lookupAddSchema = () => {
-  return {
-   '$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',
-   'type': 'AdaptiveCard',
-     'version': '1.0',
-     'body': [
-     {
-       'type': 'TextBlock',
-       'text': `${i18n.__('unblockLookup_blocked_msg')}`,
-       'wrap': true,
-       'fontType': 'default'
-     }
-   ]
- }
-};

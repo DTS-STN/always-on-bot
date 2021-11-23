@@ -58,24 +58,5 @@ export const howToFindNumbersSchema = () => {
   }
 };
 
-export const saveConfirmationSchema = () => {
-  return {
-  '$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',
-  'type': 'AdaptiveCard',
-    'version': '1.0',
-    'body' : [
-      {
-        'type': 'TextBlock',
-        'text': `${i18n.__('unblock_direct_deposit_valid_msg')}`,
-        'wrap': true
-      },
-      {
-        'spacing' : 'medium',
-        'type': 'TextBlock',
-        'text': `${i18n.__('unblock_direct_deposit_valid_tip')}`,
-        'wrap': true
-      }
-    ]
-  }
-};
+
 
