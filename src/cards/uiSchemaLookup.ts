@@ -20,7 +20,7 @@ export const lookupUpdateSchema = (reason:any) => {
        'inlines': [
         {
           'type': 'TextRun',
-          'text': `${i18n.__('unblockLookup_update_details')}`,
+          'text': `${i18n.__('unblockLookup_update_details')}`
         },
         {
           'type': 'TextRun',
