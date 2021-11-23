@@ -11,8 +11,7 @@ import {
 
 import i18n from '../locales/i18nConfig';
 import { CallbackBotDialog } from '../callbackBotDialog';
-import { welcomeSchema } from '../../cards/uiSchemaWelcome';
-import { addACard } from '../../utils';
+import { TextBlock, addACard } from '../../cards';
 
 export const UNBLOCK_BOT_DIALOG = 'UNBLOCK_BOT_DIALOG';
 const MAIN_UNBLOCK_BOT_WATERFALL_DIALOG = 'MAIN_UNBLOCK_BOT_WATERFALL_DIALOG';
@@ -44,20 +43,20 @@ export class UnblockBotDialog extends ComponentDialog {
    * But in the off chance that the bot has already run through the switch statement
    * will take care of edge cases
    */
-  async welcomeStep(stepContext) {
+  async welcomeStep(stepContext:any) {
     // Get the unblockbot details / state machine for the current user
     const unblockBotDetails = stepContext.options;
 
     // DEBUG
     // console.log('DEBUG: welcomeSteps:', unblockBotDetails);
-    await stepContext.context.sendActivity(addACard(welcomeSchema()));
+    await stepContext.context.sendActivity(addACard(TextBlock(i18n.__('unblockLookup_welcome_msg'))));
     return await stepContext.next(unblockBotDetails);
   }
 
   /**
    * 2. Confirm the user's intent to proceed with the unblockbot
    */
-  async confirmLookIntoStep(stepContext) {
+  async confirmLookIntoStep(stepContext:any) {
     // Get the state machine from the last step
     const unblockBotDetails = stepContext.result;
 

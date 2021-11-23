@@ -10,9 +10,7 @@ import {LUISUnblockSetup} from '../../utils/LUISAppSetup';
 import { LuisRecognizer } from 'botbuilder-ai';
 
 import i18n from '../locales/i18nConfig';
-import {addACard} from '../../utils';
-import {lookupUpdateSchema, lookupAddSchema} from '../../cards/uiSchemaLookup';
-
+import {lookupUpdateSchema, lookupAddSchema,addACard} from '../../cards';
 import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
 
 import { CallbackBotDetails } from '../callbackBotDetails';

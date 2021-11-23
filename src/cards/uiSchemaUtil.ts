@@ -16,3 +16,20 @@ export const welcomeSchema = () => {
    ]
  }
 };
+
+export const TextBlock = (text:string) => {
+  return {
+   '$schema': 'http://adaptivecards.io/schemas/adaptive-card.json',
+   'type': 'AdaptiveCard',
+     'version': '1.0',
+     'body': [
+     {
+       'type': 'TextBlock',
+       'text': `${text}`,
+       'wrap': true,
+       'fontType': 'default'
+     }
+   ]
+ }
+};
+

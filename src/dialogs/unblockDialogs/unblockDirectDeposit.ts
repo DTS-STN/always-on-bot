@@ -6,9 +6,14 @@ import {
 } from 'botbuilder-dialogs';
 
 import i18n from '../locales/i18nConfig';
-import {addACard} from '../../utils';
 
-import {whatNumbersToFindSchema, howToFindNumbersSchema} from '../../cards/uiSchemaDirectDeposit'
+import {
+  whatNumbersToFindSchema,
+  howToFindNumbersSchema,
+  saveConfirmationSchema,
+  TextBlock,
+  addACard}
+from '../../cards'
 
 import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
 import { CallbackBotDetails } from '../callbackBotDetails';
@@ -188,14 +193,14 @@ export class UnblockDirectDepositStep extends ComponentDialog {
 
     // Get the results of the last ran step
     const unblockBotDetails = stepContext.result;
-
-    const validMsg = i18n.__('unblock_direct_deposit_valid_msg');
-    const validTip = i18n.__('unblock_direct_deposit_valid_tip');
+    const welcomeMsg = i18n.__('unblockLookup_welcome_msg')
     const validReminder = i18n.__('unblock_direct_deposit_valid_reminder');
+    const doneMsg = i18n.__('unblock_direct_deposit_complete');
 
-    await stepContext.context.sendActivity(validMsg);
-    await stepContext.context.sendActivity(validTip);
+    await stepContext.context.sendActivity(addACard(saveConfirmationSchema()));
+    await stepContext.context.sendActivity(addACard(TextBlock(welcomeMsg)));
     await stepContext.context.sendActivity(validReminder);
+    await stepContext.context.sendActivity(addACard(TextBlock(doneMsg)));
 
     return await stepContext.endDialog(unblockBotDetails);
   }

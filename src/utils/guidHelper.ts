@@ -2,7 +2,6 @@
  * Copyright(c) Microsoft Corporation.All rights reserved.
  * Licensed under the MIT License.
  */
- import { MessageFactory, CardFactory } from 'botbuilder';
 
 // Helper function to generate an UUID.
 // Code is from @stevenic: https://github.com/stevenic
@@ -13,11 +12,3 @@ export function uuid(): string {
     });
 }
 
-// Helper function to attach adaptive card.
-export function addACard(schema:any): any {
-    let card:any;
-    let message:any;
-
-    card = CardFactory.adaptiveCard(schema);
-    return message = MessageFactory.attachment(card);
-}
