@@ -4,3 +4,4 @@
  */
 
  export * from './guidHelper';
+ export * from './luisAppSetup';
