@@ -4,14 +4,11 @@ import {
   ComponentDialog,
   WaterfallDialog
 } from 'botbuilder-dialogs';
-import { MessageFactory, CardFactory } from 'botbuilder';
 
 import i18n from '../locales/i18nConfig';
+import {addACard} from '../../utils';
 
-import {inlineFormSchema,
-  standardMsgSchema,
-  infoMsgSchema,
-  actionMsgSchema} from '../../cards/uiSchemaDirectDeposit'
+import {standardMsgSchema, infoMsgSchema} from '../../cards/uiSchemaDirectDeposit'
 
 import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
 import { CallbackBotDetails } from '../callbackBotDetails';
@@ -81,13 +78,12 @@ export class UnblockDirectDepositStep extends ComponentDialog {
       // Set dialog messages
       const standardMsg       = i18n.__('unblock_direct_deposit_msg');
       const infoMsg           = i18n.__('unblock_direct_deposit_how_to');
-      const listOfItems       = i18n.__('unblock_direct_deposit_prompt_opts');
       let promptMsg           = '';
       let retryMsg            = '';
 
 
-      console.log('TRANSIT', TRANSIT);
-      console.log('INSTITUTE', INSTITUTE);
+      // console.log('TRANSIT', TRANSIT);
+      // console.log('INSTITUTE', INSTITUTE);
 
       // State of unblock direct deposit determines message prompts
       if(INSTITUTE === true) { // ACCOUNT
@@ -116,73 +112,21 @@ export class UnblockDirectDepositStep extends ComponentDialog {
         if(unblockBotDetails.unblockDirectDeposit === -1) {
           await stepContext.context.sendActivity(retryMsg);
         }
-
       }
 
-      // WIP: EXPERIMENTING WITH ADAPTIVE CARDS IN START STEP, REMOVE LATER (true/null)
-      const ADAPTIVE_CARD_FORM = null;
-      const ADAPTIVE_CARD_HYBRID = true;
-      const ADAPTIVE_CARD_ACTIONS = null;
-
-      if(ADAPTIVE_CARD_FORM === true) {
-
-        // Shows inline form version
-        const card = CardFactory.adaptiveCard(inlineFormSchema(standardMsg,infoMsg));
-        const message = MessageFactory.attachment(card);
-        await stepContext.context.sendActivity(message);
-
-      } else if (ADAPTIVE_CARD_HYBRID === true) {
-
-        // If first pass through, show welcome messaging
-        if(unblockBotDetails.unblockDirectDeposit === null) {
-
-          let card:any;
-          let message:any;
-
-          card = CardFactory.adaptiveCard(standardMsgSchema(standardMsg));
-          message = MessageFactory.attachment(card);
-          await stepContext.context.sendActivity(message);
-
-          card = CardFactory.adaptiveCard(infoMsgSchema(infoMsg));
-          message = MessageFactory.attachment(card);
-          await stepContext.context.sendActivity(message);
-        }
-
-      } else if (ADAPTIVE_CARD_ACTIONS === true) {
-
-        // If first pass through, show welcome messaging
-        if(unblockBotDetails.unblockDirectDeposit === null) {
-
-          let card:any;
-          let message:any;
-
-          card = CardFactory.adaptiveCard(standardMsgSchema(standardMsg));
-          message = MessageFactory.attachment(card);
-          await stepContext.context.sendActivity(message);
-
-          card = CardFactory.adaptiveCard(actionMsgSchema(infoMsg));
-          message = MessageFactory.attachment(card);
-          await stepContext.context.sendActivity(message);
-        }
-
-      } else {
-
-        //  If first pass through, show welcome messaging
-        if(unblockBotDetails.unblockDirectDeposit === null) {
-          await stepContext.context.sendActivity(standardMsg);
-          await stepContext.context.sendActivity(listOfItems);
-          await stepContext.context.sendActivity(infoMsg);
-        }
-
+      // If first pass through, show welcome messaging (adative cards)
+      if(unblockBotDetails.unblockDirectDeposit === null) {
+        await stepContext.context.sendActivity(addACard(standardMsgSchema(standardMsg)));
+        await stepContext.context.sendActivity(addACard(infoMsgSchema(infoMsg)));
       }
 
-       // Prompt the user to enter their bank information
-       return await stepContext.prompt(TEXT_PROMPT, { prompt: promptMsg });
+      // Prompt the user to enter their bank information
+      return await stepContext.prompt(TEXT_PROMPT, { prompt: promptMsg });
 
-      } else {
-        return await stepContext.next(false);
-      }
+    } else {
+      return await stepContext.next(false);
     }
+  }
 
   /**
    * Offer to have a Service Canada Officer contact them
@@ -205,10 +149,10 @@ export class UnblockDirectDepositStep extends ComponentDialog {
     const numberRegex = /^\d+$/;
     const validNumber = numberRegex.test(userInput);
 
-    console.log('-------');
-    console.log('TRANSIT', TRANSIT);
-    console.log('INSTITUTE', INSTITUTE);
-    console.log('numLength', numLength);
+    // console.log('-------');
+    // console.log('TRANSIT', TRANSIT);
+    // console.log('INSTITUTE', INSTITUTE);
+    // console.log('numLength', numLength);
 
     // If valid number matches requested value lenght
     if (validNumber && userInput.length === numLength && TRANSIT === false) {
