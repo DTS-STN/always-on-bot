@@ -10,4 +10,14 @@ i18n.configure({
   defaultLocale: 'en'
 });
 
+
+export const setLocale = (locale:any) => {
+  console.log('test set locale');
+  if (locale.toLowerCase() === 'fr-ca' || locale.toLowerCase() === 'fr-fr') {
+    i18n.setLocale('fr');
+  } else {
+    i18n.setLocale('en');
+  }
+}
+
 export default i18n;

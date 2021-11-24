@@ -5,6 +5,8 @@ import {
 } from 'botbuilder';
 import { MainDialog } from '../dialogs/mainDialog';
 
+import { setLocale } from '../dialogs/locales/i18nConfig';
+
 import { Dialog, DialogState, DialogSet } from 'botbuilder-dialogs';
 export class VirtualAssistantUnblockBot extends ActivityHandler {
   private conversationState: BotState;
@@ -52,7 +54,7 @@ export class VirtualAssistantUnblockBot extends ActivityHandler {
       // console.log('MEMBER ADDED:Running dialog with Message Activity.');
 
       // Send greeting and then activate dialog
-      // await context.sendActivity(`Hi Mary, I’m your virtual concierge!`);
+      // await context.sendActivity(`Hi Mary, I'm your virtual concierge!`);
 
       // Run the Dialog with the new message Activity.
       await (this.dialog as MainDialog).run(context, this.dialogState);
@@ -66,6 +68,25 @@ export class VirtualAssistantUnblockBot extends ActivityHandler {
       // Run the Dialog with the new message Activity.
       await (this.dialog as MainDialog).run(context, this.dialogState);
 
+      // By calling next() you ensure that the next BotHandler is run.
+      await next();
+    });
+
+    // Setting lang/locale
+    this.onMembersAdded(async (context, next) => {
+      console.log('MEMBER ADDED:Running dialog with Message Activity.');
+      setLocale(context.activity.locale);
+      // Run the Dialog with the new message Activity.
+      await (this.dialog as MainDialog).run(context, this.dialogState);
+      // By calling next() you ensure that the next BotHandler is run.
+      await next();
+    });
+
+    this.onMessage(async (context, next) => {
+      console.log('Running dialog with Message Activity.');
+      // Run the Dialog with the new message Activity.
+      setLocale(context.activity.locale);
+      await (this.dialog as MainDialog).run(context, this.dialogState);
       // By calling next() you ensure that the next BotHandler is run.
       await next();
     });
@@ -90,3 +111,5 @@ export class VirtualAssistantUnblockBot extends ActivityHandler {
     await this.conversationState.saveChanges(context, false);
   }
 }
+
+
