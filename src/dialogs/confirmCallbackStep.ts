@@ -64,7 +64,8 @@ export class ConfirmCallbackStep extends ComponentDialog {
     const retryMsg = i18n.__('confirmCallbackStepRetryMsg');
 
     // Check if the error count is greater than the max threshold
-    if (callbackBotDetails.errorCount.confirmCallbackStep >= MAX_ERROR_COUNT) {
+    if (callbackBotDetails.errorCount.confirmLookIntoStep >= MAX_ERROR_COUNT) {
+      console.log('CALLBACK');
       // Throw the master error flag
       callbackBotDetails.masterError = true;
 
@@ -178,7 +179,7 @@ export class ConfirmCallbackStep extends ComponentDialog {
       // Could not understand / None intent
       default: {
         // Catch all
-        console.log('NONE INTENT');
+        console.log('NONE INTENT-');
         callbackDetails.confirmLookIntoStep = -1;
         callbackDetails.errorCount.confirmLookIntoStep++;
 

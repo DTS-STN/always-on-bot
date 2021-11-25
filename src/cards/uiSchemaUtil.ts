@@ -61,4 +61,3 @@ export const TwoTextBlock = (one:any, two:any) => {
     ]
   }
 };
-

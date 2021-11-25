@@ -79,14 +79,13 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       // Set dialog messages
       let promptMsg:any;
       let cardMessage = null;
+      let oasGreetingMsg = '';
       const promptOptions = i18n.__('unblockLookup_prompt_opts');
       const retryMsg = i18n.__('confirmLookIntoStepRetryMsg');
 
       // Hard coded response simulation of bot lookup
       let LOOKUP_RESULT = 'foreign-bank-account'; // DEBUG
-      let oasGreetingMsg = '';
-
-      LOOKUP_RESULT = null;
+      // LOOKUP_RESULT = null;
 
       if(LOOKUP_RESULT === 'foreign-bank-account') {
         oasGreetingMsg = i18n.__('unblockLookup_update_msg');
@@ -94,22 +93,25 @@ export class ConfirmLookIntoStep extends ComponentDialog {
         promptMsg = i18n.__('unblockLookup_update_prompt_msg');
       } else {
         oasGreetingMsg = i18n.__('unblockLookup_update_msg');
-        // cardMessage = i18n.__('unblockLookup_blocked_msg');
         promptMsg = i18n.__('unblockLookup_add_prompt_msg');
       }
 
+      // Setup the prompt
+      let promptText = unblockBotDetails.confirmLookIntoStep === -1 ? retryMsg : promptMsg
       const promptDetails = {
         prompt: ChoiceFactory.forChannel(
           stepContext.context,
           promptOptions,
-          unblockBotDetails.confirmLookIntoStep === -1 ? retryMsg : promptMsg
+          promptText
         )
       };
 
+      // Send the welcome message and text prompt
       await adaptiveCard(stepContext, TextBlock(oasGreetingMsg));
       if(cardMessage) {
         await adaptiveCard(stepContext, TextBlock(cardMessage));
       }
+
       return await stepContext.prompt(TEXT_PROMPT, promptDetails);
 
     } else {

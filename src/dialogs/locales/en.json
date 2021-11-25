@@ -53,7 +53,7 @@
   "unblock_direct_deposit_valid_tip": "Once it's been processed, you will receive more information regarding the payment details of your pension by mail. This information typically comes one month before your 65th birthday.",
   "unblock_direct_deposit_valid_reminder": "Just a reminder: you'll receive your first Old Age Security payment one month after your 65th birthday.",
   "unblock_direct_deposit_complete": "You're all set for now!",
-  "unblock_direct_deposit_main_error": "Hmm, looks like the numbers you've entered aren't the correct. Please check your banking information before continuing. Alternatively, I can have a Service Canada officer call you on the phone to help you with your pension application. Does that sound good to you?",
+  "unblock_direct_deposit_main_error": "Hmm, looks like the numbers you've entered aren't the correct. \n\n Please check your banking information before continuing. Alternatively, I can have a Service Canada officer call you on the phone to help you with your pension application. \n\n  Does that sound good to you?",
   "callbackConfirmationQueryMsg": "I can also send you this code via email, text message, or both. What would you prefer?",
   "getUserEmailStepStandardMsg": "No problem - what's your new email address?",
   "getUserEmailStepConfirmMsg": "We'll also email/text your confirmation code to [EMAIL/INSERT PHONE].",
