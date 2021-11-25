@@ -10,7 +10,7 @@ import {LUISUnblockSetup} from '../../utils/LUISAppSetup';
 import { LuisRecognizer } from 'botbuilder-ai';
 
 import i18n from '../locales/i18nConfig';
-import {adaptiveCard, lookupUpdateSchema, TextBlockWithLink, TextBlock} from '../../cards';
+import {adaptiveCard, TextBlock} from '../../cards';
 import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
 
 import { CallbackBotDetails } from '../callbackBotDetails';
@@ -78,18 +78,23 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
       // Set dialog messages
       let promptMsg:any;
-      let cardMessage:string;
+      let cardMessage = null;
       const promptOptions = i18n.__('unblockLookup_prompt_opts');
       const retryMsg = i18n.__('confirmLookIntoStepRetryMsg');
 
       // Hard coded response simulation of bot lookup
-      const LOOKUP_RESULT = 'foreign-bank-account'; // DEBUG
+      let LOOKUP_RESULT = 'foreign-bank-account'; // DEBUG
+      let oasGreetingMsg = '';
+
+      LOOKUP_RESULT = null;
 
       if(LOOKUP_RESULT === 'foreign-bank-account') {
+        oasGreetingMsg = i18n.__('unblockLookup_update_msg');
         cardMessage = i18n.__('unblockLookup_update_reason');
         promptMsg = i18n.__('unblockLookup_update_prompt_msg');
       } else {
-        cardMessage = i18n.__('unblockLookup_blocked_msg');
+        oasGreetingMsg = i18n.__('unblockLookup_update_msg');
+        // cardMessage = i18n.__('unblockLookup_blocked_msg');
         promptMsg = i18n.__('unblockLookup_add_prompt_msg');
       }
 
@@ -101,7 +106,10 @@ export class ConfirmLookIntoStep extends ComponentDialog {
         )
       };
 
-      await adaptiveCard(stepContext, lookupUpdateSchema(cardMessage));
+      await adaptiveCard(stepContext, TextBlock(oasGreetingMsg));
+      if(cardMessage) {
+        await adaptiveCard(stepContext, TextBlock(cardMessage));
+      }
       return await stepContext.prompt(TEXT_PROMPT, promptDetails);
 
     } else {
