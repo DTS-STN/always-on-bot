@@ -50,28 +50,6 @@ export class VirtualAssistantUnblockBot extends ActivityHandler {
       await next();
     });
 
-    this.onMembersAdded(async (context, next) => {
-      // console.log('MEMBER ADDED:Running dialog with Message Activity.');
-
-      // Send greeting and then activate dialog
-      // await context.sendActivity(`Hi Mary, I'm your virtual concierge!`);
-
-      // Run the Dialog with the new message Activity.
-      await (this.dialog as MainDialog).run(context, this.dialogState);
-
-      // By calling next() you ensure that the next BotHandler is run.
-      await next();
-    });
-
-    this.onMessage(async (context, next) => {
-      // console.log('Running dialog with Message Activity.');
-      // Run the Dialog with the new message Activity.
-      await (this.dialog as MainDialog).run(context, this.dialogState);
-
-      // By calling next() you ensure that the next BotHandler is run.
-      await next();
-    });
-
     // Setting lang/locale
     this.onMembersAdded(async (context, next) => {
       console.log('MEMBER ADDED:Running dialog with Message Activity.');
