@@ -38,7 +38,7 @@
  describe('CallbackBot Initial', () => {
      const testAdapter = new TestAdapter(async (context) => undefined);
 
-     async function processActivity(activity, bot) {
+     async function processActivity(activity, bot:any) {
          const context = new TurnContext(testAdapter, activity);
          await bot.run(context);
      }

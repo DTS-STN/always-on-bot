@@ -10,7 +10,7 @@ import {LUISUnblockSetup} from '../../utils/luisAppSetup';
 import { LuisRecognizer } from 'botbuilder-ai';
 
 import i18n from '../locales/i18nConfig';
-import {adaptiveCard, TextBlock} from '../../cards';
+import {adaptiveCard, TextBlock, TextBlockWithLink} from '../../cards';
 import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
 
 import { CallbackBotDetails } from '../callbackBotDetails';
@@ -80,24 +80,24 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       let promptMsg:any;
       let cardMessage = null;
       let oasGreetingMsg = '';
-      const promptOptions = i18n.__('unblockLookup_prompt_opts');
+      const promptOptions = i18n.__('unblock_lookup_prompt_opts');
       const retryMsg = i18n.__('confirmLookIntoStepRetryMsg');
 
       // Hard coded response simulation of bot lookup
-      let LOOKUP_RESULT = 'foreign-bank-account'; // DEBUG
+      const LOOKUP_RESULT = 'foreign-bank-account'; // DEBUG
       // LOOKUP_RESULT = null;
 
       if(LOOKUP_RESULT === 'foreign-bank-account') {
-        oasGreetingMsg = i18n.__('unblockLookup_update_msg');
-        cardMessage = i18n.__('unblockLookup_update_reason');
-        promptMsg = i18n.__('unblockLookup_update_prompt_msg');
+        oasGreetingMsg = i18n.__('unblock_lookup_update_msg');
+        cardMessage = i18n.__('unblock_lookup_update_reason');
+        promptMsg = i18n.__('unblock_lookup_update_prompt_msg');
       } else {
-        oasGreetingMsg = i18n.__('unblockLookup_update_msg');
-        promptMsg = i18n.__('unblockLookup_add_prompt_msg');
+        oasGreetingMsg = i18n.__('unblock_lookup_update_msg');
+        promptMsg = i18n.__('unblock_lookup_add_prompt_msg');
       }
 
       // Setup the prompt
-      let promptText = unblockBotDetails.confirmLookIntoStep === -1 ? retryMsg : promptMsg
+      const promptText = unblockBotDetails.confirmLookIntoStep === -1 ? retryMsg : promptMsg
       const promptDetails = {
         prompt: ChoiceFactory.forChannel(
           stepContext.context,
@@ -138,19 +138,24 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     switch (intent) {
       // Proceed
       case 'promptConfirmYes':
-      case 'promptConfirmSendEmailYes':
         unblockBotDetails.confirmLookIntoStep = true;
         return await stepContext.next(unblockBotDetails);
 
-      // Don't Proceed, offer callback
+      // Don't Proceed, but confirm they don't want to
       case 'promptConfirmNo':
-      case 'promptConfirmSendEmailNo':
-        console.log('NO');
         unblockBotDetails.confirmLookIntoStep = false;
-        return await stepContext.replaceDialog(
-          CALLBACK_BOT_DIALOG,
-          new CallbackBotDetails()
-        );
+
+        const promptText = i18n.__('unblock_lookup_prompt_confirm_msg');
+        const promptOptions = i18n.__('unblock_lookup_prompt_confirm_opts');
+        const promptDetails = {
+          prompt: ChoiceFactory.forChannel(
+            stepContext.context,
+            promptOptions,
+            promptText
+          )
+        };
+
+        return await stepContext.prompt(TEXT_PROMPT, promptDetails);
 
       // Could not understand / No intent
       default: {
@@ -180,21 +185,32 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     const recognizerResult = await recognizer.recognize(stepContext.context);
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
 
+    // DEBUG
+    console.log('unblockLookupEnd',unblockBotDetails, intent);
+
     switch (intent) {
 
       // Proceed to callback bot
       case 'promptConfirmYes':
-      case 'promptConfirmSendEmailYes':
-        unblockBotDetails.confirmLookIntoStep = true;
-        return await stepContext.next(unblockBotDetails);
+        unblockBotDetails.confirmLookIntoStep = false;
+        unblockBotDetails.unblockDirectDeposit = false;
+
+        const text = i18n.__('unblock_lookup_decline_final_text');
+        const link = i18n.__('unblock_lookup_decline_callback_link');
+        const linkText = i18n.__('unblock_lookup_decline_final_link_text');
+
+        adaptiveCard(stepContext, TextBlockWithLink(text, link, linkText));
+
+
+
+        return await stepContext.endDialog(unblockBotDetails);
 
       // Don't Proceed, ask for rating
       case 'promptConfirmNo':
-      case 'promptConfirmSendEmailNo':
 
         // Set remaining steps to false (skip to the rating step)
-        unblockBotDetails.confirmLookIntoStep = false;
-        unblockBotDetails.unblockDirectDeposit = false;
+        unblockBotDetails.confirmLookIntoStep = true;
+        unblockBotDetails.unblockDirectDeposit = true;
         const confirmLookIntoStepCloseMsg = i18n.__('confirmLookIntoStepCloseMsg');
 
         await adaptiveCard(stepContext, TextBlock(confirmLookIntoStepCloseMsg));

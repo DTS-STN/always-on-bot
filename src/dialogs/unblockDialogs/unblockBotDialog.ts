@@ -49,7 +49,7 @@ export class UnblockBotDialog extends ComponentDialog {
 
     // DEBUG
     // console.log('DEBUG: welcomeSteps:', unblockBotDetails);
-    await adaptiveCard(stepContext, TextBlock(i18n.__('unblockLookup_welcome_msg')));
+    await adaptiveCard(stepContext, TextBlock(i18n.__('unblock_lookup_welcome_msg')));
     return await stepContext.next(unblockBotDetails);
   }
 

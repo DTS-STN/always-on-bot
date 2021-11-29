@@ -70,7 +70,7 @@
 
          // Assert we got the welcome statement
          let reply = testAdapter.activityBuffer.shift();
-         const expectedMsg = i18n.__('unblockLookup_welcome_msg');
+         const expectedMsg = i18n.__('unblock_lookup_welcome_msg');
          assert.strictEqual(reply.text, expectedMsg);
          reply =  testAdapter.activityBuffer.shift();
          const confirmMsg = i18n.__('confirmLookIntoStepStandardMsg');

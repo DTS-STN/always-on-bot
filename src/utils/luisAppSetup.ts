@@ -11,7 +11,8 @@ export const LUISUnblockSetup = (stepContext:any) => {
   // Then change LUIZ appID
   if (
     stepContext.context.activity.locale.toLowerCase() === 'fr-ca' ||
-    stepContext.context.activity.locale.toLowerCase() === 'fr-fr'
+    stepContext.context.activity.locale.toLowerCase() === 'fr-fr' ||
+    stepContext.context.activity.locale.toLowerCase() === 'fr'
   ) {
     applicationId = process.env.LuisAppIdFR;
     endpointKey = process.env.LuisAPIKeyFR;

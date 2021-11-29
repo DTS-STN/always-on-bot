@@ -35,7 +35,8 @@ export const TextBlockWithLink = (text:string, link:string, linkText:string) => 
         'title': `${linkText}`,
         'url': `${link}`,
         'spacing' : 'medium',
-        'style': 'positive'
+        'style': 'positive',
+        'wrap': true
       }
     ]
   }

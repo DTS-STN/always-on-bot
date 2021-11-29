@@ -9,7 +9,7 @@ export const lookupUpdateSchema = (reason:any) => {
      'body': [
       {
        'type': 'TextBlock',
-       'text': `${i18n.__('unblockLookup_update_msg')}`,
+       'text': `${i18n.__('unblock_lookup_update_msg')}`,
        'wrap': true,
        'fontType': 'default'
       },
@@ -20,7 +20,7 @@ export const lookupUpdateSchema = (reason:any) => {
        'inlines': [
         {
           'type': 'TextRun',
-          'text': `${i18n.__('unblockLookup_update_details')}`
+          'text': `${i18n.__('unblock_lookup_update_details')}`
         },
         {
           'type': 'TextRun',

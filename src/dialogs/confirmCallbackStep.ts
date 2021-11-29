@@ -149,9 +149,9 @@ export class ConfirmCallbackStep extends ComponentDialog {
 
     // const closeMsg = i18n.__('confirmCallbackStepCloseMsg');
 
-    const closeMsg = i18n.__('unblockLookup_decline_callback_msg');
-    const link = i18n.__('unblockLookup_decline_callback_link');
-    const linkMsg = i18n.__('unblockLookup_decline_callback_link_msg');
+    const closeMsg = i18n.__('unblock_lookup_decline_callback_msg');
+    const link = i18n.__('unblock_lookup_decline_callback_link');
+    const linkMsg = i18n.__('unblock_lookup_decline_callback_link_msg');
 
     switch (intent) {
       // Proceed
