@@ -11,10 +11,7 @@ import { LuisRecognizer } from 'botbuilder-ai';
 
 import i18n from '../locales/i18nConfig';
 import {adaptiveCard, TextBlock, TextBlockWithLink} from '../../cards';
-import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
-import { UnblockDirectDepositStep, CONFIRM_DIRECT_DEPOSIT_STEP } from './unblockDirectDeposit';
-
-import { CallbackBotDetails } from '../callbackBotDetails';
+import { CONFIRM_DIRECT_DEPOSIT_STEP } from './unblockDirectDeposit';
 
 const TEXT_PROMPT = 'TEXT_PROMPT';
 const CHOICE_PROMPT = 'CHOICE_PROMPT';
