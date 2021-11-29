@@ -12,6 +12,7 @@ import { LuisRecognizer } from 'botbuilder-ai';
 import i18n from '../locales/i18nConfig';
 import {adaptiveCard, TextBlock, TextBlockWithLink} from '../../cards';
 import { CallbackBotDialog, CALLBACK_BOT_DIALOG } from '../callbackBotDialog';
+import { UnblockDirectDepositStep, CONFIRM_DIRECT_DEPOSIT_STEP } from './unblockDirectDeposit';
 
 import { CallbackBotDetails } from '../callbackBotDetails';
 
@@ -139,7 +140,12 @@ export class ConfirmLookIntoStep extends ComponentDialog {
       // Proceed
       case 'promptConfirmYes':
         unblockBotDetails.confirmLookIntoStep = true;
-        return await stepContext.next(unblockBotDetails);
+
+        // Do the direct deposit step
+        return await stepContext.replaceDialog(
+          CONFIRM_DIRECT_DEPOSIT_STEP,
+          unblockBotDetails
+        );
 
       // Don't Proceed, but confirm they don't want to
       case 'promptConfirmNo':
@@ -201,8 +207,6 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
         adaptiveCard(stepContext, TextBlockWithLink(text, link, linkText));
 
-
-
         return await stepContext.endDialog(unblockBotDetails);
 
       // Don't Proceed, ask for rating
@@ -210,11 +214,12 @@ export class ConfirmLookIntoStep extends ComponentDialog {
 
         // Set remaining steps to false (skip to the rating step)
         unblockBotDetails.confirmLookIntoStep = true;
-        unblockBotDetails.unblockDirectDeposit = true;
-        const confirmLookIntoStepCloseMsg = i18n.__('confirmLookIntoStepCloseMsg');
 
-        await adaptiveCard(stepContext, TextBlock(confirmLookIntoStepCloseMsg));
-        return await stepContext.endDialog(unblockBotDetails);
+        // Do the direct deposit step
+        return await stepContext.replaceDialog(
+          CONFIRM_DIRECT_DEPOSIT_STEP,
+          unblockBotDetails
+        );
 
       // Could not understand / None intent, try again
       default: {
