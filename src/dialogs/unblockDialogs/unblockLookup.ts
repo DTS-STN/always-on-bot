@@ -6,7 +6,7 @@ import {
   ChoiceFactory
 } from 'botbuilder-dialogs';
 
-import {LUISUnblockSetup} from '../../utils/LUISAppSetup';
+import {LUISUnblockSetup} from '../../utils/luisAppSetup';
 import { LuisRecognizer } from 'botbuilder-ai';
 
 import i18n from '../locales/i18nConfig';
@@ -133,7 +133,7 @@ export class ConfirmLookIntoStep extends ComponentDialog {
     const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.5);
 
     // DEBUG
-    // console.log('unblockLookupUserConfirm',unblockBotDetails, intent);
+    console.log('unblockLookupUserConfirm',unblockBotDetails, intent);
 
     switch (intent) {
       // Proceed

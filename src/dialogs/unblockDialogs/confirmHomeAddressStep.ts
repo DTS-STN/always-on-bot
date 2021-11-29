@@ -6,7 +6,7 @@ import {
 } from 'botbuilder-dialogs';
 
 import { LuisRecognizer } from 'botbuilder-ai';
-import {LUISUnblockSetup} from '../../utils/LUISAppSetup';
+import {LUISUnblockSetup} from '../../utils/luisAppSetup';
 
 import i18n from '../locales/i18nConfig';
 

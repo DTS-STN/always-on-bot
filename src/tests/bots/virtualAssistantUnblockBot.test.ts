@@ -4,7 +4,7 @@
  */
  import { ActivityTypes, ConversationState, MemoryStorage, TestAdapter, TurnContext, UserState } from 'botbuilder';
  import { ComponentDialog, Dialog, DialogSet, DialogTurnStatus } from 'botbuilder-dialogs';
- import { VirtualAssistantUnblockBot  } from '../../bots/VirtualAssistantUnblockBot';
+ import { VirtualAssistantUnblockBot  } from '../../bots/virtualAssistantUnblockBot';
  const assert = require('assert');
  import  i18n  from '../../dialogs/locales/i18nConfig';
  // TODO: change assert to chai or other third part lib instead of use nodejs default one

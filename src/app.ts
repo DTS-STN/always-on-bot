@@ -17,7 +17,7 @@ import {
 import { DialogSet } from 'botbuilder-dialogs';
 
 // This bot's main dialog.
-import { VirtualAssistantUnblockBot } from './bots/VirtualAssistantUnblockBot';
+import { VirtualAssistantUnblockBot } from './bots/virtualAssistantUnblockBot';
 
 // import i18n from './dialogs/locales/i18nConfig';
 

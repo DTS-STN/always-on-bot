@@ -12,6 +12,9 @@ export class CallbackRecognizer {
   private endpoint;
   constructor(lang: string) {
     // Then change LUIZ appID
+
+      console.log('CallbackRecognizer', lang);
+
     if (lang === 'fr') {
       this.applicationId = process.env.LuisCallbackAppIdFR;
       this.endpointKey = process.env.LuisCallbackAPIKeyFR;

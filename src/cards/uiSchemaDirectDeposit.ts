@@ -52,7 +52,7 @@ export const howToFindNumbersSchema = () => {
       {
         'spacing' : 'large',
         'type': 'Image',
-        'url': 'https://wornertcouture.ca/assets/cheque-visual.svg'
+        'url': 'cheque.gif'
       }
     ]
   }
