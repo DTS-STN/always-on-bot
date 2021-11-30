@@ -52,18 +52,18 @@ secrets:
       - name: SINGLE_SECRET_NAME
         value: oas-unblock-api-az-credentials
       - name: SECRET_LIST
-        value: "bdm-dev-oas-callback-luis-sp-id,bdm-dev-oas-callback-luis-sp-pass,bdm-dev-terraform-LuisAppIdEN,bdm-dev-terraform-LuisAPIKeyEN,bdm-dev-terraform-LuisAPIHostNameEN,bdm-dev-terraform-LuisCallbackAppIdEN,bdm-dev-terraform-LuisCallbackAPIKeyEN,bdm-dev-terraform-LuisCallbackAPIHostNameEN,bdm-dev-terraform-sp-id,bdm-dev-terraform-sp-pass,bdm-dev-terraform-LuisAppIdFR,bdm-dev-terraform-LuisAPIKeyFR,bdm-dev-terraform-LuisAPIHostNameFR,bdm-dev-terraform-LuisCallbackAppIdFR,bdm-dev-terraform-LuisCallbackAPIKeyFR,bdm-dev-terraform-LuisCallbackAPIHostNameFR"
+        value: "bdm-dev-terraform-LuisAppIdEN,bdm-dev-terraform-LuisAPIKeyEN,bdm-dev-terraform-LuisAPIHostNameEN,bdm-dev-terraform-LuisCallbackAppIdEN,bdm-dev-terraform-LuisCallbackAPIKeyEN,bdm-dev-terraform-LuisCallbackAPIHostNameEN,bdm-dev-decd-oas-unblock-bot-appid,bdm-dev-decd-oas-unblock-bot-password,bdm-dev-terraform-LuisAppIdFR,bdm-dev-terraform-LuisAPIKeyFR,bdm-dev-terraform-LuisAPIHostNameFR,bdm-dev-terraform-LuisCallbackAppIdFR,bdm-dev-terraform-LuisCallbackAPIKeyFR,bdm-dev-terraform-LuisCallbackAPIHostNameFR"
 extraEnv:
     - name: MicrosoftAppId
       valueFrom:
         secretKeyRef:
           name: oas-unblock-api-az-credentials
-          key: bdm-dev-oas-callback-luis-sp-id
+          key: bdm-dev-decd-oas-unblock-bot-appid
     - name: MicrosoftAppPassword
       valueFrom:
         secretKeyRef:
           name: oas-unblock-api-az-credentials
-          key: bdm-dev-oas-callback-luis-sp-pass
+          key: bdm-dev-decd-oas-unblock-bot-password
     - name: LuisAppIdFR
       valueFrom:
         secretKeyRef:
