@@ -136,7 +136,7 @@ export class UnblockBotDialog extends ComponentDialog {
     // console.log('UNBLOCK FINALSTEP: ', unblockBotDetails);
 
     // Check if a master error has occured
-    if (unblockBotDetails.masterError) {
+    if (unblockBotDetails !== undefined && unblockBotDetails.masterError) {
       const masterErrorMsg = i18n.__('masterErrorMsg');
       await stepContext.context.sendActivity(masterErrorMsg);
     }
