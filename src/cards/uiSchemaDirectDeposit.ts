@@ -44,15 +44,14 @@ export const howToFindNumbersSchema = () => {
         'wrap': true
       },
       {
-        'spacing' : 'medium',
         'type': 'TextBlock',
         'text': `${i18n.__('unblock_direct_deposit_how_to_bank')}`,
         'wrap': true
       },
       {
-        'spacing' : 'large',
         'type': 'Image',
-        'url': 'https://wornertcouture.ca/assets/cheque-visual.svg'
+        'url': `${i18n.__('unblock_direct_deposit_cheque_path')}`,
+        'altText': `${i18n.__('unblock_direct_deposit_cheque_altText')}`,
       }
     ]
   }
