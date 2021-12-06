@@ -55,7 +55,8 @@
         "lint-staged": "~11.1.2",
         "path": "^0.12.7",
         "restify": "~8.5.1",
-        "ts-node": "~10.2.1"
+        "ts-node": "~10.2.1",
+        "ts-sinon": "^2.0.2"
     },
     "devDependencies": {
         "@types/chai": "~4.2.22",
