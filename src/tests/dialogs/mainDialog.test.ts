@@ -1,63 +1,95 @@
 
-import { MessageFactory } from 'botbuilder';
-import { ComponentDialog, TextPrompt, WaterfallDialog } from 'botbuilder-dialogs';
+import { Activity, MessageFactory } from 'botbuilder';
+
+import {
+  ComponentDialog,
+  TextPrompt,
+  WaterfallDialog,
+  WaterfallStepContext
+} from 'botbuilder-dialogs';
+
 import { DialogTestClient, DialogTestLogger } from 'botbuilder-testing';
 import { MainDialog } from '../../dialogs/mainDialog';
-import  i18n  from '../../dialogs/locales/i18nConfig';
-const assert = require('assert');
+import i18n from '../../dialogs/locales/i18nConfig';
+import assert from 'assert';
+import chai from 'chai';
+import * as tsSinon from 'ts-sinon';
+import {
+  UnblockBotDialog,
+  UNBLOCK_BOT_DIALOG
+} from '../../dialogs/unblockDialogs/unblockBotDialog';
+
+chai.use(require('sinon-chai'));
 import { expect } from 'chai';
+import { CallbackRecognizer } from '../../dialogs/calllbackDialogs/callbackRecognizer';
+import { ConfirmLookIntoStep } from '../../dialogs/unblockDialogs/unblockLookup';
 
 /**
  * An waterfall dialog derived from MainDialog for testing
  */
 describe('MainDialog', () => {
-    describe('Should be able to initial callback dialog', () => {
-       // const testCases = require('./testData/MainDialogTestData');
+    describe('Should initialize the main bot dialog', () => {
+
         const sut = new MainDialog();
-      // Create array with test case data.
-      const standardMsg = i18n.__('confirmSendEmailStepStandardMsg');
-      const firstMsg = i18n.__('unblock_lookup_welcome_msg');
-      const secondMsg = i18n.__('confirmLookIntoStepStandardMsg');
-      const leaveMsg = i18n.__('confirmCallbackStepCloseMsg');
-      const testCases = [
-        { utterance: 'Yes, please', intent: 'go to unblock dialog', invokedDialogResponse: 'mainDialog mock invoked', taskConfirmationMessage: standardMsg },
-        { utterance: 'No,thanks', intent: 'Leave the dialog', invokedDialogResponse: ``, taskConfirmationMessage: leaveMsg }
-    ];
-        testCases.map((testData) => {
-            it(testData.intent, async () => {
+        const unblockBotDialog = new UnblockBotDialog();
 
-                const client = new DialogTestClient('test', sut, null, [new DialogTestLogger()]);
-
-                // Execute the test case
-                // console.log('test 2',client.conversationState)
-                // console.log('test 3',client.dialogTurnResult.result)
-                const reply = await client.sendActivity('');
-                //  let newUpdateReply = client.getNextReply();
-                expect(reply.text).to.be.equal( firstMsg);
-
-
-                //  console.log('test 3',newUpdateReply)
-                // reply = await client.sendActivity(testData.utterance);
-                const secondReply = client.getNextReply();
-                expect(secondReply.text).to.be.equal(secondMsg+' (1) Yes please! or (2) No thanks');
-                const realReply = await client.sendActivity(testData.utterance);
-                // let nextReply = client.getNextReply()
-                //  console.log('test 2',reply)
-
-                expect(realReply.text).to.be.equal('testData.taskConfirmationMessagte');
-                // assert.strictEqual(client.dialogTurnResult.status, 'waiting');
-
-                // reply = await client.sendActivity(testData.invokedDialogResponse);
-                //   assert.strictEqual(reply.text, 'Cancelling...');
-                //   assert.strictEqual(client.dialogTurnResult.status, 'complete');
-                });
+        const confirmLookInto = new ConfirmLookIntoStep();
+        sut.addDialog(unblockBotDialog);
+        unblockBotDialog.addDialog(confirmLookInto);
+        afterEach(() => {
+            tsSinon.default.restore();
         });
+
+        // Create array with test case data.
+        const testCases = [
+        {
+          initialData: {
+            locale: 'en',
+            masterError: 'null',
+            confirmLookIntoStep: null,
+            unblockDirectDeposit: null,
+            errorCount : {
+              confirmLookIntoStep: 0,
+              unblockDirectDeposit: 0
+            }
+          }
+        }
+      ];
+
+      testCases.map((testData) => {
+        it(`Should initialize the main dialog with locale ${testData.initialData.locale}`, async () => {
+          const client = new DialogTestClient('test', sut, testData.initialData, [
+            new DialogTestLogger()
+          ]);
+
+          // Execute the test case
+          const updatedActivity: Partial<Activity> = {
+            locale: 'en'
+          };
+          const reply = await client.sendActivity(updatedActivity);
+          expect(reply.locale).to.be.equal(testData.initialData.locale);
+        });
+
+        it(`Should set the unblockBot details object`, async () => {
+            const client = new DialogTestClient('test', sut, testData.initialData, [
+              new DialogTestLogger()
+            ]);
+
+            // Execute the test case
+            // const updatedActivity: Partial<Activity> = {
+            //     locale: 'en'
+            // };
+
+            // const reply = await client.sendActivity(updatedActivity);
+            // expect(reply.locale).to.be.equal(testData.initialData.locale);
+          });
+      });
     });
 
     describe('Should be able to get rate step', () => {
         const leaveMsg = i18n.__('confirmCallbackStepCloseMsg');
         const testCases = [
-            { utterance: 'No,thanks', intent: 'Leave the dialog', invokedDialogResponse: ``, taskConfirmationMessage: leaveMsg }
+            { utterance: 'No,thanks', intent: 'Should leave the dialog', invokedDialogResponse: ``, taskConfirmationMessage: leaveMsg }
         ];
 
         testCases.map((testData) => {
