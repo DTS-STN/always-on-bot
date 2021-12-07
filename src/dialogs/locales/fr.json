@@ -56,7 +56,7 @@
   "unblock_direct_deposit_account_name": " Le numéro de votre compte bancaire (7 chiffres).",
   "unblock_direct_deposit_how_to_cheques": "Tous les numéros se trouvent au bas de vos chèques personnels.",
   "unblock_direct_deposit_how_to_bank": "Vous pouvez également trouver ces numéros en visitant le site Web de votre institution financière ou en vous connectant à votre compte bancaire en ligne.",
-  "unblock_direct_deposit_cheque_path": "/src/assets/Attachments/cheque-fr.svg",
+  "unblock_direct_deposit_cheque_path": "chequeFR",
   "unblock_direct_deposit_cheque_altText": "An image of a cheque with the 3 numbers circled at the bottom",
   "unblock_direct_deposit_institute": "Quel est le numéro de votre institution financière (3 chiffres)?",
   "unblock_direct_deposit_institute_retry": "Hum, ce numéro d'institution financière ne semble pas valide. Essayez à nouveau.",
