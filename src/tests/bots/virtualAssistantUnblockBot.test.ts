@@ -35,7 +35,7 @@
      }
  }
 
- describe('CallbackBot Initial', () => {
+ describe('Unblock Bot Initial', () => {
      const testAdapter = new TestAdapter(async (context) => undefined);
 
      async function processActivity(activity, bot) {
@@ -43,7 +43,7 @@
          await bot.run(context);
      }
 
-     it('Shows welcome statement on member added and starts main dialog', async () => {
+     it('Displays text and an image describing where to find banking information for direct deposit auto-enrolement', async () => {
          const mockRootDialog = new MockRootDialog();
          const memoryStorage = new MemoryStorage();
          const conversationState = new ConversationState(memoryStorage)
