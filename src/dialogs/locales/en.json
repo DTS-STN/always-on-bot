@@ -30,7 +30,7 @@
   "unblock_lookup_welcome_msg": "Hi Mary, I’m your virtual assistant!",
   "unblock_lookup_update_msg": "I have nearly enough information to complete your automatic enrolment into the Old Age Security pension.",
   "unblock_lookup_update_reason": "However, the bank account I have for you appears to be outside of Canada.",
-  "unblock_lookup_update_prompt_msg": "I need to update your information in order to get you ready to receive your first payment on time. Do you have a bank account with a Canadian financial institution?",
+  "unblock_lookup_update_prompt_msg": "I need to update your information in order to get you ready to receive your first payment on time. \n\n Do you have a bank account with a Canadian financial institution?",
   "unblock_lookup_prompt_confirm_msg": "Ok, I just want to let you know that if you don't add your banking information, you will not be automatically enrolled. You will have to submit your application using the form. Are you sure you want to apply by yourself?",
   "unblock_lookup_prompt_confirm_opts": [
     "Yes, I am sure",
@@ -38,7 +38,7 @@
   ],
   "unblock_lookup_decline_final_text": "Ok, no problem. You can access the Old Age Security application form in the following link:",
   "unblock_lookup_decline_final_link_text": "Apply for Old Age Security pension",
-  "unblock_lookup_prompt_opts": ["Yes please", "No thanks"],
+  "unblock_lookup_prompt_opts": ["Yes, thank you", "No thanks"],
   "unblock_lookup_add_msg": "I have nearly enough information to complete your auto-enrolment into OAS.",
   "unblock_lookup_add_prompt_msg": "I just need to add your missing banking information to speed up our process and get you ready to receive your first payment on time. Does that sound good?",
   "unblock_lookup_decline_callback_msg": "Ok, no problem. You can access the manual OAS application form in the following link.",
@@ -50,7 +50,7 @@
   "unblock_direct_deposit_account_name": "Your 7-digit Account number.",
   "unblock_direct_deposit_how_to_cheques": "All numbers can be found at the bottom of any personal cheques.",
   "unblock_direct_deposit_how_to_bank": "You maybe also find these numbers by visiting your bank's website or contacting your bank's support line.",
-  "unblock_direct_deposit_cheque_path": "/src/assets/Attachments/cheque-en.svg",
+  "unblock_direct_deposit_cheque_path": "/assets/Attachments/cheque-en.svg",
   "unblock_direct_deposit_cheque_altText": "An image of a cheque with the 3 numbers circled at the bottom",
   "unblock_direct_deposit_institute": "What is your 3-digit institution number?",
   "unblock_direct_deposit_institute_retry": "Hmm, looks like this isn't a valid institution number, let's try again.",
@@ -93,5 +93,5 @@
   "confirmHomeAddressFailedErrorMsg": "Thank you! Because I can't find that address in my records, I'd suggest we have a Service Canada officer give you a call. Does that sound good?",
   "confirmSendEmailStepStandardMsg": "confirmSendEmailStepStandardMsg",
   "confirmLookIntoStepStandardMsg": "confirmLookIntoStepStandardMsg",
-  "unblockLookup_welcome_msg": "unblockLookup_welcome_msg"
+  "unblockLookup_welcome_msg": "Hi Mary, I’m your virtual assistant!"
 }
