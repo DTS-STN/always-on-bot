@@ -8,3 +8,6 @@ export TF_VAR_luis_authoring_instance_name="virtualassistantluisbdmdev.Authoring
 export TF_VAR_luis_sku_name="S0"
 export TF_VAR_location="westus"
 export TF_VAR_resource_group_name="virtual-assistant-dev"
+
+
+# Note, LUIS vault is different bdmDevDPSKeyVault for dev
