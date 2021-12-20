@@ -167,7 +167,7 @@ Enter text in the emulator. The text will be echoed back by the bot.
 
 To learn more about deploying a bot to Azure, see [Deploy your bot to Azure](https://aka.ms/azuredeployment) for a complete list of deployment instructions.
 
-You will need to be added to the Azure Resource Group ([oas-unlock-bot-bdm-dev](https://portal.azure.com/#@014gc.onmicrosoft.com/asset/HubsExtension/ResourceGroups/subscriptions/19bddd49-8e73-4699-930d-74baa7e5751e/resourceGroups/oas-unlock-bot-bdm-dev)) and that it be added to [Traefik](https://traefik-dev.bdm-dev.dts-stn.com/dashboard/).
+You will need to be added to the Azure Resource Group ([oas-unblock-bot-bdm-dev](https://portal.azure.com/#@014gc.onmicrosoft.com/asset/HubsExtension/ResourceGroups/subscriptions/19bddd49-8e73-4699-930d-74baa7e5751e/resourceGroups/oas-unblock-bot-bdm-dev)) and that it be added to [Traefik](https://traefik-dev.bdm-dev.dts-stn.com/dashboard/).
 
 - Eric Dube
 - Ben Larabie
