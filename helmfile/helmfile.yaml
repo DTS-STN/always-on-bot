@@ -9,14 +9,14 @@ environments:
 
 releases:
 
-  - name: oasubapi-{{ requiredEnv "BRANCH" }}
-    chart: ../helm/charts/oas-unblock-bot-bdm-dev
-    namespace: oas-ub-{{ requiredEnv "BRANCH" }}
+  - name: alwaysonbotapi-{{ requiredEnv "BRANCH" }}
+    chart: ../helm/charts/always-on-bot-bdm-dev
+    namespace: always-on-bot-backend-{{ requiredEnv "BRANCH" }}
     values:
-      - overrides/oas-unblock-bot-bdm-dev-api.yaml.gotmpl
+      - overrides/always-on-bot-bdm-dev-api.yaml.gotmpl
     labels:
         category: prototype
-        app: oas-unblock-bot-bdm-dev
+        app: always-on-bot-bdm-dev
         tier: api
     wait: false
     installed: true
