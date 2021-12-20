@@ -7,9 +7,9 @@ terraform {
   backend "azurerm" {
     resource_group_name  = "DPSTerraformStore"
     storage_account_name = "esdbdmdecdtfstate"
-    container_name       = "oas-unblock-bot-bdm-dev"
+    container_name       = "always-on-bot-bdm-dev"
     key                  = "terraform.tfstate"
-  }  
+  }
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"

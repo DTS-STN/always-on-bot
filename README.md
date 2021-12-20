@@ -1,4 +1,4 @@
-# oas-unblock-Bot
+# always-on-bot
 
 ## Summary
 
@@ -16,7 +16,7 @@ The project is building a chatbot to help OAS user to understand and know their 
 
 ## Table of Contents
 
-- [oas-unblock-Bot](#oas-unblock-bot)
+- [always-on-Bot](#always-on-bot)
   - [Summary](#summary)
   - [Table of Contents](#table-of-contents)
   - [Glossary](#glossary)
@@ -70,7 +70,7 @@ Follow these steps to get started.
 - Clone the repository
 
 ```bash
-git clone https://github.com/DTS-STN/oas-unblock-bot
+git clone https://github.com/DTS-STN/always-on-bot
 ```
 
 or
@@ -144,7 +144,7 @@ Workspaces:
 - Launch Bot Framework Emulator
 - File -> Open Bot
 - Enter a Bot URL of `http://localhost:3978/api/messages`
-- Enter a Dev Bot URL `https://dts-oas-unblock-bot-dev.bdm-dev.dts-stn.com/api/messages`
+- Enter a Dev Bot URL `https://dts-always-on-bot-dev.bdm-dev.dts-stn.com/api/messages`
 - if you are using docker container or connect to dev env from your local laptop, please download ngrok and config as below ![config-ngrok](config_ngrok.png)
 - otherwise do not need this step
 - Enter MicrosoftAppId and MicrosoftAppPassword from your .env file
@@ -157,8 +157,8 @@ Enter text in the emulator. The text will be echoed back by the bot.
 
 - Access LUIS with your GoC email address
 - Make sure you have access to the projects
-  - [oas-unblock-en](https://www.luis.ai/applications/8ffba8be-f92e-401e-821b-ac462772ab7c/versions/0.1/build/intents)
-  - [oas-unblock-fr](https://www.luis.ai/applications/83f33ed1-f700-4bc8-bc50-98d4babffdba/versions/0.1/build/intents)
+  - [virtual-assistant-en](https://www.luis.ai/applications/8ffba8be-f92e-401e-821b-ac462772ab7c/versions/0.1/build/intents)
+  - [virtual-assistant-fr](https://www.luis.ai/applications/83f33ed1-f700-4bc8-bc50-98d4babffdba/versions/0.1/build/intents)
 - Follow tour steps there to learn how to create and edit intent
 - Make sure to train and publish your app in both environments
 - Make sure that your .env variables are set to use the [FR](https://www.luis.ai/applications/83f33ed1-f700-4bc8-bc50-98d4babffdba/versions/0.1/manage/resources) and [EN](https://www.luis.ai/applications/8ffba8be-f92e-401e-821b-ac462772ab7c/versions/0.1/manage/resources) bot keys
