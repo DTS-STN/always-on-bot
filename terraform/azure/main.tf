@@ -1,12 +1,12 @@
-resource "azurerm_resource_group" "oas_unblock_luis" {
+resource "azurerm_resource_group" "virtual_assistant_luis" {
   name     = "${var.resource_group_name}"
   location = "${var.location}"
 }
 
 #LUIS
-resource "azurerm_cognitive_account" "luis_oas_unblock" {
+resource "azurerm_cognitive_account" "luis_virtual_assistant" {
   name                = "${var.luis_instance_name}"
-  location            = azurerm_resource_group.oas_unblock_luis.location
+  location            = azurerm_resource_group.virtual_assistant_luis.location
   resource_group_name = "${var.resource_group_name}"
   kind                = "LUIS"
 
@@ -17,9 +17,9 @@ resource "azurerm_cognitive_account" "luis_oas_unblock" {
 }
 }
 
-resource "azurerm_cognitive_account" "luis_authoring_oas_unblock" {
+resource "azurerm_cognitive_account" "luis_virtual_assistant-authoring" {
   name                = "${var.luis_authoring_instance_name}"
-  location            = azurerm_resource_group.oas_unblock_luis.location
+  location            = azurerm_resource_group.virtual_assistant_luis.location
   resource_group_name = "${var.resource_group_name}"
   kind                = "LUIS.Authoring"
   #Authoring only has one SKU tier
