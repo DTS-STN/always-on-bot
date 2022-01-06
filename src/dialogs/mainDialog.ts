@@ -1,108 +1,105 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+import { InputHints, StatePropertyAccessor, TurnContext } from 'botbuilder';
+import { LuisRecognizer } from 'botbuilder-ai';
 import {
-  ComponentDialog,
-  ChoiceFactory,
-  ChoicePrompt,
-  DialogSet,
-  DialogTurnStatus,
-  WaterfallDialog,
-  DialogTurnResult,
-  WaterfallStepContext,
-  DialogState
+    ChoiceFactory, ChoicePrompt, ComponentDialog,
+    DialogSet,
+    DialogState,
+    DialogTurnResult,
+    DialogTurnStatus, ListStyle,
+    PromptValidatorContext, TextPrompt,
+    WaterfallDialog,
+    WaterfallStepContext
 } from 'botbuilder-dialogs';
+import { Choice } from '../../node_modules/botbuilder-dialogs/src/choices/findChoices';
+import { LUISAOSetup } from '../utils/luisAppSetup';
+import i18n from './locales/i18nconfig';
+import { oASBenifitDialog, OAS_BENEFIT_DIALOG_STEP } from './OASBenifit/oASBenifitDialog';
+import { UpdateProfileDialog, UPDATE_PROFILE_DIALOG_STEP } from './UpdateProfile/updateProfileDialog';
 
-import { TurnContext, StatePropertyAccessor } from 'botbuilder';
 
-import i18n from './locales/i18nConfig';
-import { UnblockBotDetails } from './unblockDialogs/unblockBotDetails';
-import {
-  UNBLOCK_BOT_DIALOG,
-  UnblockBotDialog
-} from './unblockDialogs/unblockBotDialog';
-
+const MAIN_WATERFALL_DIALOG = 'mainWaterfallDialog';
 const CHOICE_PROMPT = 'CHOICE_PROMPT';
 
-// The String ID name for the main dialog
-const MAIN_DIALOG = 'MAIN_DIALOG';
-
-// The String ID of the waterfall dialog that exists in the main dialog
-const MAIN_WATERFALL_DIALOG = 'MAIN_WATERFALL_DIALOG';
+export const MAIN_DIALOG_STEP = 'MAIN_DIALOG_STEP';
 
 export class MainDialog extends ComponentDialog {
-  constructor() {
-    super(MAIN_DIALOG);
 
-    // Add the unblockBot dialog to the dialog
-    this.addDialog(new UnblockBotDialog());
-    this.addDialog(new ChoicePrompt(CHOICE_PROMPT));
+    constructor() {
+        super(MAIN_DIALOG_STEP);
 
-    this.addDialog(
-      new WaterfallDialog(MAIN_WATERFALL_DIALOG, [
-        this.initialStep.bind(this),
-        this.rateStep.bind(this),
-        this.finalStep.bind(this)
-      ])
-    );
+        if (!UpdateProfileDialog) throw new Error('[MainDialog]: Missing parameter \'updateProfileDialog\' is required');
 
-    this.initialDialogId = MAIN_WATERFALL_DIALOG;
-  }
+        // Define the main dialog and its related components.
+        // This is a sample "book a flight" dialog.
+        this.addDialog(new TextPrompt('TEXT_PROMPT'))
+            .addDialog(new UpdateProfileDialog())
+            .addDialog(new oASBenifitDialog())
+            .addDialog(new ChoicePrompt(CHOICE_PROMPT,this.CustomChoiceValidator))
+            .addDialog(new WaterfallDialog(MAIN_WATERFALL_DIALOG, [
+                this.introStep.bind(this),
+                this.actStep.bind(this)
+            ]));
 
-  /**
-   * The run method handles the incoming activity (in the form of a TurnContext) and passes it through the dialog system.
-   * If no dialog is active, it will start the default dialog.
-   * @param {*} turnContext
-   * @param {*} accessor
-   */
-  public async run(
-    turnContext: TurnContext,
-    accessor: StatePropertyAccessor<DialogState>
-  ) {
-    const dialogSet = new DialogSet(accessor);
-    dialogSet.add(this);
-
-    const dialogContext = await dialogSet.createContext(turnContext);
-    const results = await dialogContext.continueDialog();
-    if (results.status === DialogTurnStatus.empty) {
-      await dialogContext.beginDialog(this.id);
+        this.initialDialogId = MAIN_WATERFALL_DIALOG;
     }
-  }
 
-  /**
-   * Initial step in the waterfall. This will kick of the callbackBot dialog
-   */
-  async initialStep(
-    stepContext: WaterfallStepContext
-  ): Promise<DialogTurnResult> {
-    // Here we are start the unblock dialog in the prototype,
-    // in the real case, the callback flow will trigger from unblock bot, which
-    // should run in a different instance
-    const unblockBotDetails = new UnblockBotDetails();
-    return await stepContext.beginDialog(UNBLOCK_BOT_DIALOG, unblockBotDetails);
-  }
+    /**
+     * The run method handles the incoming activity (in the form of a DialogContext) and passes it through the dialog system.
+     * If no dialog is active, it will start the default dialog.
+     * @param {TurnContext} context
+     */
+    public async run(context: TurnContext, accessor: StatePropertyAccessor<DialogState>) {
+        const dialogSet = new DialogSet(accessor);
+        dialogSet.add(this);
+        const dialogContext = await dialogSet.createContext(context);
+        const results = await dialogContext.continueDialog();
+        if (results.status === DialogTurnStatus.empty) {
+            await dialogContext.beginDialog(this.id);
+        }
+    }
 
-  /**
-   * Rate step in the waterfall.
-   * ask users to review the user experience for future improvement
-   */
-  async rateStep(stepContext: WaterfallStepContext): Promise<DialogTurnResult> {
-    const feedbackMsg = i18n.__('mainDialogFeedbackMsg');
+    /**
+     * First step in the waterfall dialog. Prompts the user for a command.
+     */
 
-    // Running a prompt here means the next WaterfallStep will be run when the user's response is received.
-    return await stepContext.prompt(CHOICE_PROMPT, {
-      prompt: feedbackMsg,
-      choices: ChoiceFactory.toChoices(['😡', '🙁', '😐', '🙂', '😄'])
-    });
-  }
+    // validates all the prompts
+     private async CustomChoiceValidator(promptContext: PromptValidatorContext<Choice>) {
+        return true;
+    }
+    private async introStep(stepContext: WaterfallStepContext): Promise<DialogTurnResult> {
+        
+        let promptMsg = i18n.__('welcomeChoicePromptMain');
+        let promptOptions: Array<string>;
+        promptOptions = i18n.__('welcomeChoicesMain');
+        return await stepContext.prompt(CHOICE_PROMPT, {
+            prompt: promptMsg,
+            choices: ChoiceFactory.toChoices(promptOptions),
+            style: ListStyle.suggestedAction
+        });
+         await stepContext.next(stepContext);
+    }
 
-  /**
-   * This is the final step in the main waterfall dialog.
-   */
-  async finalStep(
-    stepContext: WaterfallStepContext
-  ): Promise<DialogTurnResult> {
-    const greatDayMsg = i18n.__('mainDialogGreatDayMsg');
+    /**
+     * Second step in the waterall.  This will use LUIS to find the update profile and Question about OASbenefit.
+     * Then, it hands off to the Update Profile dialog or Question about OASbenefit based on users's decision.
+     */
+    private async actStep(stepContext: WaterfallStepContext): Promise<DialogTurnResult> {
+        const recognizer = LUISAOSetup(stepContext);
+        const recognizerResult = await recognizer.recognize(stepContext.context);
+        const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.7);
+        switch (intent) {
+            case 'UpdateProfile':
+                return await stepContext.beginDialog(UPDATE_PROFILE_DIALOG_STEP, UpdateProfileDialog);
+            case 'QuestionaboutOASbenefit':
+                return await stepContext.beginDialog(OAS_BENEFIT_DIALOG_STEP, oASBenifitDialog);
+            default:
+                // Catch all for unhandled intents
+                const didntUnderstandMessageText = 'Sorry i didn\'t understand that, try asking me different question';
+                await stepContext.context.sendActivity(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+        }
+        return await stepContext.next();
+    }
 
-    await stepContext.context.sendActivity(greatDayMsg);
-    // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is the end.
-    return await stepContext.endDialog();
-  }
 }
