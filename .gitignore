@@ -1,0 +1,17 @@
+node_modules/
+*.js.map
+.env
+.history
+.config/.env.local
+build
+dist
+**/.DS_Store
+.nyc_output
+# Local .terraform directories
+**/.terraform/*
+**/*.json
+!example.json
+*.pfx
+# .tfstate files
+*.tfstate
+*.tfstate.*
