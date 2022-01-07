@@ -1,3 +1,7 @@
+# provider keeps the state of all the azure resources
+# resource_group_name and storage_account_name are managed by SRE team (TODO Ben, confirm this is best).
+# container_name needs to be precreated for this to work (ask Admin or SRE team)
+
 provider "azurerm" {
   features {}
 }
