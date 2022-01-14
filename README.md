@@ -6,8 +6,8 @@ Bot Framework v4 application.
 
 This bot has been created using [Bot Framework](https://dev.botframework.com). The project is building a chatbot to help OAS user to understand and know their pension information.
 
-**Front-End app**: The [Virtual Assistant Web App code repo is located here](https://github.com/DTS-STN/Oas-Unblock-Web-App).
-**Demo**: [OAS Unblock bot is online here](https://oas-unblock-web-app-main.bdm-dev.dts-stn.com/).
+- **Front-End app**: The [Virtual Assistant Web App code repo is located here](https://github.com/DTS-STN/Oas-Unblock-Web-App).
+- **Demo**: [OAS Unblock bot is online here](https://oas-unblock-web-app-main.bdm-dev.dts-stn.com/).
 
 ## Build Status
 
