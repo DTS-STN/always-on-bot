@@ -69,3 +69,4 @@ Always On Bot [Terraform is configured here](https://teamcity.dts-stn.com/buildC
 ## Config Changelog
 
 - 2021/12/21: les.lakewood@hrsdc-rhdcc.gc.ca - Initial Draft based on oas-unblock-bot
+- 2022/01/07: gurunadham.buddepu@ca.ey.com - Always-on bot first draft pushed
