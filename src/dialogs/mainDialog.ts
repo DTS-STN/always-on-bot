@@ -1,21 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { InputHints, StatePropertyAccessor, TurnContext } from 'botbuilder';
-import { LuisRecognizer } from 'botbuilder-ai';
+import { StatePropertyAccessor, TurnContext } from 'botbuilder';
 import {
-    ChoiceFactory, ChoicePrompt, ComponentDialog,
+    ChoicePrompt, ComponentDialog,
     DialogSet,
     DialogState,
     DialogTurnResult,
-    DialogTurnStatus, ListStyle,
-    PromptValidatorContext, TextPrompt,
+    DialogTurnStatus, PromptValidatorContext, TextPrompt,
     WaterfallDialog,
     WaterfallStepContext
 } from 'botbuilder-dialogs';
 import { Choice } from '../../node_modules/botbuilder-dialogs/src/choices/findChoices';
-import { LUISAOSetup } from '../utils/luisAppSetup';
-import i18n from './locales/i18nconfig';
+import { CommonPromptValidatorModel } from '../models/commonPromptValidatorModel';
+import { FeedbackDialog, FeedBack_Dialog } from './Common/FeedbackDialog';
 import { oASBenifitDialog, OAS_BENEFIT_DIALOG_STEP } from './OASBenifit/oASBenifitDialog';
+import { CommonChoiceCheckDialog, COMMON_CHOICE_CHECK_DIALOG } from './UpdateProfile/UpdatePhoneNumber/commonChoiceCheckDialog';
 import { UpdateProfileDialog, UPDATE_PROFILE_DIALOG_STEP } from './UpdateProfile/updateProfileDialog';
 
 
@@ -35,6 +34,8 @@ export class MainDialog extends ComponentDialog {
         // This is a sample "book a flight" dialog.
         this.addDialog(new TextPrompt('TEXT_PROMPT'))
             .addDialog(new UpdateProfileDialog())
+            .addDialog(new FeedbackDialog())
+            .addDialog(new CommonChoiceCheckDialog())
             .addDialog(new oASBenifitDialog())
             .addDialog(new ChoicePrompt(CHOICE_PROMPT,this.CustomChoiceValidator))
             .addDialog(new WaterfallDialog(MAIN_WATERFALL_DIALOG, [
@@ -70,36 +71,34 @@ export class MainDialog extends ComponentDialog {
     }
     private async introStep(stepContext: WaterfallStepContext): Promise<DialogTurnResult> {
         
-        let promptMsg = i18n.__('welcomeChoicePromptMain');
-        let promptOptions: Array<string>;
-        promptOptions = i18n.__('welcomeChoicesMain');
-        return await stepContext.prompt(CHOICE_PROMPT, {
-            prompt: promptMsg,
-            choices: ChoiceFactory.toChoices(promptOptions),
-            style: ListStyle.suggestedAction
-        });
-         await stepContext.next(stepContext);
+       let commonPromptValidatorModel = new CommonPromptValidatorModel(
+        ["IwanttoUpdateMyPersonalInformation", "IhaveaQuestionAboutOASPension"],
+        3,
+        'MainDialog'
+    );
+    //call dialog
+    return await stepContext.beginDialog(COMMON_CHOICE_CHECK_DIALOG, commonPromptValidatorModel); 
     }
-
-    /**
-     * Second step in the waterall.  This will use LUIS to find the update profile and Question about OASbenefit.
-     * Then, it hands off to the Update Profile dialog or Question about OASbenefit based on users's decision.
-     */
+    
     private async actStep(stepContext: WaterfallStepContext): Promise<DialogTurnResult> {
-        const recognizer = LUISAOSetup(stepContext);
-        const recognizerResult = await recognizer.recognize(stepContext.context);
-        const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.7);
-        switch (intent) {
-            case 'UpdateProfile':
-                return await stepContext.beginDialog(UPDATE_PROFILE_DIALOG_STEP, UpdateProfileDialog);
-            case 'QuestionaboutOASbenefit':
-                return await stepContext.beginDialog(OAS_BENEFIT_DIALOG_STEP, oASBenifitDialog);
-            default:
-                // Catch all for unhandled intents
-                const didntUnderstandMessageText = 'Sorry i didn\'t understand that, try asking me different question';
-                await stepContext.context.sendActivity(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
-        }
-        return await stepContext.next();
-    }
+        const commonPromptValidatorModel = stepContext.result as CommonPromptValidatorModel;
 
+        if (commonPromptValidatorModel != null && commonPromptValidatorModel.status)
+        {
+            switch (commonPromptValidatorModel.result) {
+                case 'IwanttoUpdateMyPersonalInformation':
+                    return await stepContext.beginDialog(UPDATE_PROFILE_DIALOG_STEP, UpdateProfileDialog);
+                case 'IhaveaQuestionAboutOASPension':
+                    return await stepContext.beginDialog(OAS_BENEFIT_DIALOG_STEP,UpdateProfileDialog); 
+            }
+        }
+        else
+        {
+            return stepContext.beginDialog(FeedBack_Dialog, FeedbackDialog);
+            return await stepContext.endDialog();
+        }
+    }
 }
+   
+
+

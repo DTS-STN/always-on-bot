@@ -42,7 +42,6 @@ export class VirtualassistantAOBot extends ActivityHandler {
                 if (member.id !== context.activity.recipient.id) {
                     await context.sendActivity(i18n.__("welcomeVirtualAssistantMessage"));
                     await context.sendActivity(i18n.__("welcomeProfileStatement"));
-                    await context.sendActivity(i18n.__("welcomeHelpStatement"));
                     await (dialog as MainDialog).run(context, conversationState.createProperty<DialogState>('DialogState'));
                 }
             }

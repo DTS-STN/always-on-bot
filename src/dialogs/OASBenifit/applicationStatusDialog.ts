@@ -1,28 +1,34 @@
 import {
-    ComponentDialog, ConfirmPrompt, WaterfallDialog
+    ComponentDialog, ConfirmPrompt, WaterfallDialog,PromptValidatorContext, ChoiceFactory,Choice,ListStyle,ChoicePrompt, WaterfallStepContext,DialogTurnResult
 } from 'botbuilder-dialogs';
 import { ContinueAndFeedbackDialog, CONTINUE_AND_FEEDBACK_DIALOG_STEP } from '../Common/continueAndFeedbackDialog';
 import i18n from '../locales/i18nconfig';
+import { COMMON_CHOICE_CHECK_DIALOG,CommonChoiceCheckDialog } from '../UpdateProfile/UpdatePhoneNumber/commonChoiceCheckDialog';
+
+import { CommonPromptValidatorModel } from '../../models/commonPromptValidatorModel';
+
 const WATERFALL_DIALOG = 'waterfallDialog';
 const CONFIRM_PROMPT = 'confirmPrompt';
 const TEXT_PROMPT = 'textPrompt';
 
-export const DATE_OF_NEXT_PAYMENT_DIALOG_STEP = 'DATE_OF_NEXT_PAYMENT_DIALOG_STEP';
+export const APPLICATION_STATUS_DIALOG_STEP = 'APPLICATION_STATUS_DIALOG_STEP';
 
 // Define the main dialog and its related components.
 
-export class dateOfNextPaymentDialog extends ComponentDialog {
+export class ApplicationStatusDialog extends ComponentDialog {
     constructor() {
-        super(DATE_OF_NEXT_PAYMENT_DIALOG_STEP);
+        super(APPLICATION_STATUS_DIALOG_STEP);
 
         this.addDialog(new ConfirmPrompt(CONFIRM_PROMPT))
             .addDialog(new ContinueAndFeedbackDialog())
             .addDialog(new WaterfallDialog(WATERFALL_DIALOG, [
+               
                 this.checkProfileStep.bind(this)
             ]));
 
         this.initialDialogId = WATERFALL_DIALOG;
     }
+    
    /**
    * This is the final step in the main waterfall dialog.
    * Bot displays the Payment due amount and next payment details..etc.

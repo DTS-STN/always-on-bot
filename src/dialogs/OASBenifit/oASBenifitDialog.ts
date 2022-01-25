@@ -7,13 +7,15 @@ import {
     Choice, ChoiceFactory, ChoicePrompt, ComponentDialog, DialogTurnResult, ListStyle,
     PromptValidatorContext, TextPrompt,
     WaterfallDialog,
-    WaterfallStepContext
+    WaterfallStepContext,
+
 } from 'botbuilder-dialogs';
 import { LUISAOSetup } from '../../utils/luisAppSetup';
 import i18n from '../locales/i18nconfig';
-import { dateOfNextPaymentDialog, DATE_OF_NEXT_PAYMENT_DIALOG_STEP } from '../OASBenifit/dateOfNextPaymentDialog';
-import { PaymentChangeDailog, PAYMENT_CHANGE_DIALOG_STEP } from '../OASBenifit/paymentChangeDailog';
-
+import { APPLICATION_STATUS_DIALOG_STEP,ApplicationStatusDialog } from './applicationStatusDialog';
+import { CommonPromptValidatorModel } from '../../models/commonPromptValidatorModel';
+import { COMMON_CHOICE_CHECK_DIALOG,CommonChoiceCheckDialog } from '../UpdateProfile/UpdatePhoneNumber/commonChoiceCheckDialog';
+import { FeedBack_Dialog,FeedbackDialog } from '../Common/FeedbackDialog';
 
 const WATERFALL_DIALOG = 'waterfallDialog';
 const CHOISE_PROMPT = 'CHOISE_PROMPT';
@@ -28,52 +30,50 @@ export class oASBenifitDialog extends ComponentDialog {
         super(OAS_BENEFIT_DIALOG_STEP);
 
         this.addDialog(new TextPrompt(TEXT_PROMPT))
+            .addDialog(new ApplicationStatusDialog())
             .addDialog(new ChoicePrompt(CHOISE_PROMPT,this.CustomChoiceValidator))
-            .addDialog(new PaymentChangeDailog())
-            .addDialog(new dateOfNextPaymentDialog())
             .addDialog(new WaterfallDialog(WATERFALL_DIALOG, [
-                this.continueStep.bind(this),
+                this.checkApplicationStatusStep.bind(this),
                 this.selectionStep.bind(this)
             ]));
 
         this.initialDialogId = WATERFALL_DIALOG;
     }
+
     private async CustomChoiceValidator(promptContext: PromptValidatorContext<Choice>) {
         return true;
     }
-     /**
-     * First step in the waterfall dialog. Prompts the user for a command.
-     */
-    public async continueStep(stepContext: WaterfallStepContext): Promise<DialogTurnResult> {
-        const prompt = i18n.__('oasBenifitChoicePrompt');
-        let choices: Array<string>;
-        choices = i18n.__('oasBenifitChoices');
-        return await stepContext.prompt(CHOISE_PROMPT, {
-            prompt: prompt,
-            choices: ChoiceFactory.toChoices(choices),
-            style: ListStyle.suggestedAction
-        });
+    async checkApplicationStatusStep(stepContext: WaterfallStepContext): Promise<DialogTurnResult> {
+
+        let commonPromptValidatorModel = new CommonPromptValidatorModel(
+            ["WhatisMyApplicationStatus"],
+            4,
+            'OASBenefit'
+        );
+        return await stepContext.beginDialog(COMMON_CHOICE_CHECK_DIALOG, commonPromptValidatorModel);
     }
+     
    /**
    * This is the final step in the main waterfall dialog.
    * Bot promts the 'Date of Next Payment' and 'Payment amount change'
    * Users selects the one of the promts.
    */
-    public async selectionStep(stepContext: WaterfallStepContext): Promise<DialogTurnResult> {
-        const recognizer = LUISAOSetup(stepContext);
-        const recognizerResult = await recognizer.recognize(stepContext.context);
-        // Top intent tell us which cognitive service to use.
-        const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.7);
-        switch (intent) {
-            case 'DateOfNextPayment':
-                return await stepContext.replaceDialog(DATE_OF_NEXT_PAYMENT_DIALOG_STEP, dateOfNextPaymentDialog);
-            case 'Paymentamountchange':
-                    return await stepContext.replaceDialog(PAYMENT_CHANGE_DIALOG_STEP, PaymentChangeDailog);
-            default:
-                // Catch all for unhandled intents
-                const didntUnderstandMessageText = 'Sorry i didn\'t understand that, try asking me different question';
-                await stepContext.context.sendActivity(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+
+    private async selectionStep(stepContext: WaterfallStepContext): Promise<DialogTurnResult> {
+        const commonPromptValidatorModel = stepContext.result as CommonPromptValidatorModel;
+
+        if (commonPromptValidatorModel != null && commonPromptValidatorModel.status)
+        {
+            switch (commonPromptValidatorModel.result) {
+                case 'WhatisMyApplicationStatus':
+                    return await stepContext.replaceDialog(APPLICATION_STATUS_DIALOG_STEP, ApplicationStatusDialog)
+            }
         }
-        return await stepContext.next();
+        else
+        {
+            return stepContext.beginDialog(FeedBack_Dialog, FeedbackDialog);
+            return await stepContext.endDialog();
+        }
     }
 }
+    

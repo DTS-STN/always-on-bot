@@ -1,27 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
-import { InputHints } from 'botbuilder';
-import { LuisRecognizer } from 'botbuilder-ai';
 import {
-    Choice, ChoiceFactory,
-    ChoicePrompt, ComponentDialog,
-    ConfirmPrompt, ListStyle,
-    PromptValidatorContext, TextPrompt,
-    WaterfallDialog
+    Choice, ChoicePrompt, ComponentDialog, DialogTurnResult, PromptValidatorContext, TextPrompt,
+    WaterfallDialog,
+    WaterfallStepContext
 } from 'botbuilder-dialogs';
-import { LUISAOSetup } from '../../utils/luisAppSetup';
+import { CommonPromptValidatorModel } from '../../models/commonPromptValidatorModel';
 import { ContinueAndFeedbackDialog } from '../Common/continueAndFeedbackDialog';
-import i18n from '../locales/i18nconfig';
-import { DirectDepositDetails } from './DirectDeposit/directDepositDetails';
-import { DirectDepositDialog, DIRECT_DEPOSIT_DIALOG_STEP } from './DirectDeposit/directDepositDialog';
+import { FeedbackDialog, FeedBack_Dialog } from '../Common/FeedbackDialog';
 import { UpdateAddressDialog, UPDATE_ADDRESS_DIALOG_STEP } from './UpdateAddress/updateAddressDialog';
+import { CommonChoiceCheckDialog, COMMON_CHOICE_CHECK_DIALOG } from './UpdatePhoneNumber/commonChoiceCheckDialog';
+import { UpdateMyPhoneDialog } from './UpdatePhoneNumber/updateMyPhoneDialog';
 
-const CONFIRM_PROMPT = 'confirmPrompt';
-const continue_And_Feedback_Dialog = 'ContinueAndFeedbackDialog';
+
+
 const TEXT_PROMPT = 'textPrompt';
 const WATERFALL_DIALOG = 'waterfallDialog';
 const CHOICE_PROMPT = 'CHOICE_PROMPT';
+const UPDATE_PHONE_NUMBER_DIALOG_STEP = 'UPDATE_PHONE_NUMBER_DIALOG_STEP';
 
 export const UPDATE_PROFILE_DIALOG_STEP = 'UPDATE_PROFILE_DIALOG_STEP';
 // Define the main dialog and its related components.
@@ -30,11 +26,11 @@ export class UpdateProfileDialog extends ComponentDialog {
         super(UPDATE_PROFILE_DIALOG_STEP);
 
         this.addDialog(new TextPrompt(TEXT_PROMPT))
-            .addDialog(new ChoicePrompt(CHOICE_PROMPT, this.CustomChoiceValidator))
-            .addDialog(new ContinueAndFeedbackDialog())
-            .addDialog(new DirectDepositDialog())
+            .addDialog(new UpdateMyPhoneDialog())
             .addDialog(new UpdateAddressDialog())
-            .addDialog(new ConfirmPrompt(CONFIRM_PROMPT))
+            .addDialog(new CommonChoiceCheckDialog())
+            .addDialog(new ContinueAndFeedbackDialog())
+            .addDialog(new ChoicePrompt(CHOICE_PROMPT, this.CustomChoiceValidator))
             .addDialog(new WaterfallDialog(WATERFALL_DIALOG, [
                 this.checkProfileStep.bind(this),
                 this.routingStep.bind(this)
@@ -42,43 +38,42 @@ export class UpdateProfileDialog extends ComponentDialog {
 
         this.initialDialogId = WATERFALL_DIALOG;
     }
+
     private async CustomChoiceValidator(promptContext: PromptValidatorContext<Choice>) {
         return true;
     }
+
     /**
      * First step in the waterfall dialog. Prompts the user for a command.
      */
-    async checkProfileStep(stepContext) {
-        let promptMsg = i18n.__('UpdatemyprofilePrompt');
-        let promptOptions: Array<string>;
-        promptOptions = i18n.__('UpdatemyprofileChoices');
-        return await stepContext.prompt(CHOICE_PROMPT, {
-            prompt: promptMsg,
-            choices: ChoiceFactory.toChoices(promptOptions),
-            style: ListStyle.suggestedAction
-        });
+    async checkProfileStep(stepContext: WaterfallStepContext): Promise<DialogTurnResult> {
+
+        let commonPromptValidatorModel = new CommonPromptValidatorModel(
+            ["UpdateMyAddress", "UpdateMyPhoneNumber", "UpdateMyEmail"],
+            3,
+            'UpdateMyProfile'
+        );
+        //call dialog
+        return await stepContext.beginDialog(COMMON_CHOICE_CHECK_DIALOG, commonPromptValidatorModel);
     }
     /**
     * Selection step in the waterfall.
     * Bot chooses the flows(UpdateMyAddress,UpdateDirectDeposit) based on user's input.
     */
     async routingStep(stepContext) {
-        const recognizer = LUISAOSetup(stepContext);
-        const directDepositdetails = new DirectDepositDetails();
-        const recognizerResult = await recognizer.recognize(stepContext.context);
-        const intent = LuisRecognizer.topIntent(recognizerResult, 'None', 0.7);
-        switch (intent) {
-            case 'UpdateMyAddress':
-                return await stepContext.replaceDialog(UPDATE_ADDRESS_DIALOG_STEP, null);
-            case 'UpdatePowerofAttorney':
-                return await stepContext.endDialog(this.id);
-            case 'UpdateDirectDeposit':
-                return await stepContext.replaceDialog(DIRECT_DEPOSIT_DIALOG_STEP, directDepositdetails);
-            default:
-                // Catch all for unhandled intents
-                const didntUnderstandMessageText = 'Sorry i didn\'t understand that, try asking me different question';
-                await stepContext.context.sendActivity(didntUnderstandMessageText, didntUnderstandMessageText, InputHints.IgnoringInput);
+        const commonPromptValidatorModel = stepContext.result as CommonPromptValidatorModel;
+        if (commonPromptValidatorModel != null && commonPromptValidatorModel.status) {
+            switch (commonPromptValidatorModel.result) {
+                case 'UpdateMyAddress':
+                    return await stepContext.beginDialog(UPDATE_ADDRESS_DIALOG_STEP, UpdateAddressDialog);
+                case 'UpdateMyPhoneNumber':
+                    return await stepContext.beginDialog(UPDATE_PHONE_NUMBER_DIALOG_STEP, UpdateMyPhoneDialog);
+                case 'UpdateMyEmail':
+                    return await stepContext.cancelAllDialogs();  
+            }
         }
-        return await stepContext.next();
+        else {
+            return stepContext.beginDialog(FeedBack_Dialog, FeedbackDialog);
+        }
     }
 }
