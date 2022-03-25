@@ -28,7 +28,8 @@ import { DialogSet } from 'botbuilder-dialogs';
 
 // The bot and its main dialog.
 import { VirtualassistantAOBot } from './bots/VirtualassistantAOBot';
-import { MainDialog } from './dialogs/mainDialog';
+import { ALWAYS_ON_BOT_DIALOG,AlwaysOnBotDialog } from './dialogs/alwaysOnDialogs/alwaysOnBotDialog';
+
 
 const credentialsFactory = new ConfigurationServiceClientCredentialFactory({
     MicrosoftAppId: process.env.MicrosoftAppId,
@@ -84,7 +85,7 @@ conversationState = new ConversationState(memoryStorage);
 userState = new UserState(memoryStorage);
 
 // Create the main dialog.
-const dialog = new MainDialog();
+const dialog = new AlwaysOnBotDialog();
 
 const bot = new VirtualassistantAOBot(conversationState, userState, dialog);
 
