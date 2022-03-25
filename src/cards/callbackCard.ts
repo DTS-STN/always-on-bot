@@ -17,7 +17,7 @@ export const  callbackCard= (locale:string,text:string) => {
         {
           'type': 'Action.OpenUrl',
           'title': `${i18n.__('MasterErrorMessageLink')}`,
-          'url': 'https://en.wikipedia.org/wiki/Help_desk',
+          'url': 'https://www.canada.ca/en/contact/contact-1-800-o-canada.html',
           'spacing' : 'medium',
           'style': 'positive',
           'wrap': true

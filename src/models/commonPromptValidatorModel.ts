@@ -1,17 +1,17 @@
 export class CommonPromptValidatorModel {
     public retryCount: number;
-    // public promptMessage: string;
-    // public retryPromptMessage: string;
     public result: string;
     public promptCode: string;
     public status: boolean;
-    public intents: Array<string>;
+    public intents: string[];
     public maxRetryCount: number;
+    public initialPrompt : string;
 
-    constructor(intents: Array<string>, maxRetryCount: number, promptCode:string){
+    constructor(intents?: string[], maxRetryCount?: number, promptCode?:string,initialPrompt?:string){
         this.retryCount = 0;
         this.intents = intents;
-        this.maxRetryCount = maxRetryCount ?? 4;
+        this.maxRetryCount = maxRetryCount ?? 2;
         this.promptCode = promptCode;
+        this.initialPrompt = initialPrompt;
     }
 }

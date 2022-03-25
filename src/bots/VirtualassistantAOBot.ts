@@ -3,8 +3,10 @@
 
 import { ActivityHandler, BotState, ConversationState, StatePropertyAccessor, UserState } from 'botbuilder';
 import { Dialog, DialogState } from 'botbuilder-dialogs';
-import { MainDialog } from '../dialogs/mainDialog';
-import i18n, { setLocale } from '../dialogs/locales/i18nconfig';
+
+import { ALWAYS_ON_BOT_DIALOG,AlwaysOnBotDialog } from '../dialogs/alwaysOnDialogs/alwaysOnBotDialog';
+
+import i18n, { setLocale } from '../dialogs/locales/i18nConfig';
 
 export class VirtualassistantAOBot extends ActivityHandler {
     private conversationState: BotState;
@@ -42,7 +44,7 @@ export class VirtualassistantAOBot extends ActivityHandler {
                 if (member.id !== context.activity.recipient.id) {
                     await context.sendActivity(i18n.__("welcomeVirtualAssistantMessage"));
                     await context.sendActivity(i18n.__("welcomeProfileStatement"));
-                    await (dialog as MainDialog).run(context, conversationState.createProperty<DialogState>('DialogState'));
+                    await (dialog as AlwaysOnBotDialog).run(context, conversationState.createProperty<DialogState>('DialogState'));
                 }
             }
             // By calling next() you ensure that the next BotHandler is run.
@@ -53,7 +55,7 @@ export class VirtualassistantAOBot extends ActivityHandler {
             console.log('Running dialog with Message Activity.');
             setLocale(context.activity.locale);
             // Run the Dialog with the new message Activity.
-            await (this.dialog as MainDialog).run(context, this.dialogState);
+            await (this.dialog as AlwaysOnBotDialog).run(context, this.dialogState);
 
             // By calling next() you ensure that the next BotHandler is run.
             await next();
