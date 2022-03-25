@@ -15,7 +15,7 @@ import { INodeSocket } from 'botframework-streaming';
 
 // Import required bot services.
 // See https://aka.ms/bot-services to learn more about the different parts of a bot.
-import { 
+import {
     CloudAdapter,
     ConfigurationServiceClientCredentialFactory,
     ConversationState,
@@ -105,6 +105,13 @@ server.post('/api/messages', (req, res) => {
       // Route to main dialog.
       await bot.run(context);
     });
+  });
+// [OPTIONAL]
+// When deploying azure usually pings the web app server to know the status. The request can be ignored or answered, depending
+// on the implementation. In my case it was logging the errors so I prefer to just reply to the request.
+server.get('/', (req, res, next) => {
+    res.send(200);
+    next();
   });
 
 // Listen for Upgrade requests for Streaming.
