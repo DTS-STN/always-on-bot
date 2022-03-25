@@ -42,8 +42,8 @@ export class VirtualassistantAOBot extends ActivityHandler {
             setLocale(context.activity.locale);
             for (const member of membersAdded) {
                 if (member.id !== context.activity.recipient.id) {
-                    await context.sendActivity(i18n.__("welcomeVirtualAssistantMessage"));
-                    await context.sendActivity(i18n.__("welcomeProfileStatement"));
+                    await context.sendActivity(i18n.__('welcomeVirtualAssistantMessage'));
+                    await context.sendActivity(i18n.__('welcomeProfileStatement'));
                     await (dialog as AlwaysOnBotDialog).run(context, conversationState.createProperty<DialogState>('DialogState'));
                 }
             }

@@ -10,7 +10,7 @@ import { AddressDetails } from './addressDetails';
 import { ChoiceCheckUpdateAddressStep, CHOICE_CHECK_UPDATE_ADDRESS_STEP } from './choiceCheckUpdateAddressStep';
 import { UPDATE_ADDRESS_STEP } from './updateAddressStep';
 import { ValidateNumberStep, VALIDATE_NUMBER_STEP } from './validateNumberStep';
-import { CommonChoiceCheckStepMultipleAddresses, COMMON_CHOICE_CHECK_MULTIPLE_ADDRESSES_STEP } from "./choiceCheckStepMultipleAddressesStep";
+import { CommonChoiceCheckStepMultipleAddresses, COMMON_CHOICE_CHECK_MULTIPLE_ADDRESSES_STEP } from './choiceCheckStepMultipleAddressesStep';
 
 const CHOICE_PROMPT = 'CHOICE_PROMPT';
 const TEXT_PROMPT = 'TEXT_PROMPT';
@@ -19,7 +19,7 @@ let fullAddress: string;
 let addressNotFoundAPI:string = '';
 let isCallBackPassed:boolean = false;
 let isValidPostalCode:boolean = false;
-var manyAddresses:string[] = new Array();
+let manyAddresses:string[] = new Array();
 
 export const GET_ADDRESS_STEP = 'GET_ADDRESS_STEP';
 const GET_ADDRESS_WATERFALL_STEP = 'GET_ADDRESS_WATERFALL_STEP';
@@ -124,10 +124,10 @@ export class GetAddressesStep extends ComponentDialog {
                             return await stepContext.next();
                         }
                         else{
-                            let commonPromptValidatorModel = new CommonPromptValidatorModel(
+                            const commonPromptValidatorModel = new CommonPromptValidatorModel(
                                 manyAddresses,
-                                Number(i18n.__("MaxRetryCount")),
-                                "MultpleAddresses",promptmsg
+                                Number(i18n.__('MaxRetryCount')),
+                                'MultpleAddresses',promptmsg
                             );
                             return await stepContext.beginDialog(COMMON_CHOICE_CHECK_MULTIPLE_ADDRESSES_STEP, commonPromptValidatorModel);
                         }

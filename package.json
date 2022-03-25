@@ -1,7 +1,7 @@
 {
-    "name": "callback-bot",
+    "name": "always-on-bot",
     "version": "1.0.0",
-    "description": "Bot Builder v4 based callback bot Demo",
+    "description": "Bot Builder v4 based always on bot Demo",
     "author": "EY&Freshworks",
     "license": "MIT",
     "main": "app.js",

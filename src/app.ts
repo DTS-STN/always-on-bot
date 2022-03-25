@@ -33,7 +33,7 @@ import { ALWAYS_ON_BOT_DIALOG,AlwaysOnBotDialog } from './dialogs/alwaysOnDialog
 
 const credentialsFactory = new ConfigurationServiceClientCredentialFactory({
     MicrosoftAppId: process.env.MicrosoftAppId,
-    MicrosoftAppPassword: process.env.MicrosoftAppPassword,
+    MicrosoftAppPassword: process.env.MicrosoftAppPassword
 
 });
 
@@ -45,7 +45,7 @@ const adapter = new BotFrameworkAdapter({
   });
 // Create adapter.
 // See https://aka.ms/about-bot-adapter to learn more about adapters.
-//const adapter = new CloudAdapter(botFrameworkAuthentication);
+// const adapter = new CloudAdapter(botFrameworkAuthentication);
 
 // Catch-all for errors.
 const onTurnErrorHandler = async (context, error) => {
