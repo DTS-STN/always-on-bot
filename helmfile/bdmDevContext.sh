@@ -8,7 +8,7 @@ export KEYVAULT_READ_PASSWORD=$(az keyvault secret show --vault-name $KEYVAULT_N
 export K8S_CLUSTER_NAME=ESdCDPSBDMK8SDev-K8S
 export K8S_RG_NAME=ESdCDPSBDMK8SDev
 export BASE_DOMAIN=bdm-dev.dts-stn.com
-export PROJECT=dts-oas-callback-bot
+export PROJECT=dts-always-on-bot
 export BRANCH=main
 export RBAC_TEAM_ID=$(az ad group show --group bdm-dps-fujitsu-si --query 'objectId' -o tsv)
 az aks get-credentials --name $K8S_CLUSTER_NAME --resource-group $K8S_RG_NAME
