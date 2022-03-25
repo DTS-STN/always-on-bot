@@ -9,7 +9,7 @@ import { LUISAlwaysOnBotSetup } from '../alwaysOnDialogs/alwaysOnBotRecognizer';
 
 import i18n from '../locales/i18nConfig';
 import { OAS_BENEFIT_STEP,OASBenefitStep } from '../alwaysOnDialogs/OASBenefit/oASBenefitStep';
-import { CommonChoiceCheckStep, COMMON_CHOICE_CHECK_STEP } from '../common/commonChoiceCheckStep';
+import { CommonChoiceCheckStep, COMMON_CHOICE_CHECK_STEP } from './commonChoiceCheckStep';
 import { UpdateProfileStep, UPDATE_PROFILE_STEP } from '../alwaysOnDialogs/UpdateProfile/updateProfileStep';
 import { FeedBackStep, FEED_BACK_STEP } from './feedBackStep';
 import { ALWAYS_ON_BOT_DIALOG } from '../alwaysOnDialogs/alwaysOnBotDialog';

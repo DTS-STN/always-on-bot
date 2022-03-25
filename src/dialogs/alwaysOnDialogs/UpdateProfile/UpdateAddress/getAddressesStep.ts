@@ -19,7 +19,7 @@ let fullAddress: string;
 let addressNotFoundAPI:string = '';
 let isCallBackPassed:boolean = false;
 let isValidPostalCode:boolean = false;
-var manyAddresses:string[] = new Array(); 
+var manyAddresses:string[] = new Array();
 
 export const GET_ADDRESS_STEP = 'GET_ADDRESS_STEP';
 const GET_ADDRESS_WATERFALL_STEP = 'GET_ADDRESS_WATERFALL_STEP';
@@ -200,7 +200,7 @@ export class GetAddressesStep extends ComponentDialog {
                     isCallBackPassed = true;
                     return await stepContext.endDialog();
                 }
- 
+
             }
            }
            else{

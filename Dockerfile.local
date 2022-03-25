@@ -16,7 +16,7 @@ RUN printf "Host db.github.com\n    Hostname github.com\n    IdentityFile ~/.ssh
 COPY ./package*.json ./
 # COPY ./tsconfig.json ./
 
-# COPY . /usr/src/app/
+COPY . /usr/src/app/
 
 # COPY ./src ./
 

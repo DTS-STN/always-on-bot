@@ -5,7 +5,7 @@ services:
   application:
     image: ${PROJECT}:${GIT_LOCAL_BRANCH}
     container_name: ${PROJECT}
-    env_file: ./src/.env
+    env_file: .env
     build:
       context: .
       dockerfile: Dockerfile.local
