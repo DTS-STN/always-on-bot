@@ -52,75 +52,53 @@ secrets:
       - name: SINGLE_SECRET_NAME
         value: always-on-api-az-credentials
       - name: SECRET_LIST
-        value: "bdm-dev-terraform-LuisAppIdEN,bdm-dev-terraform-LuisAPIKeyEN,bdm-dev-terraform-LuisAPIHostNameEN,bdm-dev-terraform-LuisCallbackAppIdEN,bdm-dev-terraform-LuisCallbackAPIKeyEN,bdm-dev-terraform-LuisCallbackAPIHostNameEN,bdm-dev-decd-always-on-bot-appid,bdm-dev-decd-always-on-bot-password,bdm-dev-terraform-LuisAppIdFR,bdm-dev-terraform-LuisAPIKeyFR,bdm-dev-terraform-LuisAPIHostNameFR,bdm-dev-terraform-LuisCallbackAppIdFR,bdm-dev-terraform-LuisCallbackAPIKeyFR,bdm-dev-terraform-LuisCallbackAPIHostNameFR,bdm-dev-unblock-bot-LuisAppIdEN,bdm-dev-unblock-bot-LuisAPIKeyEN,bdm-dev-unblock-bot-LuisHostNameEN"
+        value: "bdm-dev-LuisAppIdEN,bdm-dev-LuisAPIKeyEN,bdm-dev-LuisAPIHostNameEN,always-on-mvp-bot-id,always-on-mvp-bot-pass,bdm-dev-LuisAppIdFR,bdm-dev-LuisAPIKeyFR,bdm-dev-LuisAPIHostNameFR,bdm-dev-AddressAPIUrl"
 extraEnv:
     - name: MicrosoftAppId
       valueFrom:
         secretKeyRef:
           name: always-on-api-az-credentials
-          key: bdm-dev-decd-always-on-bot-appid
+          key: always-on-mvp-bot-id
     - name: MicrosoftAppPassword
       valueFrom:
         secretKeyRef:
           name: always-on-api-az-credentials
-          key: bdm-dev-decd-always-on-bot-password
+          key: always-on-mvp-bot-pass
     - name: LuisAppIdFR
       valueFrom:
         secretKeyRef:
           name: always-on-api-az-credentials
-          key: bdm-dev-unblock-bot-LuisAppIdFR
+          key: bdm-dev-LuisAppIdFR
     - name: LuisAPIKeyFR
       valueFrom:
         secretKeyRef:
           name: always-on-api-az-credentials
-          key: bdm-dev-unblock-bot-LuisAPIKeyFR
+          key: bdm-dev-LuisAPIKeyFR
     - name: LuisAPIHostNameFR
       valueFrom:
         secretKeyRef:
           name: always-on-api-az-credentials
-          key: bdm-dev-terraform-LuisAPIHostNameFR
+          key: bdm-dev-LuisAPIHostNameFR
     - name: LuisAppIdEN
       valueFrom:
         secretKeyRef:
           name: always-on-api-az-credentials
-          key: bdm-dev-unblock-bot-LuisAppIdEN
+          key: bdm-dev-LuisAppIdEN
     - name: LuisAPIKeyEN
       valueFrom:
         secretKeyRef:
           name: always-on-api-az-credentials
-          key: bdm-dev-unblock-bot-LuisAPIKeyEN
-    - name: LuisCallbackAppIdFR
-      valueFrom:
-        secretKeyRef:
-          name: always-on-api-az-credentials
-          key: bdm-dev-terraform-LuisCallbackAppIdFR
+          key: bdm-dev-LuisAPIKeyEN
     - name: LuisAPIHostNameEN
       valueFrom:
         secretKeyRef:
           name: always-on-api-az-credentials
-          key: bdm-dev-terraform-LuisCallbackAPIHostNameEN
-    - name: LuisCallbackAPIKeyFR
+          key: bdm-dev-LuisAPIHostNameEN
+    - name: AddressAPIUrl
       valueFrom:
         secretKeyRef:
-          name: always-on-api-az-credentials
-          key: bdm-dev-terraform-LuisCallbackAPIKeyFR
-    - name: LuisCallbackAPIHostNameFR
-      valueFrom:
-        secretKeyRef:
-          name: always-on-api-az-credentials
-          key: bdm-dev-terraform-LuisCallbackAPIHostNameFR
-    - name: LuisCallbackAppIdEN
-      valueFrom:
-        secretKeyRef:
-          name: always-on-api-az-credentials
-          key: bdm-dev-terraform-LuisCallbackAppIdEN
-    - name: LuisCallbackAPIKeyEN
-      valueFrom:
-        secretKeyRef:
-          name: always-on-api-az-credentials
-          key: bdm-dev-terraform-LuisCallbackAPIKeyEN
-    - name: LuisCallbackAPIHostNameEN
-      valueFrom:
-        secretKeyRef:
-          name: always-on-api-az-credentials
-          key: bdm-dev-terraform-LuisCallbackAPIHostNameEN
+          name: oas-unblock-api-az-credentials
+          key: bdm-dev-AddressAPIUrl
+
+
+
